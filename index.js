@@ -131,10 +131,16 @@ gl.cullFace(gl.BACK);
 console.log("testing program");
 testingProgram = new Program();
 // testingProgram.setShaderNames('./shader.vs.glsl', './shader.fs.glsl');
-testingProgram.setShaderNames('./resources/simple_vert.glsl', './resources/simple_frag.glsl');
+testingProgram.setShaderNames(VShaderText, FShaderText);
 console.log("after setShaderNames");
 testingProgram.init();
-//testingProgram.testing();
+testingProgram.bind();
+testingProgram.addAttribute('vertPosition');
+testingProgram.getAttribute("vertPosition");
+testingProgram.addUniform('mWorld');
+testingProgram.getUniform('mWorld');
+testingProgram.testing();
+testingProgram.unbind();
 
 for(let Key in testingProgram)
 {
@@ -142,9 +148,19 @@ for(let Key in testingProgram)
 }
 
 //testing light class
-testingLight = new Light();
-console.log("Light variable test ", testingLight.exampleVariable, "position: ", testingLight.position);
-testingLight.testing();
-MV = 0;
-sphere = 0;
-testingLight.draw(MV, testingProgram, sphere);
+// testingLight = new Light();
+// console.log("Light variable test ", testingLight.exampleVariable, "position: ", testingLight.position);
+// testingLight.testing();
+// MV = 0;
+// sphere = 0;
+// testingLight.draw(MV, testingProgram, sphere);
+
+function listFruits() {
+    let fruits = ["apple", "cherry", "pear"]
+    
+    fruits.map((fruit, index) => {
+      console.log(index, fruit)
+    })
+  }
+  
+listFruits()
