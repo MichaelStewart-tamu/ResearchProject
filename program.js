@@ -168,7 +168,7 @@ class Program
         //     alert('Your browser does not support WebGL');
         // }
 
-        gl.useProgram(GLint null);   //the whole point of this function
+        gl.useProgram(null);   //the whole point of this function, QUESTION: zero threw an error, is this necessary for the program?
     }
 
     addAttribute(name)
