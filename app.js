@@ -17,27 +17,16 @@ var InitDemo = function () {
 				} 
 				else 
 				{
-					loadJSONResource('./sphere.json', function (modelErr, modelObj) 
+					loadJSONResource('./Susan.json', function (modelErr, modelObj) 
 					{
 						if (modelErr) 
 						{
 							alert('Fatal error getting Susan model (see console)');
-							console.error(fsErr);
+							console.error(modelErr);
 						} 
 						else 
 						{
-							loadImage('./SusanTexture.png', function (imgErr, img) 
-							{
-								if (imgErr) 
-								{
-									alert('Fatal error getting Susan texture (see console)');
-									console.error(imgErr);
-								} 
-								else 
-								{ 
-									RunDemo(vsText, fsText, img, modelObj);
-								}
-							});
+							RunDemo(vsText, fsText, modelObj);
 						}
 					});
 				}

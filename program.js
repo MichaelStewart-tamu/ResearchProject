@@ -1,4 +1,5 @@
-let VShaderText = ['precision mediump float;',
+let VShaderText = [
+        'precision mediump float;',
 
         'attribute vec3 vertPosition;',
         'attribute vec2 vertTexCoord;',
@@ -45,6 +46,103 @@ let FShaderText =
     '    vec3 lightIntensity = ambientLightIntensity + sun.color * max(dot(fragNormal, normSunDir), 0.0);',
 
     '    gl_FragColor = vec4(texel.rgb * lightIntensity, texel.a);',
+    '}'
+].join('\n');
+
+let phong_vert =
+[
+    'precision mediump float;',
+    'attribute vec4 aPos;',
+    'attribute vec3 aNor;',
+    'attribute vec2 aTex;',
+    'uniform mat4 P;',
+    'uniform mat4 MV;',
+    'uniform mat4 MVit;',
+    'varying vec3 vPos;',
+    'varying vec3 vNor;',
+    'varying vec2 vTex;',
+    '',
+    'void main()',
+    '{',
+    '    vec4 posCam = MV * aPos;',
+    '    gl_Position = P * posCam;',
+    '    vPos = posCam.xyz;',
+    '    vNor = normalize((MVit * vec4(aNor, 0.0)).xyz);',
+    '    vTex = aTex;',
+    '}'
+].join('\n');
+
+//only supports version 1.0, as orriginally listed version 1.20
+let phong_frag =
+[
+    'precision mediump float;',
+    'varying vec3 vPos; // in camera space',
+    'varying vec3 vNor; // in camera space',
+    'varying vec2 vTex;',
+    'uniform vec3 kd;',
+    'uniform vec3 ks;',
+    'uniform vec3 ka;',
+    'uniform float s;',
+    'uniform vec3 lPos0; // in camera space',
+    'uniform vec3 lPos1; // in camera space',
+    'uniform float lInt0;',
+    'uniform float lInt1;',
+    'uniform float alpha;',
+
+    // Can't get arrays to work! Debug later
+    //uniform float lNum; // number of lights
+
+    'void main()',
+    '{',
+    '    vec3 color = ka;',
+    '    vec3 n = normalize(vNor);',
+    '    vec3 v = -normalize(vPos);',
+    '    {',
+    '        vec3 l = normalize(lPos0 - vPos);',
+    '        vec3 h = normalize(l + v);',
+    '        vec3 diffuse = max(dot(l, n), 0.0) * kd;',
+    '        vec3 specular = pow(max(dot(h, n), 0.0), s) * ks;',
+    '        color += lInt0*(diffuse + specular);',
+    '    }',
+    '    {',
+    '        vec3 l = normalize(lPos1 - vPos);',
+    '        vec3 h = normalize(l + v);',
+    '        vec3 diffuse = max(dot(l, n), 0.0) * kd;',
+    '        vec3 specular = pow(max(dot(h, n), 0.0), s) * ks;',
+    '        color += lInt1*(diffuse + specular);',
+    '    }',
+    '    gl_FragColor = vec4(color, alpha);',
+    '}'
+
+].join('\n');
+
+// let vertSimple = 
+// [
+
+// ].join('\n');
+
+let fragSimple = 
+[
+    'precision mediump float;',
+    'varying vec3 vPos; // in camera space',
+    'varying vec3 vNor; // in camera space',
+    'varying vec2 vTex;',
+    'uniform vec3 kd;',
+    'uniform vec3 ks;',
+    'uniform vec3 ka;',
+    'uniform float s;',
+    'uniform vec3 lPos0; // in camera space',
+    'uniform vec3 lPos1; // in camera space',
+    'uniform float lInt0;',
+    'uniform float lInt1;',
+    'uniform float alpha;',
+
+    // Can't get arrays to work! Debug later
+    //uniform float lNum; // number of lights
+
+    'void main()',
+    '{',
+    '   gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);',
     '}'
 ].join('\n');
 
@@ -180,7 +278,8 @@ class Program
     {
         for(var i = 0; i < this.#attributes.length; i++)
         {
-            console.log("testing inside get Attribute", i, this.#attributes[i][0]);
+            //debug statement
+            //console.log("testing inside get Attribute", i, this.#attributes[i][0], this.#attributes[i][1]);
             if(this.#attributes[i][0] == name)
             {
                 return this.#attributes[i][1];
@@ -188,18 +287,20 @@ class Program
         }
 
         console.error(name, " is not an attribute variable");
+        return -1;
     }
 
     addUniform(name)
     {
-        this.#uniforms.push([name, gl.getAttribLocation(this.#pid, name)]);
+        this.#uniforms.push([name, gl.getUniformLocation(this.#pid, name)]);
     }
 
     getUniform(name)
     {
         for(var i = 0; i < this.#uniforms.length; i++)
         {
-            console.log("testing inside get Attribute", i, this.#uniforms[i][0]);
+            //Debug Statement
+            // console.log("testing inside get Uniforms", i, this.#uniforms[i][0]);
             if(this.#uniforms[i][0] == name)
             {
                 return this.#uniforms[i][1];
@@ -233,5 +334,11 @@ class Program
             console.log("length of attributes", this.#attributes.length);
         }
         
+    }
+
+    getPid()
+    {
+        console.log("output from getPID", this.#pid);
+        return this.#pid;
     }
 }

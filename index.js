@@ -131,16 +131,36 @@ gl.cullFace(gl.BACK);
 console.log("testing program");
 testingProgram = new Program();
 // testingProgram.setShaderNames('./shader.vs.glsl', './shader.fs.glsl');
-testingProgram.setShaderNames(VShaderText, FShaderText);
+testingProgram.setShaderNames(phong_vert, phong_frag);
 console.log("after setShaderNames");
 testingProgram.init();
 testingProgram.bind();
-testingProgram.addAttribute('vertPosition');
-testingProgram.getAttribute("vertPosition");
-testingProgram.addUniform('mWorld');
-testingProgram.getUniform('mWorld');
+// testingProgram.addAttribute('vertPosition');
+// testingProgram.getAttribute("vertPosition");
+// console.log("testing get Attribute", testingProgram.getAttribute("vertPosition"));
+testingProgram.addAttribute('aPos');
+testingProgram.getAttribute("aPos");
+testingProgram.addAttribute('aNor');
+testingProgram.addAttribute('aTex');
+testingProgram.addUniform('P');
+testingProgram.addUniform('MV');
+testingProgram.addUniform('MVit');
+testingProgram.addUniform('kd');
+testingProgram.addUniform('ks');
+testingProgram.addUniform('ka');
+testingProgram.addUniform('s');
+testingProgram.addUniform('lPos0');
+testingProgram.addUniform('lPos1');
+testingProgram.addUniform('lInt0');
+testingProgram.addUniform('lInt1');
+testingProgram.addUniform('alpha');
+testingProgram.bind();
+
+//making sure they all show up
+console.log("testing all variables were added correctly", "P", testingProgram.getUniform("P"), "MV", testingProgram.getUniform("MV"), "MVit", testingProgram.getUniform("MVit"), "kd", testingProgram.getUniform("kd"), "ks", testingProgram.getUniform("ks"), "ka", testingProgram.getUniform("ka"), "s", testingProgram.getUniform("s"), "lpos0", testingProgram.getUniform("lPos0"), "lPos1", testingProgram.getUniform("lPos1"), "lInt0", testingProgram.getUniform("lInt0"), "lInt1", testingProgram.getUniform("lInt1"), "alpha", testingProgram.getUniform("alpha"), "aPos", testingProgram.getAttribute("aPos"), "aNor", testingProgram.getAttribute("aNor"), "aTex", testingProgram.getAttribute("aTex"));
+
 testingProgram.testing();
-testingProgram.unbind();
+// testingProgram.unbind();
 
 for(let Key in testingProgram)
 {
@@ -164,3 +184,82 @@ function listFruits() {
   }
   
 listFruits()
+
+loadJSONResource('./Susan.json', function (modelErr, modelObj) 
+{
+    if (modelErr) 
+    {
+        alert('Fatal error getting Susan model (see console)');
+        console.error(modelErr);
+    } 
+    else 
+    {
+        
+        testingProgram.bind();
+        testingShape = new Shape();
+        testingShape.init(modelObj);
+
+        //MV = mView * mWorld
+        
+
+        // var matWorldUniformLocation = gl.getUniformLocation(program, 'mWorld');
+        // var matViewUniformLocation = gl.getUniformLocation(program, 'mView');
+        // var matProjUniformLocation = gl.getUniformLocation(program, 'mProj');
+
+        var worldMatrix = new Float32Array(16);
+        var viewMatrix = new Float32Array(16);
+        var projMatrix = new Float32Array(16);
+        mat4.identity(worldMatrix);
+        mat4.lookAt(viewMatrix, [0, 0, -8], [0, 0, 0], [0, 1, 0]);
+        mat4.perspective(projMatrix, glMatrix.toRadian(45), canvas.clientWidth / canvas.clientHeight, 0.1, 1000.0);
+
+        var MV = new Float32Array(16);
+        mat4.multiply(MV, viewMatrix, worldMatrix); //MV = mView * mWorld
+
+        var MVit = new Float32Array(16);
+        mat4.invert(MVit, MV);
+
+        gl.uniformMatrix4fv(testingProgram.getUniform("P"), gl.FALSE, projMatrix);
+        gl.uniformMatrix4fv(testingProgram.getUniform("MV"), gl.FALSE, MV);
+        gl.uniformMatrix4fv(testingProgram.getUniform("MVit"), gl.FALSE, MVit);
+
+        // gl.uniformMatrix4fv(matWorldUniformLocation, gl.FALSE, worldMatrix);
+        // gl.uniformMatrix4fv(matViewUniformLocation, gl.FALSE, viewMatrix);
+        // gl.uniformMatrix4fv(matProjUniformLocation, gl.FALSE, projMatrix);
+
+        //
+        //main rendering loop
+        //
+        //
+        // Main render loop
+        //
+        var identityMatrix = new Float32Array(16);
+        mat4.identity(identityMatrix);
+        var angle = 0;
+        var loop = function () 
+        {
+            // angle = performance.now() / 1000 / 6 * 2 * Math.PI;
+            // mat4.rotate(yRotationMatrix, identityMatrix, angle, [0, 1, 0]);
+            // mat4.rotate(xRotationMatrix, identityMatrix, angle / 4, [1, 0, 0]);
+            // mat4.mul(worldMatrix, yRotationMatrix, xRotationMatrix);
+            // gl.uniformMatrix4fv(matWorldUniformLocation, gl.FALSE, worldMatrix);
+
+            gl.clearColor(0.0, 0.0, 0.0, 1.0);
+            gl.clear(gl.DEPTH_BUFFER_BIT | gl.COLOR_BUFFER_BIT);
+
+            // gl.bindTexture(gl.TEXTURE_2D, susanTexture);
+            // gl.activeTexture(gl.TEXTURE0);
+
+            // gl.drawElements(gl.TRIANGLES, susanIndices.length, gl.UNSIGNED_SHORT, 0);
+            testingProgram.bind();
+            testingShape.draw(testingProgram);
+            testingProgram.unbind();
+            
+            
+            requestAnimationFrame(loop);
+        };
+        requestAnimationFrame(loop);
+
+        testingProgram.unbind();
+    }
+});
