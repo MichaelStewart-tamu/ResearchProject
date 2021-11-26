@@ -17,7 +17,7 @@ var InitDemo = function () {
 				} 
 				else 
 				{
-					loadJSONResource('./Susan.json', function (modelErr, modelObj) 
+					loadJSONResource('./sphere1.json', function (modelErr, modelObj) 
 					{
 						if (modelErr) 
 						{
@@ -75,6 +75,7 @@ var RunDemo = function (vertexShaderText, fragmentShaderText, SusanModel)
 	testingProgram.addUniform('mWorld');
 	testingProgram.addUniform('mView');
 	testingProgram.addUniform('mProj');
+	testingProgram.addUniform('MVit');
 	//ambientLightIntensity, sun.direction, sun.color
 	testingProgram.addUniform('ambientLightIntensity');
 	testingProgram.addUniform('sun.direction');
@@ -118,10 +119,10 @@ var RunDemo = function (vertexShaderText, fragmentShaderText, SusanModel)
 	//
 	// Create buffer
 	//
-	var susanVertices = SusanModel.meshes[0].vertices;
-	var susanIndices = [].concat.apply([], SusanModel.meshes[0].faces);
-	var susanTexCoords = SusanModel.meshes[0].texturecoords[0];
-	var susanNormals = SusanModel.meshes[0].normals;
+	var susanVertices = SusanModel.verts;
+	var susanIndices = SusanModel.indices;
+	var susanTexCoords = SusanModel.texcoords;
+	var susanNormals = SusanModel.normals;
 
 	var susanPosVertexBufferObject = gl.createBuffer();
 	gl.bindBuffer(gl.ARRAY_BUFFER, susanPosVertexBufferObject);
@@ -204,18 +205,27 @@ var RunDemo = function (vertexShaderText, fragmentShaderText, SusanModel)
 	var matViewUniformLocation = testingProgram.getUniform("mView");
 	// var matProjUniformLocation = gl.getUniformLocation(program, 'mProj');
 	var matProjUniformLocation = testingProgram.getUniform("mProj");
-	
+	// MVit
+	var matInvertedUniformLocation = testingProgram.getUniform('MVit');
 
 	var worldMatrix = new Float32Array(16);
 	var viewMatrix = new Float32Array(16);
 	var projMatrix = new Float32Array(16);
+	//view then world
+	var invertedMatrix = new Float32Array(16);
+	var temp = new Float32Array(16);
 	mat4.identity(worldMatrix);
 	mat4.lookAt(viewMatrix, [0, 0, -8], [0, 0, 0], [0, 1, 0]);
 	mat4.perspective(projMatrix, glMatrix.toRadian(45), canvas.clientWidth / canvas.clientHeight, 0.1, 1000.0);
 
+	
 	gl.uniformMatrix4fv(matWorldUniformLocation, gl.FALSE, worldMatrix);
 	gl.uniformMatrix4fv(matViewUniformLocation, gl.FALSE, viewMatrix);
 	gl.uniformMatrix4fv(matProjUniformLocation, gl.FALSE, projMatrix);
+	mat4.multiply(temp, viewMatrix, worldMatrix);
+	mat4.invert(invertedMatrix, temp);
+	console.log("trying to find undefined", invertedMatrix, temp, viewMatrix, worldMatrix);
+	gl.uniformMatrix4fv(matInvertedUniformLocation, gl.FALSE, invertedMatrix);
 
 	var xRotationMatrix = new Float32Array(16);
 	var yRotationMatrix = new Float32Array(16);
@@ -252,7 +262,13 @@ var RunDemo = function (vertexShaderText, fragmentShaderText, SusanModel)
 		mat4.mul(worldMatrix, yRotationMatrix, xRotationMatrix);
 		gl.uniformMatrix4fv(matWorldUniformLocation, gl.FALSE, worldMatrix);
 
-		gl.clearColor(0.00, 0.00, 0.0, 1.0);
+		//new
+		mat4.multiply(temp, viewMatrix, worldMatrix);
+		mat4.invert(invertedMatrix, temp);
+		gl.uniformMatrix4fv(matInvertedUniformLocation, gl.FALSE, invertedMatrix);
+
+
+		gl.clearColor(0.40, 0.00, 0.0, 1.0);
 		gl.clear(gl.DEPTH_BUFFER_BIT | gl.COLOR_BUFFER_BIT);
 
 		// gl.bindTexture(gl.TEXTURE_2D, susanTexture);
