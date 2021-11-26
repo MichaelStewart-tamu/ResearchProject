@@ -4,9 +4,11 @@ class Shape
     #posBufID
     #norBufID
     #texBufID
+    #indBufID
     #posBuf
     #norBuf
     #texBuf
+    #indBuf
 
     //constructor
     constructor()
@@ -14,29 +16,74 @@ class Shape
         this.#norBufID = 0;
         this.#posBufID = 0;
         this.#texBufID = 0;
+        this.#indBufID = 0;
     }
 
     //load
+    //old
+    // init(modelInfo)
+    // {
+    //     console.log("testing input", modelInfo);
+
+    //     this.#posBuf = modelInfo.meshes[0].vertices;
+    //     this.#norBuf = modelInfo.meshes[0].normals;
+    //     this.#texBuf = modelInfo.meshes[0].texturecoords;
+
+    //     console.log("posBUf", this.#posBuf, "norBuf", this.#norBuf, "texBuf", this.#texBuf);
+   
+    //     this.#posBufID = gl.createBuffer();
+    //     gl.bindBuffer(gl.ARRAY_BUFFER, this.#posBufID);
+    //     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.#posBuf), gl.STATIC_DRAW);
+
+    //     if(this.#norBuf.length > 0)
+    //     {
+    //         this.#norBufID = gl.createBuffer();
+    //         gl.bindBuffer(gl.ARRAY_BUFFER, this.#norBufID);
+    //         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.#norBuf), gl.STATIC_DRAW);
+    //     }
+
+    //     if(this.#texBuf.length > 0)
+    //     {
+    //         this.#texBufID = gl.createBuffer();
+    //         gl.bindBuffer(gl.ARRAY_BUFFER, this.#texBufID);
+    //         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.#texBuf), gl.STATIC_DRAW);
+    //     }
+
+    //     //unbind buffer
+    //     gl.bindBuffer(gl.ARRAY_BUFFER, null);
+
+    //     //checking for errors
+    //     let glErr = gl.getError();
+    //     if(glErr != gl.NO_ERROR) 
+    //     {
+    //         printf("GL_ERROR = %s.\n", glErr);
+	//     }
+    // }
     init(modelInfo)
     {
         console.log("testing input", modelInfo);
 
-        this.#posBuf = modelInfo.meshes[0].vertices;
-        this.#norBuf = modelInfo.meshes[0].normals;
-        this.#texBuf = modelInfo.meshes[0].texturecoords;
+        // this.#posBuf = modelInfo.meshes[0].vertices;
+        // this.#norBuf = modelInfo.meshes[0].normals;
+        // this.#texBuf = modelInfo.meshes[0].texturecoords;
+        this.#posBuf = modelInfo.verts;
+        this.#norBuf = modelInfo.normals;
+        this.#texBuf = modelInfo.texcoords;
+        this.#indBuf = modelInfo.indices;
 
-        console.log("posBUf", this.#posBuf, "norBuf", this.#norBuf, "texBuf", this.#texBuf);
+        console.log("posBUf", this.#posBuf, "norBuf", this.#norBuf, "texBuf", this.#texBuf, "indices", this.#indBuf);
    
         this.#posBufID = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, this.#posBufID);
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.#posBuf), gl.STATIC_DRAW);
 
-        if(this.#norBuf.length > 0)
-        {
-            this.#norBufID = gl.createBuffer();
-            gl.bindBuffer(gl.ARRAY_BUFFER, this.#norBufID);
-            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.#norBuf), gl.STATIC_DRAW);
-        }
+        this.#indBufID = gl.createBuffer();
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.#indBufID);
+        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(this.#indBuf), gl.STATIC_DRAW);
+
+        this.#norBufID = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.#norBufID);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.#norBuf), gl.STATIC_DRAW);
 
         if(this.#texBuf.length > 0)
         {
@@ -87,15 +134,15 @@ class Shape
         // );
         // gl.enableVertexAttribArray(positionAttribLocation);
 
-        let h_pos = prog.getAttribute("aPos");
+        let h_pos = prog.getAttribute("vertPosition");
         //let h_pos = gl.getAttribLocation(prog.getPid(), 'aPos');
-        console.log("draw in shape", h_pos);
+        // console.log("draw in shape", h_pos);
         gl.enableVertexAttribArray(h_pos);
         gl.bindBuffer(gl.ARRAY_BUFFER, this.#posBufID);
         gl.vertexAttribPointer(h_pos, 3, gl.FLOAT, gl.FALSE, 0, 0); //TODO: check! in c++ the last two are (0, (const void *)0), whil in java script it is 3 * Float32Array.BYTES_PER_ELEMENT, // Size of an individual vertex, 0 // Offset from the beginning of a single vertex to this attribute
 
         //bind normal buffer
-        let h_nor = prog.getAttribute("aNor");
+        let h_nor = prog.getAttribute("vertNormal");
         if(h_nor != -1 && this.#norBufID != 0)
         {
             gl.enableVertexAttribArray(h_nor);
@@ -104,7 +151,7 @@ class Shape
         }
 
         //bind texture buffer
-        let h_tex = prog.getAttribute("aTex");
+        let h_tex = prog.getAttribute("vertTexCoord");
         if(h_tex != -1 && this.#texBufID != 0)
         {
             gl.enableVertexAttribArray(h_tex);

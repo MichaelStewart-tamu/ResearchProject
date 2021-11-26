@@ -119,64 +119,68 @@ var RunDemo = function (vertexShaderText, fragmentShaderText, SusanModel)
 	//
 	// Create buffer
 	//
-	var susanVertices = SusanModel.verts;
-	var susanIndices = SusanModel.indices;
-	var susanTexCoords = SusanModel.texcoords;
-	var susanNormals = SusanModel.normals;
+	// var susanVertices = SusanModel.verts;
+	// var susanIndices = SusanModel.indices;
+	// var susanTexCoords = SusanModel.texcoords;
+	// var susanNormals = SusanModel.normals;
 
-	var susanPosVertexBufferObject = gl.createBuffer();
-	gl.bindBuffer(gl.ARRAY_BUFFER, susanPosVertexBufferObject);
-	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(susanVertices), gl.STATIC_DRAW);
+	// var susanPosVertexBufferObject = gl.createBuffer();
+	// gl.bindBuffer(gl.ARRAY_BUFFER, susanPosVertexBufferObject);
+	// gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(susanVertices), gl.STATIC_DRAW);
 
-	var susanTexCoordVertexBufferObject = gl.createBuffer();
-	gl.bindBuffer(gl.ARRAY_BUFFER, susanTexCoordVertexBufferObject);
-	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(susanTexCoords), gl.STATIC_DRAW);
+	// var susanTexCoordVertexBufferObject = gl.createBuffer();
+	// gl.bindBuffer(gl.ARRAY_BUFFER, susanTexCoordVertexBufferObject);
+	// gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(susanTexCoords), gl.STATIC_DRAW);
 
-	var susanIndexBufferObject = gl.createBuffer();
-	gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, susanIndexBufferObject);
-	gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(susanIndices), gl.STATIC_DRAW);
+	// var susanIndexBufferObject = gl.createBuffer();
+	// gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, susanIndexBufferObject);
+	// gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(susanIndices), gl.STATIC_DRAW);
 
-	var susanNormalBufferObject = gl.createBuffer();
-	gl.bindBuffer(gl.ARRAY_BUFFER, susanNormalBufferObject);
-	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(susanNormals), gl.STATIC_DRAW);
+	// var susanNormalBufferObject = gl.createBuffer();
+	// gl.bindBuffer(gl.ARRAY_BUFFER, susanNormalBufferObject);
+	// gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(susanNormals), gl.STATIC_DRAW);
 
-	gl.bindBuffer(gl.ARRAY_BUFFER, susanPosVertexBufferObject);
-	// var positionAttribLocation = gl.getAttribLocation(program, 'vertPosition');
-	var positionAttribLocation = testingProgram.getAttribute("vertPosition");
-	gl.vertexAttribPointer(
-		positionAttribLocation, // Attribute location
-		3, // Number of elements per attribute
-		gl.FLOAT, // Type of elements
-		gl.FALSE,
-		3 * Float32Array.BYTES_PER_ELEMENT, // Size of an individual vertex
-		0 // Offset from the beginning of a single vertex to this attribute
-	);
-	gl.enableVertexAttribArray(positionAttribLocation);
+	//new way
+	testingShape = new Shape();
+	testingShape.init(SusanModel);
 
-	gl.bindBuffer(gl.ARRAY_BUFFER, susanTexCoordVertexBufferObject);
-	// var texCoordAttribLocation = gl.getAttribLocation(program, 'vertTexCoord');
-	var texCoordAttribLocation = testingProgram.getAttribute("vertTexCoord");
-	gl.vertexAttribPointer(
-		texCoordAttribLocation, // Attribute location
-		2, // Number of elements per attribute
-		gl.FLOAT, // Type of elements
-		gl.FALSE,
-		2 * Float32Array.BYTES_PER_ELEMENT, // Size of an individual vertex
-		0
-	);
-	gl.enableVertexAttribArray(texCoordAttribLocation);
+	// gl.bindBuffer(gl.ARRAY_BUFFER, susanPosVertexBufferObject);
+	// // var positionAttribLocation = gl.getAttribLocation(program, 'vertPosition');
+	// var positionAttribLocation = testingProgram.getAttribute("vertPosition");
+	// gl.vertexAttribPointer(
+	// 	positionAttribLocation, // Attribute location
+	// 	3, // Number of elements per attribute
+	// 	gl.FLOAT, // Type of elements
+	// 	gl.FALSE,
+	// 	3 * Float32Array.BYTES_PER_ELEMENT, // Size of an individual vertex
+	// 	0 // Offset from the beginning of a single vertex to this attribute
+	// );
+	// gl.enableVertexAttribArray(positionAttribLocation);
 
-	gl.bindBuffer(gl.ARRAY_BUFFER, susanNormalBufferObject);
-	// var normalAttribLocation = gl.getAttribLocation(program, 'vertNormal');
-	var normalAttribLocation = testingProgram.getAttribute("vertNormal");
-	gl.vertexAttribPointer(
-		normalAttribLocation,
-		3, gl.FLOAT,
-		gl.TRUE,
-		3 * Float32Array.BYTES_PER_ELEMENT,
-		0
-	);
-	gl.enableVertexAttribArray(normalAttribLocation);
+	// gl.bindBuffer(gl.ARRAY_BUFFER, susanTexCoordVertexBufferObject);
+	// // var texCoordAttribLocation = gl.getAttribLocation(program, 'vertTexCoord');
+	// var texCoordAttribLocation = testingProgram.getAttribute("vertTexCoord");
+	// gl.vertexAttribPointer(
+	// 	texCoordAttribLocation, // Attribute location
+	// 	2, // Number of elements per attribute
+	// 	gl.FLOAT, // Type of elements
+	// 	gl.FALSE,
+	// 	2 * Float32Array.BYTES_PER_ELEMENT, // Size of an individual vertex
+	// 	0
+	// );
+	// gl.enableVertexAttribArray(texCoordAttribLocation);
+
+	// gl.bindBuffer(gl.ARRAY_BUFFER, susanNormalBufferObject);
+	// // var normalAttribLocation = gl.getAttribLocation(program, 'vertNormal');
+	// var normalAttribLocation = testingProgram.getAttribute("vertNormal");
+	// gl.vertexAttribPointer(
+	// 	normalAttribLocation,
+	// 	3, gl.FLOAT,
+	// 	gl.TRUE,
+	// 	3 * Float32Array.BYTES_PER_ELEMENT,
+	// 	0
+	// );
+	// gl.enableVertexAttribArray(normalAttribLocation);
 
 	// //
 	// // Create texture
@@ -274,7 +278,8 @@ var RunDemo = function (vertexShaderText, fragmentShaderText, SusanModel)
 		// gl.bindTexture(gl.TEXTURE_2D, susanTexture);
 		// gl.activeTexture(gl.TEXTURE0);
 
-		gl.drawElements(gl.TRIANGLES, susanIndices.length, gl.UNSIGNED_SHORT, 0);
+		//gl.drawElements(gl.TRIANGLES, susanIndices.length, gl.UNSIGNED_SHORT, 0);
+		testingShape.draw(testingProgram);
 
 		requestAnimationFrame(loop);
 	};
