@@ -1,4 +1,5 @@
-var InitDemo = function () {
+var InitDemo = function () 
+{
 	loadTextResource('./shader.vs.glsl', function (vsErr, vsText) 
 	{
 		if (vsErr) 
@@ -17,16 +18,27 @@ var InitDemo = function () {
 				} 
 				else 
 				{
-					loadJSONResource('./plane.json', function (modelErr, modelObj) 
+					loadJSONResource('./cylinder.json', function (model0Err, model0Obj) 
 					{
-						if (modelErr) 
+						if (model0Err) 
 						{
 							alert('Fatal error getting Susan model (see console)');
-							console.error(modelErr);
+							console.error(model0Err);
 						} 
 						else 
 						{
-							RunDemo(vsText, fsText, modelObj);
+							loadJSONResource('./bunny.json', function (model1Err, model1Obj) 
+							{
+								if (model1Err) 
+								{
+									alert('Fatal error getting Susan model (see console)');
+									console.error(model1Err);
+								} 
+								else
+								{
+									RunDemo(vsText, fsText, model0Obj, model1Obj);
+								}
+							});
 						}
 					});
 				}
@@ -47,7 +59,7 @@ var canvas = document.getElementById('game-surface');
 		alert('Your browser does not support WebGL');
 	}
 
-var RunDemo = function (vertexShaderText, fragmentShaderText, SusanModel) 
+var RunDemo = function (vertexShaderText, fragmentShaderText, SusanModel, bunnyModel) 
 {
 	console.log('This is working');
 	model = SusanModel;
@@ -143,6 +155,11 @@ var RunDemo = function (vertexShaderText, fragmentShaderText, SusanModel)
 	//new way
 	testingShape = new Shape();
 	testingShape.init(SusanModel);
+
+	bunnyShape = new Shape();
+	bunnyShape.init(bunnyModel);
+
+	
 
 	// gl.bindBuffer(gl.ARRAY_BUFFER, susanPosVertexBufferObject);
 	// // var positionAttribLocation = gl.getAttribLocation(program, 'vertPosition');
@@ -251,6 +268,12 @@ var RunDemo = function (vertexShaderText, fragmentShaderText, SusanModel)
 	gl.uniform3f(sunlightDirUniformLocation, 3.0, 4.0, -2.0);
 	gl.uniform3f(sunlightIntUniformLocation, 0.9, 0.9, 0.9);
 
+	 //checking for errors
+	 let glErr = gl.getError();
+	 if(glErr != gl.NO_ERROR) 
+	 {
+		 console.log("GL_ERROR from before render loop = %s.\n", glErr);
+	 }
 	//
 	// Main render loop
 	//
@@ -279,6 +302,16 @@ var RunDemo = function (vertexShaderText, fragmentShaderText, SusanModel)
 		// gl.activeTexture(gl.TEXTURE0);
 
 		//gl.drawElements(gl.TRIANGLES, susanIndices.length, gl.UNSIGNED_SHORT, 0);
+		
+		bunnyShape.init(bunnyModel);
+		console.log("drawing bunny");
+		bunnyShape.draw(testingProgram);
+		vec3 translation = vec3(0.0, 1.0, 0.0);
+		mat4.fromRotationTranlation(worldMatrix, worldMatrix, translation);
+		mat4.invert(invertedMatrix, temp);
+		gl.uniformMatrix4fv(matInvertedUniformLocation, gl.FALSE, invertedMatrix);
+		testingShape.init(SusanModel);
+		console.log("drawing cylinder");
 		testingShape.draw(testingProgram);
 
 		requestAnimationFrame(loop);
