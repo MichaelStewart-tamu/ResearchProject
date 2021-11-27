@@ -36,8 +36,21 @@ var InitDemo = function ()
 								} 
 								else
 								{
-									RunDemo(vsText, fsText, model0Obj, model1Obj);
+									loadJSONResource('./plane.json', function (model2Err, model2Obj) 
+									{
+										if (model2Err) 
+										{
+											alert('Fatal error getting Susan model (see console)');
+											console.error(model2Err);
+										} 
+										else
+										{
+											RunDemo(vsText, fsText, model0Obj, model1Obj, model2Obj);
+										}
+									
+									});
 								}
+								
 							});
 						}
 					});
@@ -59,7 +72,7 @@ var canvas = document.getElementById('game-surface');
 		alert('Your browser does not support WebGL');
 	}
 
-var RunDemo = function (vertexShaderText, fragmentShaderText, SusanModel, bunnyModel) 
+var RunDemo = function (vertexShaderText, fragmentShaderText, SusanModel, bunnyModel, planeModel) 
 {
 	console.log('This is working');
 	model = SusanModel;
