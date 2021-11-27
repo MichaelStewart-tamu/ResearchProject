@@ -13,6 +13,7 @@ varying vec3 fragPos;		//vPos
 uniform vec3 ambientLightIntensity;
 uniform DirectionalLight sun;
 uniform sampler2D sampler;
+uniform vec3 ka;
 
 void main()
 {
@@ -20,9 +21,9 @@ void main()
 	//declaring values
 	vec3 kd = vec3(0.8, 0.8, 0.8);
 	vec3 ks = vec3(0.3, 0.3, 0.3);
-	vec3 ka = vec3(0.01, 0.01, 0.01);
+	// vec3 ka = vec3(0.01, 0.01, 0.01);
 	float s = 100.0;
-	vec3 lPos0 = vec3(10.0, 10.0, 10.0);
+	vec3 lPos0 = vec3(-5.0, 5.0, 5.0);
 	float lInt0 = 0.8;
 	float alpha = 1.0;
 

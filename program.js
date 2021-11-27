@@ -163,7 +163,7 @@ class Program
         this.#pid = 0;
         this.#vShaderName = "";
         this.#fShaderName = "";
-        this.#verbose = true;
+        this.#verbose = false;
         this.#attributes = [];
         this.#uniforms = [];
     }
