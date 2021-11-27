@@ -1,1 +1,157 @@
-{"verts":[-1, -1, 0, -1, 1, 0, 1, 1, 0, 1, -1, 0], "normals":[0, 0, 1], "indices":[0, 1, 2, 3]}
+{
+	 "rootnode": {
+		 "name": "RootNode"
+		,"transformation": [
+			 1
+			,0
+			,0
+			,0
+			,0
+			,1
+			,0
+			,0
+			,0
+			,0
+			,1
+			,0
+			,0
+			,0
+			,0
+			,1
+		]
+		,"children": [
+			{
+				 "name": "plane"
+				,"transformation": [
+					 100
+					,0
+					,0
+					,0
+					,0
+					,100
+					,0
+					,0
+					,0
+					,0
+					,100
+					,0
+					,0
+					,0
+					,0
+					,1
+				]
+				,"meshes": [
+					 0
+				]
+			}
+		]
+	}
+	,"flags": 8
+	,"meshes": [
+		{
+			 "name": "plane"
+			,"materialindex": 0
+			,"primitivetypes": 4
+			,"vertices": [
+				 1
+				,1
+				,0
+				,-1
+				,-1
+				,0
+				,1
+				,-1
+				,0
+				,-1
+				,1
+				,0
+			]
+			,"normals": [
+				 0
+				,0
+				,1
+				,0
+				,0
+				,1
+				,0
+				,0
+				,1
+				,0
+				,0
+				,1
+			]
+			,"faces": [
+				[
+					 0
+					,1
+					,2
+				]
+				,[
+					 1
+					,0
+					,3
+				]
+			]
+		}
+	]
+	,"materials": [
+		{
+			 "properties": [
+				{
+					 "key": "?mat.name"
+					,"semantic": 0
+					,"index": 0
+					,"type": 3
+					,"value": "Default OBJ.002"
+				}
+				,{
+					 "key": "$clr.diffuse"
+					,"semantic": 0
+					,"index": 0
+					,"type": 1
+					,"value": [
+						 0.8
+						,0.8
+						,0.8
+					]
+				}
+				,{
+					 "key": "$clr.ambient"
+					,"semantic": 0
+					,"index": 0
+					,"type": 1
+					,"value": [
+						 0
+						,0
+						,0
+					]
+				}
+				,{
+					 "key": "$clr.specular"
+					,"semantic": 0
+					,"index": 0
+					,"type": 1
+					,"value": [
+						 0.2
+						,0.2
+						,0.2
+					]
+				}
+				,{
+					 "key": "$mat.shinpercent"
+					,"semantic": 0
+					,"index": 0
+					,"type": 1
+					,"value": 25
+				}
+				,{
+					 "key": "$mat.shininess"
+					,"semantic": 0
+					,"index": 0
+					,"type": 1
+					,"value": 25
+				}
+			]
+		}
+	]
+}

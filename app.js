@@ -17,7 +17,7 @@ var InitDemo = function () {
 				} 
 				else 
 				{
-					loadJSONResource('./sphere1.json', function (modelErr, modelObj) 
+					loadJSONResource('./plane.json', function (modelErr, modelObj) 
 					{
 						if (modelErr) 
 						{
