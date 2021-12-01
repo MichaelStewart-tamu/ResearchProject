@@ -1,31 +1,41 @@
 precision highp float;
 
-struct DirectionalLight
-{
-	vec3 direction;
-	vec3 color;
-};
+// struct DirectionalLight
+// {
+// 	vec3 direction;
+// 	vec3 color;
+// };
 
 varying vec2 fragTexCoord;	//vTex
 varying vec3 fragNormal;	//vNor
 varying vec3 fragPos;		//vPos
 
-uniform vec3 ambientLightIntensity;
-uniform DirectionalLight sun;
-uniform sampler2D sampler;
+// uniform vec3 ambientLightIntensity;
+// uniform DirectionalLight sun;
+// uniform sampler2D sampler;
+// uniform vec3 ka;
+
+uniform vec3 kd;
+uniform vec3 ks;
 uniform vec3 ka;
+uniform float s;
+uniform vec3 lPos0; // in camera space
+uniform vec3 lPos1; // in camera space
+uniform float lInt0;
+uniform float lInt1;
+uniform float alpha;
 
 void main()
 {
 	//starting over
 	//declaring values
-	vec3 kd = vec3(0.8, 0.8, 0.8);
-	vec3 ks = vec3(0.3, 0.3, 0.3);
+	// vec3 kd = vec3(0.8, 0.8, 0.8);
+	// vec3 ks = vec3(0.3, 0.3, 0.3);
 	// vec3 ka = vec3(0.01, 0.01, 0.01);
-	float s = 100.0;
-	vec3 lPos0 = vec3(-5.0, 5.0, 5.0);
-	float lInt0 = 0.8;
-	float alpha = 1.0;
+	// float s = 100.0;
+	// vec3 lPos0 = vec3(-5.0, 5.0, 5.0);
+	// float lInt0 = 0.8;
+	// float alpha = 1.0;
 
 	//starting the shader
 	vec3 color = ka;	//ka the deffuse color

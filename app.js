@@ -102,9 +102,27 @@ var RunDemo = function (vertexShaderText, fragmentShaderText, SusanModel, bunnyM
 	testingProgram.addUniform('mProj');
 	testingProgram.addUniform('MVit');
 	//ambientLightIntensity, sun.direction, sun.color
-	testingProgram.addUniform('ambientLightIntensity');
-	testingProgram.addUniform('sun.direction');
-	testingProgram.addUniform('sun.color');
+	// testingProgram.addUniform('ambientLightIntensity');
+	// testingProgram.addUniform('sun.direction');
+	// testingProgram.addUniform('sun.color');
+	//uniform vec3 kd;
+	// uniform vec3 ks;
+	// uniform vec3 ka;
+	// uniform float s;
+	// uniform vec3 lPos0; // in camera space
+	// uniform vec3 lPos1; // in camera space
+	// uniform float lInt0;
+	// uniform float lInt1;
+	// uniform float alpha;
+	testingProgram.addUniform('kd');
+	testingProgram.addUniform('ks');
+	testingProgram.addUniform('ka');
+	testingProgram.addUniform('s');
+	testingProgram.addUniform('lPos0');
+	testingProgram.addUniform('lPos1');
+	testingProgram.addUniform('lInt0');
+	testingProgram.addUniform('lInt1');
+	testingProgram.addUniform('alpha');
 	
 	
 	//creating shapes
@@ -138,14 +156,25 @@ var RunDemo = function (vertexShaderText, fragmentShaderText, SusanModel, bunnyM
 	var xRotationMatrix = new Float32Array(16);
 	var yRotationMatrix = new Float32Array(16);
 
+	//add phong models
+	gl.uniform3f(testingProgram.getUniform("kd"), 0.3, 0.3, 0.3);
+	gl.uniform3f(testingProgram.getUniform("ks"), 0.5, 0.5, 0.5);
+	gl.uniform3f(testingProgram.getUniform("ka"), 0.01, 0.01, 0.01);
+	gl.uniform1f(testingProgram.getUniform("s"), 5.0);
+	gl.uniform3f(testingProgram.getUniform("lPos0"), -5.0, 5.0, 5.0);
+	gl.uniform3f(testingProgram.getUniform("lPos1"), 0.01, 0.01, 0.01);
+	gl.uniform1f(testingProgram.getUniform("lInt0"), 0.8);
+	gl.uniform1f(testingProgram.getUniform("alpha"), 1.0);
+
+
 	//
 	// Lighting information
 	//
 	// gl.useProgram(program);
 
-	gl.uniform3f(testingProgram.getUniform("ambientLightIntensity"), 0.2, 0.2, 0.2);
-	gl.uniform3f(testingProgram.getUniform("sun.direction"), 3.0, 4.0, -2.0);
-	gl.uniform3f(testingProgram.getUniform("sun.color"), 0.9, 0.9, 0.9);
+	// gl.uniform3f(testingProgram.getUniform("ambientLightIntensity"), 0.2, 0.2, 0.2);
+	// gl.uniform3f(testingProgram.getUniform("sun.direction"), 3.0, 4.0, -2.0);
+	// gl.uniform3f(testingProgram.getUniform("sun.color"), 0.9, 0.9, 0.9);
 
 	 //checking for errors
 	 let glErr = gl.getError();
