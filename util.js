@@ -26,7 +26,7 @@ var loadJSONResource = function (url, callback) {
 			callback(err);
 		} else {
 			try {
-				console.log("getting into the try tag");
+				// console.log("getting into the try tag");
 				callback(null, JSON.parse(result));
 			} catch (e) {
 				callback(e);

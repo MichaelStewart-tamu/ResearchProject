@@ -10,7 +10,7 @@ class Shape
     // #texBuf
     #indBuf
 
-    
+
     //constructor
     constructor()
     {
@@ -62,7 +62,7 @@ class Shape
     // }
     init(modelInfo)
     {
-        console.log("testing input", modelInfo);
+        // console.log("testing input", modelInfo);
 
         this.#posBuf = modelInfo.meshes[0].vertices;
         this.#norBuf = modelInfo.meshes[0].normals;
@@ -73,7 +73,7 @@ class Shape
         // this.#texBuf = modelInfo.texcoords;
         // this.#indBuf = modelInfo.indices;
 
-        console.log("posBUf", this.#posBuf, "norBuf", this.#norBuf, "indices", this.#indBuf);
+        // console.log("posBUf", this.#posBuf, "norBuf", this.#norBuf, "indices", this.#indBuf);
    
         this.#posBufID = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, this.#posBufID);
@@ -160,7 +160,7 @@ class Shape
 
         //draw
         var count = this.#indBuf.length;
-        console.log("the count is ", count);
+        // console.log("the count is ", count);
         // gl.drawArrays(gl.TRIANGLES, 0, count);
         gl.drawElements(gl.TRIANGLES, count, gl.UNSIGNED_SHORT, 0);
         
