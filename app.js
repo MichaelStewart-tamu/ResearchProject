@@ -80,23 +80,72 @@ var RunDemo = function (vertexShaderText, fragmentShaderText, SusanModel, bunnyM
 	model = SusanModel;
 
 	//TESTING
-	testingMatrixStack = new yupYup();
+	testingMatrixStack = new MatrixStack();
 	testingMatrixStack.pushMatrix();
 		testingMatrixStack.loadIdentity();
 		console.log("testing Matrix output should be identity", testingMatrixStack.topMatrix());
-		
-		testingMatrixStack.pushMatrix();
-			testingMatrixStack.translate(1.5, 0.75, 0.0);
-			console.log("testing Matrix output for push, should be translated", testingMatrixStack.topMatrix());
-		
-		testingMatrixStack.popMatrix();
-		console.log("testing Matrix output for pop, should just be identity", testingMatrixStack.topMatrix());
+		testingMatrixStack.print();
 
 		testingMatrixStack.pushMatrix();
-		testingMatrixStack.translate(0.0, 0.0, 1.8);
+			testingMatrixStack.translate(1.5, 0.75, 0.3);
+			console.log("testing Matrix output for push, should be translated", testingMatrixStack.topMatrix());
+			testingMatrixStack.print();
+		testingMatrixStack.popMatrix();
+		console.log("testing Matrix output for pop, should just be identity", testingMatrixStack.topMatrix());
+		testingMatrixStack.print();
+
 		testingMatrixStack.pushMatrix();
-		testingMatrixStack.translate(0.0, 3.3, 0.0);
-		console.log("testing Matrix output at the end, should just be identity", testingMatrixStack.topMatrix());
+			testingMatrixStack.print();
+			console.log("now testing rotation on x axis");
+			testingMatrixStack.rotate(0.0, 0.0, 2.0);
+			testingMatrixStack.print();
+
+			testingMatrixStack.pushMatrix();
+				testingMatrixStack.print();
+				console.log("now testing scale");
+				testingMatrixStack.scale(0.5, 0.5, 0.5);
+				testingMatrixStack.print();
+			testingMatrixStack.popMatrix();
+		testingMatrixStack.popMatrix();
+
+		testingMatrixStack.pushMatrix();
+			testingMatrixStack.translate(1.5, 0.75, 0.3);
+			testingMatrixStack.print();
+
+			testingMatrixStack.pushMatrix();
+				testingMatrixStack.print();
+				console.log("testing Inverted matrix", testingMatrixStack.topMatrixIT());
+			testingMatrixStack.popMatrix();
+		testingMatrixStack.popMatrix();
+			
+		testingMatrixStack.print();
+
+		
+		
+
+	testingMatrixStack.popMatrix();
+
+
+		// testingMatrixStack.pushMatrix();
+		// testingMatrixStack.translate(0.0, 0.0, 1.8);
+		// testingMatrixStack.pushMatrix();
+		// testingMatrixStack.translate(0.0, 3.3, 0.0);
+		// console.log("testing Matrix output at the end, should just be identity", testingMatrixStack.topMatrix());
+
+	testingMatrixStack.popMatrix();
+
+	testingCamera = new Camera();
+	// testingCamera.mouseClicked(0.1, 0.0, false, true, false);
+	// testingCamera.mouseMoved(0.5, 0.4);
+	P = new MatrixStack();
+
+	P.pushMatrix();
+		testingCamera.applyProjectionMatrix(P);
+		console.log("printing home made projection matrix");
+		P.print();
+	P.popMatrix();
+	
+
 
 	//end of testing
 
@@ -159,8 +208,9 @@ var RunDemo = function (vertexShaderText, fragmentShaderText, SusanModel, bunnyM
 	var invertedTransposeMatrix = new Float32Array(16);
 	var temp = new Float32Array(16);
 	mat4.identity(worldMatrix);
-	mat4.lookAt(viewMatrix, [0, 0, -8], [0, 0, 0], [0, 1, 0]);
+	mat4.lookAt(viewMatrix, [0, 0, -6], [0, 0, 0], [0, 1, 0]);
 	mat4.perspective(projMatrix, glMatrix.toRadian(45), canvas.clientWidth / canvas.clientHeight, 0.1, 1000.0);
+	console.log("printing projection matrix", projMatrix);
 
 	//giving matrix values to shader
 	gl.uniformMatrix4fv(testingProgram.getUniform("mWorld"), gl.FALSE, worldMatrix);
@@ -183,7 +233,7 @@ var RunDemo = function (vertexShaderText, fragmentShaderText, SusanModel, bunnyM
 
 	var loop = function () {
 		//reset the background color
-		gl.clearColor(0.40, 0.00, 0.0, 1.0);
+		gl.clearColor(0.00, 0.00, 0.0, 1.0);
 		gl.clear(gl.DEPTH_BUFFER_BIT | gl.COLOR_BUFFER_BIT);	//clear buffers
 
 		// SceneTest(testingProgram, bunnyModel, SusanModel, viewMatrix, worldMatrix, invertedMatrix, invertedTransposeMatrix, temp);

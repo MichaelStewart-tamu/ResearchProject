@@ -11,6 +11,7 @@ var SceneTest = function(program, bunnyModel, SusanModel, viewMatrix, worldMatri
 	var angley = 1;
 
     //rotate everything in frame
+    
     angle = performance.now() / 1000 / 6 * 2 * Math.PI;
     mat4.rotate(yRotationMatrix, identityMatrix, angle + anglex, [0, 1, 0]);
     mat4.rotate(xRotationMatrix, identityMatrix, (angle / 4) + angley, [1, 0, 0]);
@@ -62,6 +63,10 @@ var Scene0 = function(program, planeModel, SusanModel, bunnyModel, viewMatrix, w
     // mat4.rotate(xRotationMatrix, identityMatrix, (angle / 4) + angley, [1, 0, 0]);
     mat4.rotate(xRotationMatrix, identityMatrix, angle + anglex, [1, 0, 0]);
     mat4.mul(worldMatrix, zRotationMatrix, xRotationMatrix);
+
+    var scalling = vec3.create();
+    vec3.set(scalling, 1.5, 1.5, 1.5);
+    mat4.scale(worldMatrix, worldMatrix, scalling);
     gl.uniformMatrix4fv(program.getUniform("mWorld"), gl.FALSE, worldMatrix);
 
     //calculating the inverse transpose matrix
@@ -224,7 +229,7 @@ var Scene0 = function(program, planeModel, SusanModel, bunnyModel, viewMatrix, w
     
     //coloring
     gl.uniform3f(testingProgram.getUniform("kd"), 0.5, 0.5, 0.5);
-    
+
     //drawing plane
     bunnyShape.init(planeModel);	//doesnt seem to support multiple objects unless they are initialized first
     bunnyShape.draw(program);

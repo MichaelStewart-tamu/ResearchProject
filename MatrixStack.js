@@ -1,34 +1,23 @@
 
-class yupYup
+class MatrixStack
 {
     stack = [];
     height;
 
     constructor()
     {
-        this.height = -1;   //everything works out if set to negative one
-        
+        this.height = 0;
+        this.stack.push(mat4.create());
+        this.height = 1;
     }
 
     pushMatrix()
     {
-        this.height++;
-        if(this.height == 0)
-        {
-            this.stack.push(mat4.create());
-        }
-        else
-        {
-            var newLayer = new Float32Array(16);
-            newLayer = this.stack[this.height - 1];
+        var newLayer = new Float32Array(16);
+        mat4.copy(newLayer, this.stack[this.stack.length - 1]); //performs a deep copy of the current top matrix into newLayer
 
-            let newStack = mat4.create();
-            // mat4.set(newStack, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16);
-            // newStack = mat4.clone(this.stack[this.height - 1]);
-            console.log("outputting set test", mat4.str(newStack));
-            this.stack.push(newLayer);
-            console.log("outputting set test top", mat4.str(this.stack[this.height]), "second", mat4.str(this.stack[this.height - 1]));
-        }   
+        this.stack.push(newLayer);  //pushing newLayer ontop
+        this.height++;  //increase height
     }
 
     popMatrix()
@@ -41,51 +30,56 @@ class yupYup
     {
         var newLayer = new Float32Array(16);
         mat4.identity(newLayer);
-        this.stack[this.height] = newLayer;
+        this.stack[this.stack.length - 1] = newLayer;
+    }
+
+    multMatrix(inputMatrix)
+    {
+        var temp = this.stack[this.stack.length - 1];
+        // temp = temp * inputMatrix;
+        mat4.multiply(temp, temp, inputMatrix);
+        this.stack[this.stack.length - 1] = temp;
     }
 
     translate(x, y, z)
     {
-        console.log("inside of translate height is", this.height, "stack output", this.stack.slice(), "lower stack", this.stack[this.height - 1]);
-        this.stack[1][0] = 5;
-        console.log("nice", this.stack);
-        // var temp = this.stack[this.height];
-        // var translation = vec3.create();
-		// vec3.set(translation, x, y, z);
-		// mat4.translate(temp, temp, translation);
-        // this.stack[this.height] = temp;
-
-        // let newStack = mat4.create();
-        //     // mat4.set(newStack, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16);
-        // newStack = mat4.clone(this.stack[this.height]);
-        // let translation = vec3.create();
-        // vec3.set(translation, x, y, z);
-        // mat4.translate(newStack, newStack, translation);
-        // this.stack[this.height] = newStack;
-        // console.log("nice", translation, newStack);
-
+        var temp = this.stack[this.stack.length - 1];
+		mat4.translate(temp, temp, [x, y, z]);
+        this.stack[this.stack.length - 1] = temp;
     }    
-
-    rotate(x, y, z)
-    {
-
-    }
-
+    
     scale(x, y, z)
     {
-
+        mat4.scale(this.stack[this.stack.length - 1], this.stack[this.stack.length - 1], [x, y, z]);
+    }
+    
+    rotate(x, y, z)
+    {
+        mat4.rotate(this.stack[this.stack.length - 1], this.stack[this.stack.length - 1], x, [1, 0, 0]);
+        mat4.rotate(this.stack[this.stack.length - 1], this.stack[this.stack.length - 1], y, [0, 1, 0]);
+        mat4.rotate(this.stack[this.stack.length - 1], this.stack[this.stack.length - 1], z, [0, 0, 1]);
     }
 
     topMatrix()
     {
-        console.log("inside of the class Matrix stack output", this.stack[this.height][4]);
-        console.log("inside of the class Matrix stack output", this.stack[this.height][0], this.stack[this.height][1], this.stack[this.height][2], this.stack[this.height][3], this.stack[this.height][4], this.stack[this.height][5], this.stack[this.height][6], this.stack[this.height][7], this.stack[this.height][8], this.stack[this.height][9], this.stack[this.height][10], this.stack[this.height][11], this.stack[this.height][12], this.stack[this.height][13], this.stack[this.height][14], this.stack[this.height][15]);
-        
-        return this.stack[this.height];
+        return this.stack[this.stack.length - 1];
     }
 
     topMatrixIT()
     {
+        var tempInverted = new Float32Array(16);
+        var tempInvertedTranspose = new Float32Array(16);
+        mat4.invert(tempInverted, this.stack[this.stack.length - 1]);
+        mat4.transpose(tempInvertedTranspose, tempInverted);
+        return tempInvertedTranspose;
+    }
 
+    print()
+    {
+        console.log("looping through matrix stack");
+        for(var i = this.stack.length - 1; i > -1 ; i--)
+        {
+            console.log("Level: ", i, this.stack[i]);
+        }
     }
 }
