@@ -221,7 +221,7 @@ class Program
         }
 
         //TESTS
-        console.log("testing outside nesting", tempTextVector, tempTextFrag);
+        // console.log("testing outside nesting", tempTextVector, tempTextFrag);
         if(this.#verbose == true)
         {
             console.log("at the end of the init function,", this.#pid);

@@ -346,3 +346,89 @@ var Scene0 = function(program, planeModel, SusanModel, bunnyModel, viewMatrix, w
     testingShape.init(bunnyModel);
     testingShape.draw(program);
 }
+
+var Scene1 = function(program, bunnyModel, SusanModel)
+{
+    console.log("entered scene 1");
+    P = new MatrixStack();
+    MV = new MatrixStack();
+
+    camera = new Camera();
+
+    P.pushMatrix();
+        camera.applyProjectionMatrix(P);
+        MV.pushMatrix();
+            MV.loadIdentity();
+            camera.applyViewMatrix(MV);
+
+            angle = performance.now() / 1000 / 6 * 2 * Math.PI;
+                MV.rotate(angle, angle, 0.0);
+
+            MV.pushMatrix();
+                // MV.translate(0.0, 0.0, -10.0);
+                gl.uniformMatrix4fv(program.getUniform("P"), gl.FALSE, P.topMatrix());
+                gl.uniformMatrix4fv(program.getUniform("MV"), gl.FALSE, MV.topMatrix());
+                gl.uniformMatrix4fv(program.getUniform("MVit"), gl.FALSE, MV.topMatrixIT());
+                //drawing bunny
+                bunnyShape.init(bunnyModel);	//doesnt seem to support multiple objects unless they are initialized first
+                bunnyShape.draw(program);
+            MV.popMatrix();
+
+            MV.pushMatrix();
+                MV.translate(0.0, -0.65, 0.0);
+                gl.uniformMatrix4fv(program.getUniform("P"), gl.FALSE, P.topMatrix());
+                gl.uniformMatrix4fv(program.getUniform("MV"), gl.FALSE, MV.topMatrix());
+                gl.uniformMatrix4fv(program.getUniform("MVit"), gl.FALSE, MV.topMatrixIT());
+                //drawing bunny
+                testingShape.init(SusanModel);	//doesnt seem to support multiple objects unless they are initialized first
+                testingShape.draw(program);
+            MV.popMatrix();
+        MV.popMatrix();
+    P.popMatrix();
+
+
+
+    // console.log("entered scene test");
+    // var xRotationMatrix = new Float32Array(16);
+	// var yRotationMatrix = new Float32Array(16);
+	// var identityMatrix = new Float32Array(16);
+	// mat4.identity(identityMatrix);
+	// var angle = 0;
+	// var anglex = 1;
+	// var angley = 1;
+
+    // //rotate everything in frame
+    
+    // angle = performance.now() / 1000 / 6 * 2 * Math.PI;
+    // mat4.rotate(yRotationMatrix, identityMatrix, angle + anglex, [0, 1, 0]);
+    // mat4.rotate(xRotationMatrix, identityMatrix, (angle / 4) + angley, [1, 0, 0]);
+    // mat4.mul(worldMatrix, yRotationMatrix, xRotationMatrix);
+    // gl.uniformMatrix4fv(program.getUniform("mWorld"), gl.FALSE, worldMatrix);
+
+    // //calculating the inverse transpose matrix
+    // mat4.multiply(temp, viewMatrix, worldMatrix);	//getting MV = view * world
+    // mat4.invert(invertedMatrix, temp);	//invert
+    // mat4.transpose(invertedTransposeMatrix, invertedMatrix);	//now transpose
+    // gl.uniformMatrix4fv(program.getUniform('MVit'), gl.FALSE, invertedTransposeMatrix);
+
+    
+    // //drawing bunny
+    // bunnyShape.init(bunnyModel);	//doesnt seem to support multiple objects unless they are initialized first
+    // bunnyShape.draw(program);
+
+    // //translation of cylinder
+    // var translation = vec3.create();
+    // vec3.set(translation, 0.0, -0.65, 0.0);
+    // mat4.translate(worldMatrix, worldMatrix, translation);
+    // gl.uniformMatrix4fv(program.getUniform("mWorld"), gl.FALSE, worldMatrix);
+    
+    // //calculating inverse Transpose matrix
+    // mat4.multiply(temp, viewMatrix, worldMatrix);
+    // mat4.invert(invertedMatrix, temp);	//invert
+    // mat4.transpose(invertedTransposeMatrix, invertedMatrix);
+    // gl.uniformMatrix4fv(program.getUniform('MVit'), gl.FALSE, invertedTransposeMatrix);
+    
+    // //drawing cylinder
+    // testingShape.init(SusanModel);
+    // testingShape.draw(program);
+}

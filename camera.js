@@ -104,7 +104,7 @@ class Camera
         var tempProjMatrix = new Float32Array(16);
         tempProjMatrix = mat4.create();
         mat4.perspective(tempProjMatrix, this.fovy, this.aspect, this.znear, this.zfar);
-        console.log("inside of applyProjectionMatrix()", tempProjMatrix);
+        // console.log("inside of applyProjectionMatrix()", tempProjMatrix);
         P.multMatrix(tempProjMatrix);
     }
 
@@ -117,7 +117,7 @@ class Camera
             this.#rotations = (1.0 - alpha) * this.#rotations + alpha * this.#rotationsInit;
         }
         MV.translate(this.#translations[0], this.#translations[1], this.#translations[2]);
-        MV.rotate(this.#rotations[1], this.#rotations[2], 0.0);
+        MV.rotate(this.#rotations[1], this.#rotations[0], 0.0);
     }
 
     applyCameraMatrix(MV)

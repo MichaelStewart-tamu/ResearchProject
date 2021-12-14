@@ -8,15 +8,23 @@ varying vec2 fragTexCoord;  //vTex
 varying vec3 fragNormal;    //vNor
 varying vec3 fragPos;       //vPos
 
-uniform mat4 mWorld;        
-uniform mat4 mView;
-uniform mat4 mProj;         //P
+// uniform mat4 mWorld;        
+// uniform mat4 mView;
+// uniform mat4 mProj;         //P
+uniform mat4 MV;
+uniform mat4 P;
 uniform mat4 MVit;
 
 void main()
 {
-  vec4 posCam = mView * mWorld * vec4(vertPosition, 1.0);
-  gl_Position = mProj * posCam;
+  // vec4 posCam = mView * mWorld * vec4(vertPosition, 1.0);
+  // gl_Position = mProj * posCam;
+  // fragPos = posCam.xyz;
+  // fragNormal = normalize((MVit * vec4(vertNormal, 0.0)).xyz);
+  // fragTexCoord = vertTexCoord;
+
+  vec4 posCam = MV * vec4(vertPosition, 1.0);
+  gl_Position = P * posCam;
   fragPos = posCam.xyz;
   fragNormal = normalize((MVit * vec4(vertNormal, 0.0)).xyz);
   fragTexCoord = vertTexCoord;
