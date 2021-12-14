@@ -79,6 +79,51 @@ var RunDemo = function (vertexShaderText, fragmentShaderText, SusanModel, bunnyM
 	console.log('This is working');	//making sure that the function has been entered
 	model = SusanModel;
 
+	/*
+	*****************************************
+	**********MOUSE DETECTION START**********
+	*****************************************
+	*/
+	var rotationSpeed = 1.0;
+
+	canvas.addEventListener( "mousemove", MouseMove, false );
+	canvas.addEventListener( "mousedown", MouseDown, false );
+	canvas.addEventListener( "wheel", MouseWheel, false );
+
+	function MouseMove( event )
+	{
+		console.log( event.clientX + " : " + event.clientY );
+		//console.log( event );
+	}
+
+	function MouseDown( event )
+	{
+		if ( 0 === event.button )
+		{
+			console.log( "Left mouse button pressed" );
+		}
+		if ( 1 === event.button )
+		{
+			console.log( "Middle mouse button pressed" );
+		}
+		if ( 2 === event.button )
+		{
+			console.log( "Right mouse button pressed" );
+		}
+		//console.log( event );
+	}
+
+	function MouseWheel( event )
+	{
+		rotationSpeed += 0.001 * event.deltaY;
+		//console.log( event );
+	}
+	/*
+	***************************************
+	**********MOUSE DETECTION END**********
+	***************************************
+	*/
+	
 	//TESTING
 	testingMatrixStack = new MatrixStack();
 	testingMatrixStack.pushMatrix();
