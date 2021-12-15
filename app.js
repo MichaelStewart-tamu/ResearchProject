@@ -61,6 +61,99 @@ var InitDemo = function ()
 	});
 };
 
+//functions for mouse input
+const movingMouse = function(cam, event)
+	{
+		if(cam.currentlyClicking === true)
+		{
+			// console.log( event.clientX + " : " + event.clientY );
+			//console.log( event );
+			cam.mouseMoved(event.clientX, event.clientY);
+		}
+	}
+
+const clickingMouse = function(cam, event)
+{
+	if ( 0 === event.button )
+	{
+		// console.log( "Left mouse button pressed", event);
+		cam.mouseClicked(event.clientX, event.clientY, false, false, true);
+		cam.currentlyClicking = true;
+	}
+	if ( 1 === event.button )
+	{
+		// console.log( "Middle mouse button pressed" );
+		cam.mouseClicked(event.clientX, event.clientY, false, true, false);
+		cam.currentlyClicking = true;
+	}
+	if (cam.shiftBool === true)
+	{
+		cam.mouseClicked(event.clientX, event.clientY, true, false, false);
+		cam.currentlyClicking = true;
+	}
+}
+
+const notClicking = function(cam, event)
+{
+	cam.currentlyClicking = false;
+}
+
+const scrollWheel = function(cam, event)
+{
+	cam.scrolling(event.deltaY);
+}
+
+//functions for keyboard input
+const keyPress = function(cam, event)
+{
+	console.log("have entered key press, and pressed ", event.key);
+	if("Shift" === event.key)
+	{
+		cam.shiftBool = true;
+	}
+}
+
+const keyReleased = function(cam, event)
+{
+	if("Shift" === event.key)
+	{
+		cam.shiftBool = false;
+	}
+	console.log("have released the key", event.key);
+}
+
+// function KeyDown( event )
+// 	{
+// 		// console.log(event.key);
+// 		if ( "ArrowUp" === event.key )
+// 		{
+// 			console.log("^");
+// 			console.log('|');
+// 		}
+// 		else if ( "ArrowDown" === event.key )
+// 		{
+// 			console.log("|");
+// 			console.log('V');
+// 		}
+// 		else if ( "ArrowRight" === event.key )
+// 		{
+// 			console.log("pressed the ->");
+// 		}
+// 		else if ( "ArrowLeft" === event.key )
+// 		{
+// 			console.log("pressed the <-");
+// 		}
+
+// 		if("Shift" === event.key)
+// 		{
+// 			console.log(event.key);
+// 		}
+// 	}
+
+
+
+
+
 var canvas = document.getElementById('game-surface');
 	var gl = canvas.getContext('webgl');
 
@@ -79,77 +172,6 @@ var RunDemo = function (vertexShaderText, fragmentShaderText, SusanModel, bunnyM
 	console.log('Have entered teh runDemo Function');	//making sure that the function has been entered
 	model = SusanModel;
 
-	
-
-	// //TESTING
-	// testingMatrixStack = new MatrixStack();
-	// testingMatrixStack.pushMatrix();
-	// 	testingMatrixStack.loadIdentity();
-	// 	console.log("testing Matrix output should be identity", testingMatrixStack.topMatrix());
-	// 	testingMatrixStack.print();
-
-	// 	testingMatrixStack.pushMatrix();
-	// 		testingMatrixStack.translate(1.5, 0.75, 0.3);
-	// 		console.log("testing Matrix output for push, should be translated", testingMatrixStack.topMatrix());
-	// 		testingMatrixStack.print();
-	// 	testingMatrixStack.popMatrix();
-	// 	console.log("testing Matrix output for pop, should just be identity", testingMatrixStack.topMatrix());
-	// 	testingMatrixStack.print();
-
-	// 	testingMatrixStack.pushMatrix();
-	// 		testingMatrixStack.print();
-	// 		console.log("now testing rotation on x axis");
-	// 		testingMatrixStack.rotate(0.0, 0.0, 2.0);
-	// 		testingMatrixStack.print();
-
-	// 		testingMatrixStack.pushMatrix();
-	// 			testingMatrixStack.print();
-	// 			console.log("now testing scale");
-	// 			testingMatrixStack.scale(0.5, 0.5, 0.5);
-	// 			testingMatrixStack.print();
-	// 		testingMatrixStack.popMatrix();
-	// 	testingMatrixStack.popMatrix();
-
-	// 	testingMatrixStack.pushMatrix();
-	// 		testingMatrixStack.translate(1.5, 0.75, 0.3);
-	// 		testingMatrixStack.print();
-
-	// 		testingMatrixStack.pushMatrix();
-	// 			testingMatrixStack.print();
-	// 			console.log("testing Inverted matrix", testingMatrixStack.topMatrixIT());
-	// 		testingMatrixStack.popMatrix();
-	// 	testingMatrixStack.popMatrix();
-			
-	// 	testingMatrixStack.print();
-
-		
-		
-
-	// testingMatrixStack.popMatrix();
-
-
-	// 	// testingMatrixStack.pushMatrix();
-	// 	// testingMatrixStack.translate(0.0, 0.0, 1.8);
-	// 	// testingMatrixStack.pushMatrix();
-	// 	// testingMatrixStack.translate(0.0, 3.3, 0.0);
-	// 	// console.log("testing Matrix output at the end, should just be identity", testingMatrixStack.topMatrix());
-
-	// testingMatrixStack.popMatrix();
-
-	// testingCamera = new Camera();
-	// // testingCamera.mouseClicked(0.1, 0.0, false, true, false);
-	// // testingCamera.mouseMoved(0.5, 0.4);
-	// P = new MatrixStack();
-
-	// P.pushMatrix();
-	// 	testingCamera.applyProjectionMatrix(P);
-	// 	console.log("printing home made projection matrix");
-	// 	P.print();
-	// P.popMatrix();
-	
-
-
-	// //end of testing
 
 	//initializing rendering settings
 	gl.clearColor(0.75, 0.85, 0.8, 1.0);	//background color
@@ -207,95 +229,19 @@ var RunDemo = function (vertexShaderText, fragmentShaderText, SusanModel, bunnyM
 	//creating camera
 	camera = new Camera();
 
-	/*
-	*****************************************
-	**********MOUSE DETECTION START**********
-	*****************************************
-	*/
-	var rotationSpeed = 1.0;
-
-
-	const movingMouse = function(cam, event)
-	{
-		if(cam.currentlyClicking === true)
-		{
-			console.log( event.clientX + " : " + event.clientY );
-			//console.log( event );
-			cam.mouseMoved(event.clientX, event.clientY);
-		}
-	}
-
-	const clickingMouse = function(cam, event)
-	{
-		if ( 0 === event.button )
-		{
-			console.log( "Left mouse button pressed", event);
-			cam.mouseClicked(event.clientX, event.clientY, false, false, true);
-			cam.currentlyClicking = true;
-		}
-		if ( 1 === event.button )
-		{
-			console.log( "Middle mouse button pressed" );
-			cam.mouseClicked(event.clientX, event.clientY, false, true, false);
-			cam.currentlyClicking = true;
-		}
-		if ( 2 === event.button )
-		{
-			console.log( "Right mouse button pressed" );
-			cam.mouseClicked(event.clientX, event.clientY, true, false, false);
-			cam.currentlyClicking = true;
-		}
-	}
-
-	const notClicking = function(cam, event)
-	{
-		cam.currentlyClicking = false;
-	}
-
-	const scrollWheel = function(cam, event)
-	{
-		cam.scrolling(event.deltaY);
-	}
-
-
+	//Mouse Detection
 	canvas.addEventListener( "mousemove", movingMouse.bind(null, camera));
 	canvas.addEventListener( "mousedown", clickingMouse.bind(null, camera));
 	canvas.addEventListener("mouseup", notClicking.bind(null, camera));
 	canvas.addEventListener( "wheel", scrollWheel.bind(null, camera));
+	//end of mouse detection
 
+	//keyboard detection
+	const bodyElement = document.querySelector( "body" );
 
-	function MouseWheel( event )
-	{
-		rotationSpeed += 0.001 * event.deltaY;
-		//console.log( event );
-	}
-	/*
-	***************************************
-	**********MOUSE DETECTION END**********
-	***************************************
-	*/
-
-
-	// //creating Matrix
-	// var worldMatrix = new Float32Array(16);
-	// var viewMatrix = new Float32Array(16);
-	// var projMatrix = new Float32Array(16);
-	// var invertedMatrix = new Float32Array(16);
-	// var invertedTransposeMatrix = new Float32Array(16);
-	// var temp = new Float32Array(16);
-	// mat4.identity(worldMatrix);
-	// mat4.lookAt(viewMatrix, [0, 0, -6], [0, 0, 0], [0, 1, 0]);
-	// mat4.perspective(projMatrix, glMatrix.toRadian(45), canvas.clientWidth / canvas.clientHeight, 0.1, 1000.0);
-	// console.log("printing projection matrix", projMatrix);
-
-	// //giving matrix values to shader
-	// gl.uniformMatrix4fv(testingProgram.getUniform("mWorld"), gl.FALSE, worldMatrix);
-	// gl.uniformMatrix4fv(testingProgram.getUniform("mView"), gl.FALSE, viewMatrix);
-	// gl.uniformMatrix4fv(testingProgram.getUniform("mProj"), gl.FALSE, projMatrix);
-	// mat4.multiply(temp, viewMatrix, worldMatrix);
-	// mat4.invert(invertedMatrix, temp);
-	// console.log("trying to find undefined", invertedMatrix, temp, viewMatrix, worldMatrix);
-	// gl.uniformMatrix4fv(testingProgram.getUniform('MVit'), gl.FALSE, invertedMatrix);
+	bodyElement.addEventListener( "keydown", keyPress.bind(null, camera));
+	bodyElement.addEventListener( "keyup", keyReleased.bind(null, camera));
+	//end of keyboard detection
 
 	 //checking for errors
 	 let glErr = gl.getError();
@@ -303,6 +249,7 @@ var RunDemo = function (vertexShaderText, fragmentShaderText, SusanModel, bunnyM
 	 {
 		 console.log("GL_ERROR from before render loop = %s.\n", glErr);
 	 }
+
 	//
 	// Main render loop
 	//
@@ -314,7 +261,7 @@ var RunDemo = function (vertexShaderText, fragmentShaderText, SusanModel, bunnyM
 
 		// SceneTest(testingProgram, bunnyModel, SusanModel, viewMatrix, worldMatrix, invertedMatrix, invertedTransposeMatrix, temp);
 		// Scene0(testingProgram, planeModel, SusanModel, bunnyModel, viewMatrix, worldMatrix, invertedMatrix, invertedTransposeMatrix, temp);
-		Scene1(camera, testingProgram, bunnyModel, SusanModel);
+		Scene1(camera, testingProgram, bunnyShape, testingShape);
 
 		requestAnimationFrame(loop);	//calling this function again
 	};

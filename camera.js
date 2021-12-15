@@ -14,6 +14,7 @@ class Camera
     #tfactor;
     #sfactor;
     currentlyClicking
+    shiftBool;
 
     #resetting;
     #translationsInit = vec3.create();
@@ -50,6 +51,7 @@ class Camera
         this.#curry = 0;
         this.#showAll = true;
         this.currentlyClicking = false;
+        this.shiftBool = false;
         //TODO: comeback later
         // this.colors
     }
@@ -80,7 +82,7 @@ class Camera
         // var dv = mouseCurr - this.#mousePrev;
         var dv = vec2.create();
         vec2.sub(dv, mouseCurr, this.#mousePrev);
-        console.log("testing inside mouseMoved", this.#state, this.#rotations);
+        // console.log("testing inside mouseMoved", this.#state, this.#rotations);
         switch(this.#state)
         {
             case "rotate":

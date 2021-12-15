@@ -138,6 +138,7 @@ class Shape
         // console.log("draw in shape", h_pos);
         gl.enableVertexAttribArray(h_pos);
         gl.bindBuffer(gl.ARRAY_BUFFER, this.#posBufID);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.#posBuf), gl.STATIC_DRAW);
         gl.vertexAttribPointer(h_pos, 3, gl.FLOAT, gl.FALSE, 0, 0); //TODO: check! in c++ the last two are (0, (const void *)0), whil in java script it is 3 * Float32Array.BYTES_PER_ELEMENT, // Size of an individual vertex, 0 // Offset from the beginning of a single vertex to this attribute
 
         //bind normal buffer
@@ -146,9 +147,13 @@ class Shape
         {
             gl.enableVertexAttribArray(h_nor);
             gl.bindBuffer(gl.ARRAY_BUFFER, this.#norBufID);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.#norBuf), gl.STATIC_DRAW);
             gl.vertexAttribPointer(h_nor, 3, gl.FLOAT, gl.FALSE, 0, 0); //TODO: check! in c++ the last two are (0, (const void *)0), whil in java script it is 3 * Float32Array.BYTES_PER_ELEMENT, // Size of an individual vertex, 0 // Offset from the beginning of a single vertex to this attribute
         }
 
+        //indecy 
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.#indBufID);
+        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(this.#indBuf), gl.STATIC_DRAW);
         //bind texture buffer
         // let h_tex = prog.getAttribute("vertTexCoord");
         // if(h_tex != -1 && this.#texBufID != 0)

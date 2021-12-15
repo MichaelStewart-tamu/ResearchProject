@@ -347,7 +347,7 @@ var Scene0 = function(program, planeModel, SusanModel, bunnyModel, viewMatrix, w
     testingShape.draw(program);
 }
 
-var Scene1 = function(camera, program, bunnyModel, SusanModel)
+var Scene1 = function(camera, program, Bunny, Cylinder)
 {
     console.log("entered scene 1");
     P = new MatrixStack();
@@ -369,8 +369,7 @@ var Scene1 = function(camera, program, bunnyModel, SusanModel)
                 gl.uniformMatrix4fv(program.getUniform("MVit"), gl.FALSE, MV.topMatrixIT());
                 gl.uniform1f(testingProgram.getUniform("s"), 5.0);
                 //drawing bunny
-                bunnyShape.init(bunnyModel);	//doesnt seem to support multiple objects unless they are initialized first
-                bunnyShape.draw(program);
+                Bunny.draw(program);
             MV.popMatrix();
 
             MV.pushMatrix();
@@ -380,8 +379,7 @@ var Scene1 = function(camera, program, bunnyModel, SusanModel)
                 gl.uniformMatrix4fv(program.getUniform("MVit"), gl.FALSE, MV.topMatrixIT());
                 gl.uniform1f(testingProgram.getUniform("s"), 100.0);
                 //drawing bunny
-                testingShape.init(SusanModel);	//doesnt seem to support multiple objects unless they are initialized first
-                testingShape.draw(program);
+                Cylinder.draw(program);
             MV.popMatrix();
         MV.popMatrix();
     P.popMatrix();
