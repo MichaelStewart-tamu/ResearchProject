@@ -384,3 +384,41 @@ var Scene1 = function(camera, program, Bunny, Cylinder)
         MV.popMatrix();
     P.popMatrix();
 }
+
+var Scene2 = function(camera, program, Bunny, Cylinder)
+{
+    console.log("entered scene 1");
+    P = new MatrixStack();
+    MV = new MatrixStack();
+
+    P.pushMatrix();
+        camera.applyProjectionMatrix(P);
+        MV.pushMatrix();
+            MV.loadIdentity();
+            camera.applyViewMatrix(MV);
+
+            // angle = performance.now() / 1000 / 6 * 2 * Math.PI;
+            //     MV.rotate(angle, angle, 0.0);
+
+            MV.pushMatrix();
+                // MV.translate(0.0, 0.0, -10.0);
+                gl.uniformMatrix4fv(program.getUniform("P"), gl.FALSE, P.topMatrix());
+                gl.uniformMatrix4fv(program.getUniform("MV"), gl.FALSE, MV.topMatrix());
+                gl.uniformMatrix4fv(program.getUniform("MVit"), gl.FALSE, MV.topMatrixIT());
+                gl.uniform1f(testingProgram.getUniform("s"), 100.0);
+                //drawing bunny
+                Bunny.draw(program);
+            MV.popMatrix();
+
+            MV.pushMatrix();
+                MV.translate(0.0, -0.65, 0.0);
+                gl.uniformMatrix4fv(program.getUniform("P"), gl.FALSE, P.topMatrix());
+                gl.uniformMatrix4fv(program.getUniform("MV"), gl.FALSE, MV.topMatrix());
+                gl.uniformMatrix4fv(program.getUniform("MVit"), gl.FALSE, MV.topMatrixIT());
+                gl.uniform1f(testingProgram.getUniform("s"), 100.0);
+                //drawing bunny
+                Cylinder.draw(program);
+            MV.popMatrix();
+        MV.popMatrix();
+    P.popMatrix();
+}

@@ -15,6 +15,7 @@ class Camera
     #sfactor;
     currentlyClicking
     shiftBool;
+    keyNumber;
 
     #resetting;
     #translationsInit = vec3.create();
@@ -32,7 +33,7 @@ class Camera
         // this.aspect = 1.0;
         this.aspect = canvas.clientWidth / canvas.clientHeight;
         this.fovy = (45.0 * Math.PI) / 180.0;
-        this.znear = 1.0;
+        this.znear = 0.1;
         this.zfar = 100.0;
         // vec2.set(this.#rotations, 0.0, 0.0);
         this.#rotations[0] = 0.0;
@@ -52,6 +53,7 @@ class Camera
         this.#showAll = true;
         this.currentlyClicking = false;
         this.shiftBool = false;
+        this.keyNumber = 0;
         //TODO: comeback later
         // this.colors
     }
@@ -120,9 +122,12 @@ class Camera
     {
         if(this.#resetting)
         {
-            alpha = 0.2;
-            this.#translations = (1.0 - alpha) * this.#translations + alpha * this.#translationsInit;
-            this.#rotations = (1.0 - alpha) * this.#rotations + alpha * this.#rotationsInit;
+            var alpha = 0.2;
+            this.#translations[0] = (1.0 - alpha) * this.#translations[0] + alpha * this.#translationsInit[0];
+            this.#translations[1] = (1.0 - alpha) * this.#translations[1] + alpha * this.#translationsInit[1];
+            this.#translations[2] = (1.0 - alpha) * this.#translations[2] + alpha * this.#translationsInit[2];
+            this.#rotations[0] = (1.0 - alpha) * this.#rotations[0] + alpha * this.#rotationsInit[0];
+            this.#rotations[1] = (1.0 - alpha) * this.#rotations[1] + alpha * this.#rotationsInit[1];
         }
         MV.translate(this.#translations[0], this.#translations[1], this.#translations[2]);
         MV.rotate(this.#rotations[1], this.#rotations[0], 0.0);
@@ -156,5 +161,10 @@ class Camera
         {
             this.#curry = 0;
         }
+    }
+
+    reset()
+    {
+        this.#resetting = true;
     }
 }

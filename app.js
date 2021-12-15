@@ -111,6 +111,17 @@ const keyPress = function(cam, event)
 	{
 		cam.shiftBool = true;
 	}
+
+	if("1" === event.key)
+	{
+		cam.keyNumber = 1;
+		cam.reset();
+	}
+	if("2" === event.key)
+	{
+		cam.keyNumber = 2;
+		cam.reset();
+	}
 }
 
 const keyReleased = function(cam, event)
@@ -122,49 +133,17 @@ const keyReleased = function(cam, event)
 	console.log("have released the key", event.key);
 }
 
-// function KeyDown( event )
-// 	{
-// 		// console.log(event.key);
-// 		if ( "ArrowUp" === event.key )
-// 		{
-// 			console.log("^");
-// 			console.log('|');
-// 		}
-// 		else if ( "ArrowDown" === event.key )
-// 		{
-// 			console.log("|");
-// 			console.log('V');
-// 		}
-// 		else if ( "ArrowRight" === event.key )
-// 		{
-// 			console.log("pressed the ->");
-// 		}
-// 		else if ( "ArrowLeft" === event.key )
-// 		{
-// 			console.log("pressed the <-");
-// 		}
-
-// 		if("Shift" === event.key)
-// 		{
-// 			console.log(event.key);
-// 		}
-// 	}
-
-
-
-
-
 var canvas = document.getElementById('game-surface');
-	var gl = canvas.getContext('webgl');
+var gl = canvas.getContext('webgl');
 
-	if (!gl) {
-		console.log('WebGL not supported, falling back on experimental-webgl');
-		gl = canvas.getContext('experimental-webgl');
-	}
+if (!gl) {
+	console.log('WebGL not supported, falling back on experimental-webgl');
+	gl = canvas.getContext('experimental-webgl');
+}
 
-	if (!gl) {
-		alert('Your browser does not support WebGL');
-	}
+if (!gl) {
+	alert('Your browser does not support WebGL');
+}
 
 //this is sort of the main	
 var RunDemo = function (vertexShaderText, fragmentShaderText, SusanModel, bunnyModel, planeModel) 
@@ -237,6 +216,8 @@ var RunDemo = function (vertexShaderText, fragmentShaderText, SusanModel, bunnyM
 	//end of mouse detection
 
 	//keyboard detection
+	
+
 	const bodyElement = document.querySelector( "body" );
 
 	bodyElement.addEventListener( "keydown", keyPress.bind(null, camera));
@@ -259,9 +240,20 @@ var RunDemo = function (vertexShaderText, fragmentShaderText, SusanModel, bunnyM
 		gl.clearColor(0.40, 0.40, 0.40, 1.0);
 		gl.clear(gl.DEPTH_BUFFER_BIT | gl.COLOR_BUFFER_BIT);	//clear buffers
 
+
 		// SceneTest(testingProgram, bunnyModel, SusanModel, viewMatrix, worldMatrix, invertedMatrix, invertedTransposeMatrix, temp);
 		// Scene0(testingProgram, planeModel, SusanModel, bunnyModel, viewMatrix, worldMatrix, invertedMatrix, invertedTransposeMatrix, temp);
-		Scene1(camera, testingProgram, bunnyShape, testingShape);
+		
+
+		switch(camera.keyNumber)
+		{
+			default:
+				Scene1(camera, testingProgram, bunnyShape, testingShape);
+			case 1:
+				Scene1(camera, testingProgram, bunnyShape, testingShape);
+			case 2:
+				Scene2(camera, testingProgram, bunnyShape, testingShape);
+		}
 
 		requestAnimationFrame(loop);	//calling this function again
 	};
