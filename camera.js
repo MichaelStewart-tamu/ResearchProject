@@ -13,6 +13,7 @@ class Camera
     #rfactor;
     #tfactor;
     #sfactor;
+    currentlyClicking
 
     #resetting;
     #translationsInit = vec3.create();
@@ -38,7 +39,7 @@ class Camera
         vec3.set(this.#translations, 0.0, 0.0, -5.0);
         this.#rfactor = 0.01;
         this.#tfactor = 0.001;
-        this.#sfactor = 0.005;
+        this.#sfactor = -0.001;
 
         this.#translationsInit = this.#translations;
         this.#rotationsInit = this.#rotations;
@@ -48,6 +49,7 @@ class Camera
         this.#currx = 0;
         this.#curry = 0;
         this.#showAll = true;
+        this.currentlyClicking = false;
         //TODO: comeback later
         // this.colors
     }
@@ -69,7 +71,6 @@ class Camera
             this.#state = "rotate";
         }
         this.#resetting = false;
-        
     }
 
     mouseMoved(x, y)
@@ -79,24 +80,29 @@ class Camera
         // var dv = mouseCurr - this.#mousePrev;
         var dv = vec2.create();
         vec2.sub(dv, mouseCurr, this.#mousePrev);
-        
+        console.log("testing inside mouseMoved", this.#state, this.#rotations);
         switch(this.#state)
         {
             case "rotate":
                 // vec2.multiply(this.#rotations, this.#rfactor, dv);
-                this.#rotations[0] *= dv[0];
-                this.#rotations[1] *= dv[1];
+                this.#rotations[0] += this.#rfactor * dv[0];
+                this.#rotations[1] += this.#rfactor * dv[1];
                 break;
             case "translate":
                 this.#translations[0] -= this.#translations[2] * this.#tfactor * dv[0];
-                this.#translations[1] -= this.#translations[2] * this.#tfactor * dv[1];
+                this.#translations[1] += this.#translations[2] * this.#tfactor * dv[1];
                 break;
             case "scale":
-                this.#translations[2] *= (1.0 - this.#sfactor * dv[1]);
+                this.#translations[2] *= (this.#sfactor * dv[1]);
                 break;
         }
         this.#mousePrev = mouseCurr;
         this.#resetting = false;
+    }
+
+    scrolling(delta)
+    {
+        this.#translations[2] *= (1.0 - this.#sfactor * delta);
     }
 
     applyProjectionMatrix(P)

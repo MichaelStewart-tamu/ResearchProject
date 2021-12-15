@@ -79,50 +79,7 @@ var RunDemo = function (vertexShaderText, fragmentShaderText, SusanModel, bunnyM
 	console.log('Have entered teh runDemo Function');	//making sure that the function has been entered
 	model = SusanModel;
 
-	/*
-	*****************************************
-	**********MOUSE DETECTION START**********
-	*****************************************
-	*/
-	var rotationSpeed = 1.0;
-
-	canvas.addEventListener( "mousemove", MouseMove, false );
-	canvas.addEventListener( "mousedown", MouseDown, false );
-	canvas.addEventListener( "wheel", MouseWheel, false );
-
-	function MouseMove( event )
-	{
-		// console.log( event.clientX + " : " + event.clientY );
-		//console.log( event );
-	}
-
-	function MouseDown( event )
-	{
-		if ( 0 === event.button )
-		{
-			console.log( "Left mouse button pressed" );
-		}
-		if ( 1 === event.button )
-		{
-			console.log( "Middle mouse button pressed" );
-		}
-		if ( 2 === event.button )
-		{
-			console.log( "Right mouse button pressed" );
-		}
-		//console.log( event );
-	}
-
-	function MouseWheel( event )
-	{
-		rotationSpeed += 0.001 * event.deltaY;
-		//console.log( event );
-	}
-	/*
-	***************************************
-	**********MOUSE DETECTION END**********
-	***************************************
-	*/
+	
 
 	// //TESTING
 	// testingMatrixStack = new MatrixStack();
@@ -247,6 +204,78 @@ var RunDemo = function (vertexShaderText, fragmentShaderText, SusanModel, bunnyM
 	planeShape = new Shape();
 	planeShape.init(planeModel);
 
+	//creating camera
+	camera = new Camera();
+
+	/*
+	*****************************************
+	**********MOUSE DETECTION START**********
+	*****************************************
+	*/
+	var rotationSpeed = 1.0;
+
+
+	const movingMouse = function(cam, event)
+	{
+		if(cam.currentlyClicking === true)
+		{
+			console.log( event.clientX + " : " + event.clientY );
+			//console.log( event );
+			cam.mouseMoved(event.clientX, event.clientY);
+		}
+	}
+
+	const clickingMouse = function(cam, event)
+	{
+		if ( 0 === event.button )
+		{
+			console.log( "Left mouse button pressed", event);
+			cam.mouseClicked(event.clientX, event.clientY, false, false, true);
+			cam.currentlyClicking = true;
+		}
+		if ( 1 === event.button )
+		{
+			console.log( "Middle mouse button pressed" );
+			cam.mouseClicked(event.clientX, event.clientY, false, true, false);
+			cam.currentlyClicking = true;
+		}
+		if ( 2 === event.button )
+		{
+			console.log( "Right mouse button pressed" );
+			cam.mouseClicked(event.clientX, event.clientY, true, false, false);
+			cam.currentlyClicking = true;
+		}
+	}
+
+	const notClicking = function(cam, event)
+	{
+		cam.currentlyClicking = false;
+	}
+
+	const scrollWheel = function(cam, event)
+	{
+		cam.scrolling(event.deltaY);
+	}
+
+
+	canvas.addEventListener( "mousemove", movingMouse.bind(null, camera));
+	canvas.addEventListener( "mousedown", clickingMouse.bind(null, camera));
+	canvas.addEventListener("mouseup", notClicking.bind(null, camera));
+	canvas.addEventListener( "wheel", scrollWheel.bind(null, camera));
+
+
+	function MouseWheel( event )
+	{
+		rotationSpeed += 0.001 * event.deltaY;
+		//console.log( event );
+	}
+	/*
+	***************************************
+	**********MOUSE DETECTION END**********
+	***************************************
+	*/
+
+
 	// //creating Matrix
 	// var worldMatrix = new Float32Array(16);
 	// var viewMatrix = new Float32Array(16);
@@ -285,7 +314,7 @@ var RunDemo = function (vertexShaderText, fragmentShaderText, SusanModel, bunnyM
 
 		// SceneTest(testingProgram, bunnyModel, SusanModel, viewMatrix, worldMatrix, invertedMatrix, invertedTransposeMatrix, temp);
 		// Scene0(testingProgram, planeModel, SusanModel, bunnyModel, viewMatrix, worldMatrix, invertedMatrix, invertedTransposeMatrix, temp);
-		Scene1(testingProgram, bunnyModel, SusanModel);
+		Scene1(camera, testingProgram, bunnyModel, SusanModel);
 
 		requestAnimationFrame(loop);	//calling this function again
 	};
