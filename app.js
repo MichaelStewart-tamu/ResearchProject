@@ -280,7 +280,8 @@ var RunDemo = function (vertexShaderText, fragmentShaderText, simpleFragText, si
 
 		//drawing the camera
 		lineProgram.bind();
-		drawingCamera(camera, lineProgram);
+		// drawingCamera(camera, lineProgram);
+		camera.draw(lineProgram);
 		lineProgram.unbind();
 
 

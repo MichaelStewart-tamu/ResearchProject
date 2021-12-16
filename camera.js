@@ -146,7 +146,7 @@ class Camera
         this.#currx += dx;
         this.#curry += dy;
         
-        if(this.#currx < 0)
+        if(this.#currx < 0) //pushing back around to be at the other side
         {
             this.#currx = this.numx - 1.0;
         }
@@ -173,5 +173,108 @@ class Camera
     getTranslationInit()
     {
         return this.#translationsInit;
+    }
+
+    draw(program)
+    {
+        var P = new MatrixStack();
+        var MV = new MatrixStack();
+
+        P.pushMatrix();
+            this.applyProjectionMatrix(P);
+            MV.pushMatrix();
+                MV.loadIdentity();
+                this.applyViewMatrix(MV);
+
+                // angle = performance.now() / 1000 / 6 * 2 * Math.PI;
+                //     MV.rotate(angle, angle, 0.0);
+
+                MV.pushMatrix();
+                    MV.translate(this.#translationsInit[0], this.#translationsInit[1], -1.0 * this.#translationsInit[2])
+                    // MV.translate(0.0, 0.0, -10.0);
+                    gl.uniformMatrix4fv(program.getUniform("P"), gl.FALSE, P.topMatrix());
+                    gl.uniformMatrix4fv(program.getUniform("MV"), gl.FALSE, MV.topMatrix());
+
+                    //frustum
+                    //need to do the same thing as initializing a shape
+                    var z0 = -1.0 * this.znear;
+                    var y0 = Math.tan(this.fovy/2.0)*z0;
+                    var x0 = y0 * this.aspect;
+                    var z1 = -1.0 * this.zfar;
+                    var y1 = Math.tan(this.fovy/2.0)*z1;
+                    var x1 = y1 * this.aspect;
+                    var vertices = [
+                        0.0,0.0,0.0,
+                        (-1.0 * x1),(-1.0 * y1), z1,
+                        0.0,0.0,0.0,
+                        (1.0 * x1),(-1.0 * y1), z1,
+                        0.0,0.0,0.0,
+                        (1.0 * x1),(1.0 * y1), z1,
+                        0.0,0.0,0.0,
+                        (-1.0 * x1),(1.0 * y1), z1
+                    ];
+
+                    //drawing imagePlane
+                    //drawing the outside of the frame
+                    vertices.push(-x0, -y0, z0);    //top of frame
+                    vertices.push(x0, -y0, z0);
+                    //bottom of frame
+                    vertices.push(-x0, y0, z0);
+                    vertices.push(x0, y0, z0);
+                    //left side
+                    vertices.push(-x0, y0, z0);
+                    vertices.push(-x0,-y0, z0);
+                    //right side
+                    vertices.push(x0, y0, z0);
+                    vertices.push(x0,-y0, z0);
+
+                    //loop through the verticle lines
+                    for(var i = 1; i < this.numy; i++)
+                    {
+                        var sy = i/this.numy;
+                        var y = (1.0 - sy) * (-1.0 * y0) + sy * y0;
+                        vertices.push((-1.0 * x0), y, z0);
+                        vertices.push(x0, y, z0);
+                    }
+                    //loop through the horizontal lines
+                    for(var j = 1; j < this.numx; j++)
+                    {
+                        var sx = j/this.numx;
+                        var x = (1.0 - sx) * (-x0) + sx * x0;
+                        vertices.push(x, -y0, z0);
+                        vertices.push(x, y0, z0);
+                    } 
+                    
+                    
+                    // Create an empty buffer object
+                    var vertex_buffer = gl.createBuffer();
+            
+                    // Bind appropriate array buffer to it
+                    gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
+                
+                    // Pass the vertex data to the buffer
+                    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+            
+                    // Unbind the buffer
+                    gl.bindBuffer(gl.ARRAY_BUFFER, null);
+
+                    // Bind vertex buffer object
+                    gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
+
+                    // Get the attribute location
+                    var coord = program.getAttribute("vertPosition");
+
+                    // Point an attribute to the currently bound VBO
+                    gl.vertexAttribPointer(coord, 3, gl.FLOAT, false, 0, 0);
+
+                    // Enable the attribute
+                    gl.enableVertexAttribArray(coord);
+
+                    var lineNo = vertices.length / 3;
+                    gl.drawArrays(gl.LINES, 0, lineNo);
+                    
+                MV.popMatrix();
+            MV.popMatrix();
+        P.popMatrix();
     }
 }
