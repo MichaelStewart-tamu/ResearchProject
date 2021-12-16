@@ -216,6 +216,167 @@ var Scene2 = function(camera, program, Bunny, Cylinder, light0)
     P.popMatrix();
 }
 
+var Scene3 = function(camera, program, teapot, eva, light0)
+{
+    P = new MatrixStack();
+    MV = new MatrixStack();
+
+    //set light position
+    light0.position[0] = 0.3;
+    light0.position[1] = 1.6;
+    light0.position[2] = 0.3;
+
+    P.pushMatrix();
+        camera.applyProjectionMatrix(P);
+        MV.pushMatrix();
+            MV.loadIdentity();
+            camera.applyViewMatrix(MV);
+
+            MV.pushMatrix();
+                //light
+                MV.pushMatrix();
+                    MV.scale(0.5, 0.5, 0.5);
+                    light0.draw(MV, program);
+                MV.popMatrix();
+
+                //eva
+                MV.pushMatrix();
+                    MV.translate(0.0, -1.5, 0.0);
+                    MV.rotate(0.0, 0.0, 0.0);
+                    MV.scale(1.0, 1.0, 1.0);
+                    
+
+                    gl.uniformMatrix4fv(program.getUniform("P"), gl.FALSE, P.topMatrix());
+                    gl.uniformMatrix4fv(program.getUniform("MV"), gl.FALSE, MV.topMatrix());
+                    gl.uniformMatrix4fv(program.getUniform("MVit"), gl.FALSE, MV.topMatrixIT());
+                    gl.uniform3f(program.getUniform("kd"), 0.5, 0.0, 1.0);
+                    gl.uniform3f(program.getUniform("ks"), 1.0, 1.0, 1.0);
+                    gl.uniform3f(program.getUniform("ka"), 0.1, 0.1, 0.1);
+                    gl.uniform1f(program.getUniform("s"), 50.0);
+
+                    eva.draw(program);
+                MV.popMatrix();
+
+            MV.popMatrix();
+        MV.popMatrix();
+    P.popMatrix();
+}
+
+var Scene4 = function(camera, program, teapot, eva, light0)
+{
+    P = new MatrixStack();
+    MV = new MatrixStack();
+
+    //set light position
+    light0.position[0] = 0.3;
+    light0.position[1] = 1.6;
+    light0.position[2] = 2.3;
+
+    P.pushMatrix();
+        camera.applyProjectionMatrix(P);
+        MV.pushMatrix();
+            MV.loadIdentity();
+            camera.applyViewMatrix(MV);
+
+            MV.pushMatrix();
+                //light
+                MV.pushMatrix();
+                    MV.scale(0.5, 0.5, 0.5);
+                    light0.draw(MV, program);
+                MV.popMatrix();
+
+                //teapot
+                MV.pushMatrix();
+                    MV.translate(0.0, -0.5, 0.0);
+                    MV.rotate(0.0, -2.8, 0.0);
+                    MV.scale(1.8, 1.8, 1.8);
+                    
+
+                    gl.uniformMatrix4fv(program.getUniform("P"), gl.FALSE, P.topMatrix());
+                    gl.uniformMatrix4fv(program.getUniform("MV"), gl.FALSE, MV.topMatrix());
+                    gl.uniformMatrix4fv(program.getUniform("MVit"), gl.FALSE, MV.topMatrixIT());
+                    gl.uniform3f(program.getUniform("kd"), 0.5, 0.5, 0.5);
+                    gl.uniform3f(program.getUniform("ks"), 0.5, 0.5, 0.5);
+                    gl.uniform3f(program.getUniform("ka"), 0.2, 0.2, 0.2);
+                    gl.uniform1f(program.getUniform("s"), 5.0);
+
+                    teapot.draw(program);
+                MV.popMatrix();
+
+            MV.popMatrix();
+        MV.popMatrix();
+    P.popMatrix();
+}
+
+var Scene5 = function(camera, program, teapot, eva, light0)
+{
+    P = new MatrixStack();
+    MV = new MatrixStack();
+
+    //set light position
+    light0.position[0] = 0.3;
+    light0.position[1] = 1.6;
+    light0.position[2] = 2.3;
+
+    P.pushMatrix();
+        camera.applyProjectionMatrix(P);
+        MV.pushMatrix();
+            MV.loadIdentity();
+            camera.applyViewMatrix(MV);
+
+            
+
+            MV.pushMatrix();
+                //light
+                MV.pushMatrix();
+                    MV.scale(0.5, 0.5, 0.5);
+                    light0.draw(MV, program);
+                MV.popMatrix();
+
+                angle = performance.now() / 1000 / 6 * 2 * Math.PI;
+                MV.rotate(0.0, angle, 0.0);
+
+                //eva
+                MV.pushMatrix();
+                    MV.translate(-0.5, -1.5, 0.0);
+                    MV.rotate(0.0, 0.0, 0.0);
+                    MV.scale(1.0, 1.0, 1.0);
+                    
+
+                    gl.uniformMatrix4fv(program.getUniform("P"), gl.FALSE, P.topMatrix());
+                    gl.uniformMatrix4fv(program.getUniform("MV"), gl.FALSE, MV.topMatrix());
+                    gl.uniformMatrix4fv(program.getUniform("MVit"), gl.FALSE, MV.topMatrixIT());
+                    gl.uniform3f(program.getUniform("kd"), 0.5, 0.0, 1.0);
+                    gl.uniform3f(program.getUniform("ks"), 1.0, 1.0, 1.0);
+                    gl.uniform3f(program.getUniform("ka"), 0.1, 0.1, 0.1);
+                    gl.uniform1f(program.getUniform("s"), 50.0);
+
+                    eva.draw(program);
+                MV.popMatrix();
+
+                //teapot
+                MV.pushMatrix();
+                    MV.translate(0.5, -1.5, 0.0);
+                    MV.rotate(0.0, -2.8, 0.0);
+                    MV.scale(0.5, 0.5, 0.5);
+                    
+
+                    gl.uniformMatrix4fv(program.getUniform("P"), gl.FALSE, P.topMatrix());
+                    gl.uniformMatrix4fv(program.getUniform("MV"), gl.FALSE, MV.topMatrix());
+                    gl.uniformMatrix4fv(program.getUniform("MVit"), gl.FALSE, MV.topMatrixIT());
+                    gl.uniform3f(program.getUniform("kd"), 0.5, 0.5, 0.5);
+                    gl.uniform3f(program.getUniform("ks"), 0.5, 0.5, 0.5);
+                    gl.uniform3f(program.getUniform("ka"), 0.2, 0.2, 0.2);
+                    gl.uniform1f(program.getUniform("s"), 5.0);
+
+                    teapot.draw(program);
+                MV.popMatrix();
+
+            MV.popMatrix();
+        MV.popMatrix();
+    P.popMatrix();
+}
+
 var Scene6 = function(camera, program, Bunny, light0)
 {
     P = new MatrixStack();

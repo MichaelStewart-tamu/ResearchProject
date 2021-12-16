@@ -64,7 +64,40 @@ var InitDemo = function ()
 														} 
 														else 
 														{
-															RunDemo(vsText, fsText, simpleFragText, simpleVertText, model0Obj, model1Obj, model2Obj);	//finally calling the next function to render
+															loadJSONResource('./sphere1.json', function (model3Err, model3Obj) 
+															{
+																if (model3Err) 
+																{
+																	alert('Fatal error getting sphere model (see console)');
+																	console.error(model3Err);
+																} 
+																else
+																{
+																	loadJSONResource('./teapot.json', function (model4Err, model4Obj) 
+																	{
+																		if (model4Err) 
+																		{
+																			alert('Fatal error getting teapot model (see console)');
+																			console.error(model4Err);
+																		} 
+																		else
+																		{
+																			loadJSONResource('./evaLow.json', function (model5Err, model5Obj) 
+																			{
+																				if (model5Err) 
+																				{
+																					alert('Fatal error getting eva model (see console)');
+																					console.error(model5Err);
+																				} 
+																				else
+																				{
+																					RunDemo(vsText, fsText, simpleFragText, simpleVertText, model0Obj, model1Obj, model2Obj, model3Obj, model4Obj, model5Obj);	//finally calling the next function to render
+																				}
+																			});
+																		}
+																	});
+																}
+															});
 														}
 													});
 												}
@@ -215,7 +248,7 @@ if (!gl) {
 }
 
 //this is sort of the main	
-var RunDemo = function (vertexShaderText, fragmentShaderText, simpleFragText, simpleVertText, CylModel, bunnyModel, planeModel) 
+var RunDemo = function (vertexShaderText, fragmentShaderText, simpleFragText, simpleVertText, CylModel, bunnyModel, planeModel, sphereModel, teapotModel, evaModel) 
 {
 	console.log('Have entered the runDemo Function');	//making sure that the function has been entered
 
@@ -285,6 +318,15 @@ var RunDemo = function (vertexShaderText, fragmentShaderText, simpleFragText, si
 	planeShape = new Shape();
 	planeShape.init(planeModel);
 
+	sphereShape = new Shape();
+	sphereShape.init(sphereModel);
+
+	teapotShape = new Shape();
+	teapotShape.init(teapotModel);
+
+	evaShape = new Shape();
+	evaShape.init(evaModel);
+
 	//creating lights
 	light0 = new Light();
 
@@ -341,15 +383,27 @@ var RunDemo = function (vertexShaderText, fragmentShaderText, simpleFragText, si
 		testingProgram.bind();
 		if("0" == camera.keyNumber)
 		{
-			Scene0(camera, testingProgram, bunnyShape, testingShape, planeShape, light0);
+			Scene5(camera, testingProgram, teapotShape, evaShape, light0);
 		}
 		else if(camera.keyNumber == "1")
 		{
-			Scene1(camera, testingProgram, bunnyShape, testingShape, light0);
+			Scene0(camera, testingProgram, bunnyShape, testingShape, planeShape, light0);
 		}
 		else if("2" == camera.keyNumber)
 		{
 			Scene2(camera, testingProgram, bunnyShape, testingShape, light0);
+		}
+		else if("3" == camera.keyNumber)
+		{
+			Scene3(camera, testingProgram, teapotShape, evaShape, light0);
+		}
+		else if("4" == camera.keyNumber)
+		{
+			Scene4(camera, testingProgram, teapotShape, evaShape, light0);
+		}
+		else if("5" == camera.keyNumber)
+		{
+			Scene1(camera, testingProgram, bunnyShape, testingShape, light0);
 		}
 		else if("6" == camera.keyNumber)
 		{
@@ -361,7 +415,7 @@ var RunDemo = function (vertexShaderText, fragmentShaderText, simpleFragText, si
 		}
 		else
 		{
-			Scene0(camera, testingProgram, bunnyShape, testingShape, planeShape, light0);
+			Scene5(camera, testingProgram, teapotShape, evaShape, light0);
 		}
 
 		if(loopIterations < 50 || infinite === true)
