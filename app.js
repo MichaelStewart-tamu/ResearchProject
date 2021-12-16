@@ -387,7 +387,7 @@ var RunDemo = function (vertexShaderText, fragmentShaderText, simpleFragText, si
 		}
 		else if(camera.keyNumber == "1")
 		{
-			Scene0(camera, testingProgram, bunnyShape, testingShape, planeShape, light0);
+			Scene0(camera, testingProgram, sphereShape, testingShape, planeShape, light0);
 		}
 		else if("2" == camera.keyNumber)
 		{
