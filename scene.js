@@ -346,10 +346,13 @@ var Scene0 = function(program, planeModel, SusanModel, bunnyModel, viewMatrix, w
     testingShape.draw(program);
 }
 
-var Scene1 = function(camera, program, Bunny, Cylinder)
+var Scene1 = function(camera, program, Bunny, Cylinder, light)
 {
     P = new MatrixStack();
     MV = new MatrixStack();
+
+    //light
+    gl.uniform3f(testingProgram.getUniform("lPos0"), -5.0, 5.0, 5.0);
 
     P.pushMatrix();
         camera.applyProjectionMatrix(P);
@@ -383,10 +386,14 @@ var Scene1 = function(camera, program, Bunny, Cylinder)
     P.popMatrix();
 }
 
-var Scene2 = function(camera, program, Bunny, Cylinder)
+var Scene2 = function(camera, program, Bunny, Cylinder, light0)
 {
     P = new MatrixStack();
     MV = new MatrixStack();
+
+    //set light position
+    light0.position[0] = 1.0;
+    light0.position[2] = 1.0;
 
     P.pushMatrix();
         camera.applyProjectionMatrix(P);
@@ -394,8 +401,10 @@ var Scene2 = function(camera, program, Bunny, Cylinder)
             MV.loadIdentity();
             camera.applyViewMatrix(MV);
 
-            // angle = performance.now() / 1000 / 6 * 2 * Math.PI;
-            //     MV.rotate(angle, angle, 0.0);
+            //light
+            MV.pushMatrix();
+                light0.draw(MV, program);
+            MV.popMatrix();
 
             MV.pushMatrix();
                 // MV.translate(0.0, 0.0, -10.0);

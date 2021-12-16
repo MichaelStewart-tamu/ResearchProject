@@ -256,6 +256,9 @@ var RunDemo = function (vertexShaderText, fragmentShaderText, simpleFragText, si
 	planeShape = new Shape();
 	planeShape.init(planeModel);
 
+	//creating lights
+	light0 = new Light();
+
 	//creating camera
 	camera = new Camera();
 
@@ -310,11 +313,11 @@ var RunDemo = function (vertexShaderText, fragmentShaderText, simpleFragText, si
 		switch(camera.keyNumber)
 		{
 			default:
-				Scene1(camera, testingProgram, bunnyShape, testingShape);
+				Scene1(camera, testingProgram, bunnyShape, testingShape, light0);
 			case 1:
-				Scene1(camera, testingProgram, bunnyShape, testingShape);
+				Scene1(camera, testingProgram, bunnyShape, testingShape, light0);
 			case 2:
-				Scene2(camera, testingProgram, bunnyShape, testingShape);
+				Scene2(camera, testingProgram, bunnyShape, testingShape, light0);
 		}
 
 		if(loopIterations < 50 || infinite === true)
