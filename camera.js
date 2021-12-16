@@ -43,9 +43,10 @@ class Camera
         this.#tfactor = 0.001;
         this.#sfactor = -0.001;
 
-        vec3.set(this.#translationsInit, this.#translations[0], this.#translations[1], this.#translations[2]);
+        vec3.set(this.#translationsInit, 0.0, 0.0, -5.0);
         // this.#translationsInit = this.#translations;
-        this.#rotationsInit = this.#rotations;
+        // this.#rotationsInit = this.#rotations;
+        vec2.set(this.#rotationsInit, 0.0, 0.0);
         this.#resetting = false;
         this.#numx = 25;
         this.#numy = 25;

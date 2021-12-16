@@ -1,4 +1,3 @@
-
 var SceneTest = function(program, bunnyModel, SusanModel, viewMatrix, worldMatrix, invertedMatrix, invertedTransposeMatrix, temp)
 {
     console.log("entered scene test");
@@ -421,37 +420,47 @@ var Scene2 = function(camera, program, Bunny, Cylinder)
     P.popMatrix();
 }
 
-var drawingCamera = function(camera, program)
+var drawingCamera = function(cam, program)
 {
     P = new MatrixStack();
     MV = new MatrixStack();
+    tempTranslations = vec3.create()
+    tempTranslations = cam.getTranslationInit();
 
     P.pushMatrix();
-        camera.applyProjectionMatrix(P);
+        cam.applyProjectionMatrix(P);
         MV.pushMatrix();
             MV.loadIdentity();
-            camera.applyViewMatrix(MV);
+            cam.applyViewMatrix(MV);
 
             // angle = performance.now() / 1000 / 6 * 2 * Math.PI;
             //     MV.rotate(angle, angle, 0.0);
 
             MV.pushMatrix();
-                
+                MV.translate(tempTranslations[0], tempTranslations[1], -1.0 * tempTranslations[2])
                 // MV.translate(0.0, 0.0, -10.0);
                 gl.uniformMatrix4fv(program.getUniform("P"), gl.FALSE, P.topMatrix());
                 gl.uniformMatrix4fv(program.getUniform("MV"), gl.FALSE, MV.topMatrix());
 
                 //frustum
                 //need to do the same thing as initializing a shape
+                var z1 = -1.0 * cam.zfar;
+                var y1 = Math.tan(cam.fovy/2.0)*z1;
+                var x1 = y1 * cam.aspect;
                 var vertices = [
-                    -0.7,-0.1,0,
-                    -0.3,0.6,0,
-                    -0.3,-0.3,0,
-                    0.2,0.6,0,
-                    0.3,-0.3,0,
-                    0.7,0.6,0 
+                    0.0,0.0,0.0,
+                    (-1.0 * x1),(-1.0 * y1), z1,
+                    0.0,0.0,0.0,
+                    (1.0 * x1),(-1.0 * y1), z1,
+                    0.0,0.0,0.0,
+                    (1.0 * x1),(1.0 * y1), z1,
+                    0.0,0.0,0.0,
+                    (-1.0 * x1),(1.0 * y1), z1
                  ]
-        
+
+                 //imagePlane
+                 vertices.push(0.0, 0.0, 0.0, 1.0, 1.0, 1.0);
+                
                  // Create an empty buffer object
                  var vertex_buffer = gl.createBuffer();
         
@@ -476,7 +485,8 @@ var drawingCamera = function(camera, program)
                 // Enable the attribute
                 gl.enableVertexAttribArray(coord);
 
-                gl.drawArrays(gl.LINES, 0, 6);
+                var lineNo = vertices.length / 3;
+                gl.drawArrays(gl.LINES, 0, lineNo);
                 
             MV.popMatrix();
         MV.popMatrix();
