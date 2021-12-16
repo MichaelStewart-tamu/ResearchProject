@@ -46,7 +46,29 @@ var InitDemo = function ()
 										} 
 										else
 										{
-											RunDemo(vsText, fsText, model0Obj, model1Obj, model2Obj);	//finally calling the next function to render
+											loadTextResource('./simple_frag.glsl', function (simplefsErr, simpleFragText) 
+											{
+												if (simplefsErr) 
+												{
+													alert('Fatal error getting fragment shader (see console)');
+													console.error(simplefsErr);
+												} 
+												else 
+												{
+													loadTextResource('./simple_vert.glsl', function (simplevsErr, simpleVertText) 
+													{
+														if (simplevsErr) 
+														{
+															alert('Fatal error getting vertex shader (see console)');
+															console.error(simplevsErr);
+														} 
+														else 
+														{
+															RunDemo(vsText, fsText, simpleFragText, simpleVertText, model0Obj, model1Obj, model2Obj);	//finally calling the next function to render
+														}
+													});
+												}
+											});
 										}
 									
 									});
@@ -146,7 +168,7 @@ if (!gl) {
 }
 
 //this is sort of the main	
-var RunDemo = function (vertexShaderText, fragmentShaderText, SusanModel, bunnyModel, planeModel) 
+var RunDemo = function (vertexShaderText, fragmentShaderText, simpleFragText, simpleVertText, SusanModel, bunnyModel, planeModel) 
 {
 	console.log('Have entered teh runDemo Function');	//making sure that the function has been entered
 	model = SusanModel;
@@ -160,7 +182,11 @@ var RunDemo = function (vertexShaderText, fragmentShaderText, SusanModel, bunnyM
 	gl.frontFace(gl.CCW);
 	gl.cullFace(gl.BACK);	//back of the face of triangles will not be rendered
 
-	//initializing the program
+
+	
+	
+
+	//initializing the program for rendering
 	testingProgram = new Program();
 	testingProgram.setShaderNames(vertexShaderText, fragmentShaderText);
 	testingProgram.init();
@@ -193,6 +219,14 @@ var RunDemo = function (vertexShaderText, fragmentShaderText, SusanModel, bunnyM
 	gl.uniform1f(testingProgram.getUniform("lInt0"), 0.8);
 	gl.uniform1f(testingProgram.getUniform("alpha"), 1.0);
 
+	//initialize the program for drawing lines
+	lineProgram = new Program();
+	lineProgram.setShaderNames(simpleVertText, simpleFragText);
+	lineProgram.init();
+	lineProgram.bind();
+	lineProgram.addUniform('MV');
+	lineProgram.addUniform('P');
+	lineProgram.addAttribute('vertPosition')
 
 
 	//creating shapes
@@ -235,16 +269,26 @@ var RunDemo = function (vertexShaderText, fragmentShaderText, SusanModel, bunnyM
 	// Main render loop
 	//
 
+	var loopIterations = 0;
+	var infinite = true;
+
 	var loop = function () {
 		//reset the background color
 		gl.clearColor(0.40, 0.40, 0.40, 1.0);
 		gl.clear(gl.DEPTH_BUFFER_BIT | gl.COLOR_BUFFER_BIT);	//clear buffers
 
 
+		//drawing the camera
+		lineProgram.bind();
+		drawingCamera(camera, lineProgram);
+		lineProgram.unbind();
+
+
 		// SceneTest(testingProgram, bunnyModel, SusanModel, viewMatrix, worldMatrix, invertedMatrix, invertedTransposeMatrix, temp);
 		// Scene0(testingProgram, planeModel, SusanModel, bunnyModel, viewMatrix, worldMatrix, invertedMatrix, invertedTransposeMatrix, temp);
 		
 
+		testingProgram.bind();
 		switch(camera.keyNumber)
 		{
 			default:
@@ -255,7 +299,11 @@ var RunDemo = function (vertexShaderText, fragmentShaderText, SusanModel, bunnyM
 				Scene2(camera, testingProgram, bunnyShape, testingShape);
 		}
 
-		requestAnimationFrame(loop);	//calling this function again
+		if(loopIterations < 50 || infinite === true)
+		{
+			requestAnimationFrame(loop);	//calling this function again
+			loopIterations += 1;
+		}
 	};
 	requestAnimationFrame(loop);
 };

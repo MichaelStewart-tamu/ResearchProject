@@ -349,7 +349,6 @@ var Scene0 = function(program, planeModel, SusanModel, bunnyModel, viewMatrix, w
 
 var Scene1 = function(camera, program, Bunny, Cylinder)
 {
-    console.log("entered scene 1");
     P = new MatrixStack();
     MV = new MatrixStack();
 
@@ -387,7 +386,6 @@ var Scene1 = function(camera, program, Bunny, Cylinder)
 
 var Scene2 = function(camera, program, Bunny, Cylinder)
 {
-    console.log("entered scene 1");
     P = new MatrixStack();
     MV = new MatrixStack();
 
@@ -422,3 +420,66 @@ var Scene2 = function(camera, program, Bunny, Cylinder)
         MV.popMatrix();
     P.popMatrix();
 }
+
+var drawingCamera = function(camera, program)
+{
+    P = new MatrixStack();
+    MV = new MatrixStack();
+
+    P.pushMatrix();
+        camera.applyProjectionMatrix(P);
+        MV.pushMatrix();
+            MV.loadIdentity();
+            camera.applyViewMatrix(MV);
+
+            // angle = performance.now() / 1000 / 6 * 2 * Math.PI;
+            //     MV.rotate(angle, angle, 0.0);
+
+            MV.pushMatrix();
+                
+                // MV.translate(0.0, 0.0, -10.0);
+                gl.uniformMatrix4fv(program.getUniform("P"), gl.FALSE, P.topMatrix());
+                gl.uniformMatrix4fv(program.getUniform("MV"), gl.FALSE, MV.topMatrix());
+
+                //frustum
+                //need to do the same thing as initializing a shape
+                var vertices = [
+                    -0.7,-0.1,0,
+                    -0.3,0.6,0,
+                    -0.3,-0.3,0,
+                    0.2,0.6,0,
+                    0.3,-0.3,0,
+                    0.7,0.6,0 
+                 ]
+        
+                 // Create an empty buffer object
+                 var vertex_buffer = gl.createBuffer();
+        
+                 // Bind appropriate array buffer to it
+                 gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
+              
+                 // Pass the vertex data to the buffer
+                 gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+        
+                 // Unbind the buffer
+                 gl.bindBuffer(gl.ARRAY_BUFFER, null);
+
+                 // Bind vertex buffer object
+                gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
+
+                // Get the attribute location
+                var coord = program.getAttribute("vertPosition");
+
+                // Point an attribute to the currently bound VBO
+                gl.vertexAttribPointer(coord, 3, gl.FLOAT, false, 0, 0);
+
+                // Enable the attribute
+                gl.enableVertexAttribArray(coord);
+
+                gl.drawArrays(gl.LINES, 0, 6);
+                
+            MV.popMatrix();
+        MV.popMatrix();
+    P.popMatrix();
+}
+
