@@ -134,6 +134,11 @@ const keyPress = function(cam, event)
 		cam.shiftBool = true;
 	}
 
+	if("0" === event.key)
+	{
+		cam.keyNumber = 0;
+		cam.reset();
+	}
 	if("1" === event.key)
 	{
 		cam.keyNumber = 1;
@@ -142,6 +147,31 @@ const keyPress = function(cam, event)
 	if("2" === event.key)
 	{
 		cam.keyNumber = 2;
+		cam.reset();
+	}
+	if("3" === event.key)
+	{
+		cam.keyNumber = 3;
+		cam.reset();
+	}
+	if("4" === event.key)
+	{
+		cam.keyNumber = 4;
+		cam.reset();
+	}
+	if("5" === event.key)
+	{
+		cam.keyNumber = 5;
+		cam.reset();
+	}
+	if("6" === event.key)
+	{
+		cam.keyNumber = 6;
+		cam.reset();
+	}
+	if("7" === event.key)
+	{
+		cam.keyNumber = 7;
 		cam.reset();
 	}
 	
@@ -185,10 +215,9 @@ if (!gl) {
 }
 
 //this is sort of the main	
-var RunDemo = function (vertexShaderText, fragmentShaderText, simpleFragText, simpleVertText, SusanModel, bunnyModel, planeModel) 
+var RunDemo = function (vertexShaderText, fragmentShaderText, simpleFragText, simpleVertText, CylModel, bunnyModel, planeModel) 
 {
-	console.log('Have entered teh runDemo Function');	//making sure that the function has been entered
-	model = SusanModel;
+	console.log('Have entered the runDemo Function');	//making sure that the function has been entered
 
 
 	//initializing rendering settings
@@ -248,7 +277,7 @@ var RunDemo = function (vertexShaderText, fragmentShaderText, simpleFragText, si
 
 	//creating shapes
 	testingShape = new Shape();
-	testingShape.init(SusanModel);
+	testingShape.init(CylModel);
 
 	bunnyShape = new Shape();
 	bunnyShape.init(bunnyModel);
@@ -305,19 +334,34 @@ var RunDemo = function (vertexShaderText, fragmentShaderText, simpleFragText, si
 		lineProgram.unbind();
 
 
-		// SceneTest(testingProgram, bunnyModel, SusanModel, viewMatrix, worldMatrix, invertedMatrix, invertedTransposeMatrix, temp);
-		// Scene0(testingProgram, planeModel, SusanModel, bunnyModel, viewMatrix, worldMatrix, invertedMatrix, invertedTransposeMatrix, temp);
+		// SceneTest(testingProgram, bunnyModel, CylModel, viewMatrix, worldMatrix, invertedMatrix, invertedTransposeMatrix, temp);
+		// Scene0(testingProgram, planeModel, CylModel, bunnyModel, viewMatrix, worldMatrix, invertedMatrix, invertedTransposeMatrix, temp);
 		
 
 		testingProgram.bind();
-		switch(camera.keyNumber)
+		if("0" == camera.keyNumber)
 		{
-			default:
-				Scene1(camera, testingProgram, bunnyShape, testingShape, light0);
-			case 1:
-				Scene1(camera, testingProgram, bunnyShape, testingShape, light0);
-			case 2:
-				Scene2(camera, testingProgram, bunnyShape, testingShape, light0);
+			Scene0(camera, testingProgram, bunnyShape, testingShape, planeShape, light0);
+		}
+		else if(camera.keyNumber == "1")
+		{
+			Scene1(camera, testingProgram, bunnyShape, testingShape, light0);
+		}
+		else if("2" == camera.keyNumber)
+		{
+			Scene2(camera, testingProgram, bunnyShape, testingShape, light0);
+		}
+		else if("6" == camera.keyNumber)
+		{
+			Scene6(camera, testingProgram, bunnyShape, light0);
+		}
+		else if("7" == camera.keyNumber)
+		{
+			Scene7(camera, testingProgram, bunnyShape, light0);
+		}
+		else
+		{
+			Scene0(camera, testingProgram, bunnyShape, testingShape, planeShape, light0);
 		}
 
 		if(loopIterations < 50 || infinite === true)
