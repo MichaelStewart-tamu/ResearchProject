@@ -444,6 +444,9 @@ var drawingCamera = function(cam, program)
 
                 //frustum
                 //need to do the same thing as initializing a shape
+                var z0 = -1.0 * cam.znear;
+                var y0 = Math.tan(cam.fovy/2.0)*z0;
+                var x0 = y0 * cam.aspect;
                 var z1 = -1.0 * cam.zfar;
                 var y1 = Math.tan(cam.fovy/2.0)*z1;
                 var x1 = y1 * cam.aspect;
@@ -458,8 +461,53 @@ var drawingCamera = function(cam, program)
                     (-1.0 * x1),(1.0 * y1), z1
                  ]
 
-                 //imagePlane
-                 vertices.push(0.0, 0.0, 0.0, 1.0, 1.0, 1.0);
+                 //drawing imagePlane
+                 //drawing the outside of the frame
+                //  glVertex3d(-x0, -y0, z0);
+                // glVertex3d( x0, -y0, z0);
+                // glVertex3d( x0,  y0, z0);
+                // glVertex3d(-x0,  y0, z0);
+                vertices.push(-x0, -y0, z0);    //top of frame
+                vertices.push(x0, -y0, z0);
+                //bottom of frame
+                vertices.push(-x0, y0, z0);
+                vertices.push(x0, y0, z0);
+                //left side
+                vertices.push(-x0, y0, z0);
+                vertices.push(-x0,-y0, z0);
+                //right side
+                vertices.push(x0, y0, z0);
+                vertices.push(x0,-y0, z0);
+
+                //  for(int i = 1; i < numy; ++i) {
+                //     double sy = (double)i/numy;
+                //     double y = (1.0 - sy)*(-y0) + sy*y0;
+                //     glVertex3d(-x0, y, z0);
+                //     glVertex3d( x0, y, z0);
+                // }
+                // for(int j = 1; j < numx; ++j) {
+                //     double sx = (double)j/numx;
+                //     double x = (1.0 - sx)*(-x0) + sx*x0;
+                //     glVertex3d(x, -y0, z0);
+                //     glVertex3d(x,  y0, z0);
+                // }
+                //loop through the verticle lines
+                for(var i = 1; i < camera.numy; i++)
+                {
+                    var sy = i/camera.numy;
+                    var y = (1.0 - sy) * (-1.0 * y0) + sy * y0;
+                    vertices.push((-1.0 * x0), y, z0);
+                    vertices.push(x0, y, z0);
+                }
+                //loop through the horizontal lines
+                for(var j = 1; j < cam.numx; j++)
+                {
+                    var sx = j/cam.numx;
+                    var x = (1.0 - sx) * (-x0) + sx * x0;
+                    vertices.push(x, -y0, z0);
+                    vertices.push(x, y0, z0);
+                } 
+                
                 
                  // Create an empty buffer object
                  var vertex_buffer = gl.createBuffer();

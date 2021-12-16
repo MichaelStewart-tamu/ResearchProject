@@ -33,7 +33,7 @@ class Camera
         // this.aspect = 1.0;
         this.aspect = canvas.clientWidth / canvas.clientHeight;
         this.fovy = (45.0 * Math.PI) / 180.0;
-        this.znear = 0.1;
+        this.znear = 1.0;
         this.zfar = 100.0;
         // vec2.set(this.#rotations, 0.0, 0.0);
         this.#rotations[0] = 0.0;
@@ -48,8 +48,8 @@ class Camera
         // this.#rotationsInit = this.#rotations;
         vec2.set(this.#rotationsInit, 0.0, 0.0);
         this.#resetting = false;
-        this.#numx = 25;
-        this.#numy = 25;
+        this.numx = 25;
+        this.numy = 25;
         this.#currx = 0;
         this.#curry = 0;
         this.#showAll = true;
@@ -148,18 +148,18 @@ class Camera
         
         if(this.#currx < 0)
         {
-            this.#currx = this.#numx - 1.0;
+            this.#currx = this.numx - 1.0;
         }
-        else if(this.#currx >= this.#numx)
+        else if(this.#currx >= this.numx)
         {
             this.#currx = 0;
         }
         
         if(this.#curry < 0)
         {
-            this.#curry = this.#numy - 1.0;
+            this.#curry = this.numy - 1.0;
         }
-        else if(this.#curry >= this.#numy)
+        else if(this.#curry >= this.numy)
         {
             this.#curry = 0;
         }
