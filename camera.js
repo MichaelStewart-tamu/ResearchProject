@@ -48,8 +48,8 @@ class Camera
         // this.#rotationsInit = this.#rotations;
         vec2.set(this.#rotationsInit, 0.0, 0.0);
         this.#resetting = false;
-        this.numx = 25;
-        this.numy = 25;
+        this.numx = 10;
+        this.numy = 10;
         this.#currx = 0;
         this.#curry = 0;
         this.#showAll = true;
@@ -244,6 +244,25 @@ class Camera
                         vertices.push(x, -y0, z0);
                         vertices.push(x, y0, z0);
                     } 
+
+                    //the highlighted square TODO needs to be a differnet color
+                    //TODO, make this not showAll
+                    if(this.#showAll) {
+                        // Highlight selected tile
+                        gl.lineWidth(2);
+                        var sy = this.#curry/this.numy;
+                        var sx = this.#currx/this.numx;
+                        var y = (1.0 - sy)*(-y0) + sy*y0;
+                        var x = (1.0 - sx)*(-x0) + sx*x0;
+                        var dz = 2e-4;
+                        var dy = 2.0*y0/this.numy;
+                        var dx = 2.0*x0/this.numx;
+                        var wiggleRoom = 0.002;
+                        vertices.push(x + wiggleRoom, y + wiggleRoom, z0-dz , x+dx + wiggleRoom, y + wiggleRoom, z0-dz );   //top
+                        vertices.push(x+dx + wiggleRoom, y+dy + wiggleRoom, z0-dz , x + wiggleRoom, y+dy + wiggleRoom, z0-dz ); //bottom
+                        vertices.push(x + wiggleRoom, y + wiggleRoom, z0-dz , x + wiggleRoom, y + dy + wiggleRoom, z0-dz );//right
+                        vertices.push(x + dx + wiggleRoom, y + wiggleRoom, z0-dz , x + dx + wiggleRoom, y + dy + wiggleRoom, z0-dz );
+                    }
                     
                     
                     // Create an empty buffer object

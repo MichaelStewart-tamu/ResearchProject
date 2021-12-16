@@ -144,6 +144,23 @@ const keyPress = function(cam, event)
 		cam.keyNumber = 2;
 		cam.reset();
 	}
+	
+	if("ArrowUp" === event.key)
+	{
+		cam.moveCurr(0, -1);
+	}
+	if("ArrowDown" === event.key)
+	{
+		cam.moveCurr(0, 1);
+	}
+	if("ArrowLeft" === event.key)
+	{
+		cam.moveCurr(1, 0);
+	}
+	if("ArrowRight" === event.key)
+	{
+		cam.moveCurr(-1, 0);
+	}
 }
 
 const keyReleased = function(cam, event)
