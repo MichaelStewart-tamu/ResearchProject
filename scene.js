@@ -31,7 +31,7 @@ var Scene0 = function(camera, program, Bunny, Cylinder, Plane, light0)
                     gl.uniformMatrix4fv(program.getUniform("MV"), gl.FALSE, MV.topMatrix());
                     gl.uniformMatrix4fv(program.getUniform("MVit"), gl.FALSE, MV.topMatrixIT());
                     gl.uniform3f(program.getUniform("kd"), 0.2, 0.2, 0.1);
-                    gl.uniform3f(program.getUniform("ks"), 1.0, 1.0, 0.5);
+                    gl.uniform3f(program.getUniform("ks"), 1.0, 1.0, 1.0);
                     gl.uniform3f(program.getUniform("ka"), 0.1, 0.1, 0.1);
                     gl.uniform1f(program.getUniform("s"), 100.0);
 
