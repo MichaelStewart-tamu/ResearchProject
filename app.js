@@ -3,95 +3,95 @@ var InitDemo = function ()
 {
 	loadTextResource('./shader.vs.glsl', function (vsErr, vsText) //this is loading resources and calling functions from inside the parameter while it is loading the files.
 	{
-		if (vsErr) 
+		if (vsErr) //if the function loadTextResource returns an error
 		{
 			alert('Fatal error getting vertex shader (see console)');
 			console.error(vsErr);
 		} 
-		else 
+		else 	//everything worked out move on
 		{
-			loadTextResource('./shader.fs.glsl', function (fsErr, fsText) 
+			loadTextResource('./shader.fs.glsl', function (fsErr, fsText)	//This will load the fragment shader
 			{
-				if (fsErr) 
+				if (fsErr) //if the function loadTextResource returns an error
 				{
 					alert('Fatal error getting fragment shader (see console)');
 					console.error(fsErr);
 				} 
 				else 
 				{
-					loadJSONResource('./cylinder.json', function (model0Err, model0Obj) 
+					loadJSONResource('./cylinder.json', function (model0Err, model0Obj) //Loads cylinder model
 					{
-						if (model0Err) 
+						if (model0Err) //if the function loadJSONResource returns an error
 						{
 							alert('Fatal error getting Susan model (see console)');
 							console.error(model0Err);
 						} 
 						else 
 						{
-							loadJSONResource('./bunny.json', function (model1Err, model1Obj) 
+							loadJSONResource('./bunny.json', function (model1Err, model1Obj) //loads bunny model
 							{
-								if (model1Err) 
+								if (model1Err) //if the function loadJSONResource returns an error
 								{
 									alert('Fatal error getting Susan model (see console)');
 									console.error(model1Err);
 								} 
 								else
 								{
-									loadJSONResource('./plane.json', function (model2Err, model2Obj) 
+									loadJSONResource('./plane.json', function (model2Err, model2Obj) //loads plane model
 									{
-										if (model2Err) 
+										if (model2Err) //if the function loadJSONResource returns an error
 										{
 											alert('Fatal error getting Susan model (see console)');
 											console.error(model2Err);
 										} 
 										else
 										{
-											loadTextResource('./simple_frag.glsl', function (simplefsErr, simpleFragText) 
+											loadTextResource('./simple_frag.glsl', function (simplefsErr, simpleFragText) //loads the fragment shader for lines
 											{
-												if (simplefsErr) 
+												if (simplefsErr) //if the function loadTextResource returns an error
 												{
 													alert('Fatal error getting fragment shader (see console)');
 													console.error(simplefsErr);
 												} 
 												else 
 												{
-													loadTextResource('./simple_vert.glsl', function (simplevsErr, simpleVertText) 
+													loadTextResource('./simple_vert.glsl', function (simplevsErr, simpleVertText) 	//loads the vertex shader for lines
 													{
-														if (simplevsErr) 
+														if (simplevsErr) //if the function loadTextResource returns an error
 														{
 															alert('Fatal error getting vertex shader (see console)');
 															console.error(simplevsErr);
 														} 
 														else 
 														{
-															loadJSONResource('./sphere1.json', function (model3Err, model3Obj) 
+															loadJSONResource('./sphere1.json', function (model3Err, model3Obj) //loads sphere model
 															{
-																if (model3Err) 
+																if (model3Err) //if the function loadJSONResource returns an error
 																{
 																	alert('Fatal error getting sphere model (see console)');
 																	console.error(model3Err);
 																} 
 																else
 																{
-																	loadJSONResource('./teapot.json', function (model4Err, model4Obj) 
+																	loadJSONResource('./teapot.json', function (model4Err, model4Obj) //loads teapot model
 																	{
-																		if (model4Err) 
+																		if (model4Err) //if the function loadJSONResource returns an error
 																		{
 																			alert('Fatal error getting teapot model (see console)');
 																			console.error(model4Err);
 																		} 
 																		else
 																		{
-																			loadJSONResource('./evaLow.json', function (model5Err, model5Obj) 
+																			loadJSONResource('./evaLow.json', function (model5Err, model5Obj) //loads eva object
 																			{
-																				if (model5Err) 
+																				if (model5Err) //if the function loadTextResource returns an error
 																				{
 																					alert('Fatal error getting eva model (see console)');
 																					console.error(model5Err);
 																				} 
 																				else
 																				{
-																					RunDemo(vsText, fsText, simpleFragText, simpleVertText, model0Obj, model1Obj, model2Obj, model3Obj, model4Obj, model5Obj);	//finally calling the next function to render
+																					RealTimeView(vsText, fsText, simpleFragText, simpleVertText, model0Obj, model1Obj, model2Obj, model3Obj, model4Obj, model5Obj);	//finally calling the next function to render
 																				}
 																			});
 																		}
@@ -103,10 +103,8 @@ var InitDemo = function ()
 												}
 											});
 										}
-									
 									});
 								}
-								
 							});
 						}
 					});
@@ -116,53 +114,59 @@ var InitDemo = function ()
 	});
 };
 
-//functions for mouse input
+//FUNCTIONS FOR MOUSE INPUT
+
+//This functions is used as a callback for getting the mouse cursor position data
 const movingMouse = function(cam, event)
 	{
-		if(cam.currentlyClicking === true)
+		if(cam.currentlyClicking === true)	//checking if any buttons are clicked
 		{
-			// console.log( event.clientX + " : " + event.clientY );
-			//console.log( event );
-			cam.mouseMoved(event.clientX, event.clientY);
+			//DEBUG STATEMENTS
+			//console.log(event.clientX + " : " + event.clientY);
+			//console.log(event);
+			cam.mouseMoved(event.clientX, event.clientY);	//call function to effect the camera based on mouse movement
 		}
 	}
 
+//function used to callback for checking if mouse is clicked
 const clickingMouse = function(cam, event)
 {
-	if ( 0 === event.button )
+	//will control when camera is rotated
+	if ( 0 === event.button )	//checking if the left mouse button is pressed
 	{
-		// console.log( "Left mouse button pressed", event);
-		cam.mouseClicked(event.clientX, event.clientY, false, false, true);
-		cam.currentlyClicking = true;
+		cam.mouseClicked(event.clientX, event.clientY, false, false, true);	//call function to effect camera based on button being clicked
+		cam.currentlyClicking = true;	//changing camera private property to true, This will allow functions to check if the button is clicked
 	}
-	if ( 1 === event.button )
+
+	//will control when cameras position is moved
+	if (cam.shiftBool === true)	//checking if shift button is pressed
 	{
-		// console.log( "Middle mouse button pressed" );
-		cam.mouseClicked(event.clientX, event.clientY, false, true, false);
-		cam.currentlyClicking = true;
-	}
-	if (cam.shiftBool === true)
-	{
-		cam.mouseClicked(event.clientX, event.clientY, true, false, false);
-		cam.currentlyClicking = true;
+		cam.mouseClicked(event.clientX, event.clientY, true, false, false); //call function to effect camera based on button being clicked
+		cam.currentlyClicking = true; //changing camera private property to true, This will allow functions to check if the button is clicked
 	}
 }
 
-const notClicking = function(cam, event)
+//This function acts as a call back whenever the mouse button has been released
+const notClicking = function(cam, event)	//cam is used to bring in the camera object and the event is used to understand when callback has happened	NOTE:: when event is missing pressing shift will cause the program to eternally be in movement mode
 {
 	cam.currentlyClicking = false;
 }
 
+//This function acts as a callback whenever the scroll wheel is moving
 const scrollWheel = function(cam, event)
 {
 	cam.scrolling(event.deltaY);
 }
 
-//functions for keyboard input
+//FUNCTIONS FOR KEYBOARD INPUT
+
+//detecting key presses
 const keyPress = function(cam, event)
 {
-	console.log("have entered key press, and pressed ", event.key);
-	if("Shift" === event.key)
+	//DEBUG STATEMENT
+	// console.log("have entered key press, and pressed ", event.key);
+
+	if("Shift" === event.key)	//check if the key in quotes is one that the event is currently changing, NOTE:: three equation marks in javaScript acts as a check of definite certainty
 	{
 		cam.shiftBool = true;
 	}
@@ -226,17 +230,22 @@ const keyPress = function(cam, event)
 	}
 }
 
+//detecting when a key is no longer being pressed
 const keyReleased = function(cam, event)
 {
-	if("Shift" === event.key)
+	if("Shift" === event.key)	//checking if it is the shift key being released
 	{
 		cam.shiftBool = false;
 	}
-	console.log("have released the key", event.key);
+
+	//DEBUG STATEMENT
+	// console.log("have released the key", event.key);
 }
 
-var canvas = document.getElementById('game-surface');
-var gl = canvas.getContext('webgl');
+
+//Rendering the live ViewPort
+var canvas = document.getElementById('game-surface');	//get information about the canvas
+var gl = canvas.getContext('webgl');	//used for webGl calls
 
 if (!gl) {
 	console.log('WebGL not supported, falling back on experimental-webgl');
@@ -247,11 +256,10 @@ if (!gl) {
 	alert('Your browser does not support WebGL');
 }
 
-//this is sort of the main	
-var RunDemo = function (vertexShaderText, fragmentShaderText, simpleFragText, simpleVertText, CylModel, bunnyModel, planeModel, sphereModel, teapotModel, evaModel) 
+//this acts like main() in c++
+var RealTimeView = function (vertexShaderText, fragmentShaderText, simpleFragText, simpleVertText, CylModel, bunnyModel, planeModel, sphereModel, teapotModel, evaModel) 	//the input arguments to this function are importing models and shader files
 {
-	console.log('Have entered the runDemo Function');	//making sure that the function has been entered
-
+	console.log('Have entered the RealTimeView Function');	//making sure that the function has been entered
 
 	//initializing rendering settings
 	gl.clearColor(0.75, 0.85, 0.8, 1.0);	//background color
@@ -261,10 +269,6 @@ var RunDemo = function (vertexShaderText, fragmentShaderText, simpleFragText, si
 	gl.frontFace(gl.CCW);
 	gl.cullFace(gl.BACK);	//back of the face of triangles will not be rendered
 
-
-	
-	
-
 	//initializing the program for rendering
 	testingProgram = new Program();
 	testingProgram.setShaderNames(vertexShaderText, fragmentShaderText);
@@ -273,9 +277,6 @@ var RunDemo = function (vertexShaderText, fragmentShaderText, simpleFragText, si
 	testingProgram.addAttribute('vertPosition');
 	testingProgram.addAttribute('vertTexCoord');
 	testingProgram.addAttribute('vertNormal');
-	// testingProgram.addUniform('mWorld');
-	// testingProgram.addUniform('mView');
-	// testingProgram.addUniform('mProj');
 	testingProgram.addUniform('MV');
 	testingProgram.addUniform('P');
 	testingProgram.addUniform('MVit');
@@ -306,7 +307,6 @@ var RunDemo = function (vertexShaderText, fragmentShaderText, simpleFragText, si
 	lineProgram.addUniform('MV');
 	lineProgram.addUniform('P');
 	lineProgram.addAttribute('vertPosition')
-
 
 	//creating shapes
 	testingShape = new Shape();
@@ -341,10 +341,7 @@ var RunDemo = function (vertexShaderText, fragmentShaderText, simpleFragText, si
 	//end of mouse detection
 
 	//keyboard detection
-	
-
 	const bodyElement = document.querySelector( "body" );
-
 	bodyElement.addEventListener( "keydown", keyPress.bind(null, camera));
 	bodyElement.addEventListener( "keyup", keyReleased.bind(null, camera));
 	//end of keyboard detection
@@ -357,7 +354,7 @@ var RunDemo = function (vertexShaderText, fragmentShaderText, simpleFragText, si
 	 }
 
 	//
-	// Main render loop
+	// MAIN RENDER LOOP
 	//
 
 	var loopIterations = 0;
@@ -368,17 +365,10 @@ var RunDemo = function (vertexShaderText, fragmentShaderText, simpleFragText, si
 		gl.clearColor(0.40, 0.40, 0.40, 1.0);
 		gl.clear(gl.DEPTH_BUFFER_BIT | gl.COLOR_BUFFER_BIT);	//clear buffers
 
-
 		//drawing the camera
 		lineProgram.bind();
-		// drawingCamera(camera, lineProgram);
 		camera.draw(lineProgram);
 		lineProgram.unbind();
-
-
-		// SceneTest(testingProgram, bunnyModel, CylModel, viewMatrix, worldMatrix, invertedMatrix, invertedTransposeMatrix, temp);
-		// Scene0(testingProgram, planeModel, CylModel, bunnyModel, viewMatrix, worldMatrix, invertedMatrix, invertedTransposeMatrix, temp);
-		
 
 		testingProgram.bind();
 		if("0" == camera.keyNumber)
