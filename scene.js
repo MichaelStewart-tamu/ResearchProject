@@ -316,7 +316,6 @@ var Scene3 = function(camera, program, teapot, eva, light0)
 
                     eva.draw(program);
                 MV.popMatrix();
-
             MV.popMatrix();
         MV.popMatrix();
     P.popMatrix();
@@ -431,6 +430,20 @@ var Scene5 = function(camera, program, teapot, eva, light0)
 
                     teapot.draw(program);
                 MV.popMatrix();
+
+                //testing
+                testing = new thing(teapot);
+                testing.resetPosition(-1.2, -1.3, -1.0)
+                testing.resetScale(1.2, 0.8, 1.0);
+                testing.resetRotation(1.5, 0.5, 0.450);
+                testing.material.setKA(0.2, 0.0, 0.0);
+                testing.material.setKD(0.5, 0.0, 0.0);
+                testing.material.setKS(1.0, 1.0, 1.0);
+                testing.material.s = 50.0;
+                testing.material.applyGL(program);
+                testing.draw(MV, program);
+                
+                //end of testing
 
             MV.popMatrix();
         MV.popMatrix();
