@@ -59,6 +59,13 @@ class MatrixStack
         return this.stack[this.stack.length - 1];
     }
 
+    topMatrixI()
+    {
+        var tempInverted = new Float32Array(16);    //creating a 4x4 matrix
+        mat4.invert(tempInverted, this.stack[this.stack.length - 1]);   //first invert the top matrix and stick it into tempInverted
+        return tempInverted;
+    }
+
     topMatrixIT()   //this function will return the top matrix of the stack inverted and transposed
     {
         var tempInverted = new Float32Array(16);    //creating a 4x4 matrix
