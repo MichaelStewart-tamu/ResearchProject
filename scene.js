@@ -432,6 +432,20 @@ var Scene5 = function(camera, program, teapot, eva, light0)
                 MV.popMatrix();
 
                 //testing
+                plusUltraTesting = new thingSphere(teapot);
+                plusUltraTesting.resetPosition(1.2, -1.3, -1.0)
+                plusUltraTesting.resetScale(1.2, 0.8, 1.0);
+                plusUltraTesting.resetRotation(1.5, 0.5, 0.450);
+                plusUltraTesting.material.setKA(0.0, 0.2, 0.0);
+                plusUltraTesting.material.setKD(0.0, 0.5, 0.0);
+                plusUltraTesting.material.setKS(1.0, 1.0, 1.0);
+                plusUltraTesting.material.s = 50.0;
+                plusUltraTesting.material.applyGL(program);
+                plusUltraTesting.draw(MV, program);
+                
+                plusUltraTesting.intersect();
+
+
                 testing = new thing(teapot);
                 testing.resetPosition(-1.2, -1.3, -1.0)
                 testing.resetScale(1.2, 0.8, 1.0);

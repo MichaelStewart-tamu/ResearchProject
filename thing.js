@@ -73,9 +73,7 @@ class thing
     {
         //do not have toRotationMatrix which is in the .cpp eigen library, so I am going to have to reproduce it myself
         //going to go out on a limb here and say that it is just applying the transforms in order
-        tmpALL = new MatrixStack();
-        tmpInverse = new MatrixStack();
-        tmpInverseTranspose = new MatrixStack();
+        let tmpALL = new MatrixStack();
 
         //apply everything to tmpALL first, this means first apply translations, then rotations, then scale
         tmpALL.translate(this.posX, this.posY, this.posZ);
@@ -86,6 +84,7 @@ class thing
         E = tmpALL.topMatrix();
         Ei = tmpALL.topMatrixI();
         Eit = tmpALL.topMatrixIT();
+        
     }
 }
 
