@@ -1,3 +1,33 @@
+class Scene
+{
+    #lights = [];
+    #things = [];
+    #shadowing;
+    #depthMax;
+
+    constructor()
+    {
+        this.#shadowing = true;
+        this.#depthMax = 5;
+    }
+
+    load()
+    {
+
+    }
+
+    draw()
+    {
+
+    }
+
+    trace()
+    {
+
+    }
+}
+
+
 var Scene0 = function(camera, program, sphere, Cylinder, Plane, light0)
 {
     P = new MatrixStack();
@@ -367,7 +397,7 @@ var Scene4 = function(camera, program, teapot, eva, light0)
     P.popMatrix();
 }
 
-var Scene5 = function(camera, program, teapot, eva, light0)
+var Scene5 = function(camera, program, sphere, teapot, eva, light0)
 {
     P = new MatrixStack();
     MV = new MatrixStack();
@@ -389,7 +419,7 @@ var Scene5 = function(camera, program, teapot, eva, light0)
                 //light
                 MV.pushMatrix();
                     MV.scale(0.5, 0.5, 0.5);
-                    light0.draw(MV, program);
+                    light0.draw(MV, program, sphere);
                 MV.popMatrix();
 
                 angle = performance.now() / 1000 / 6 * 2 * Math.PI;
@@ -431,19 +461,38 @@ var Scene5 = function(camera, program, teapot, eva, light0)
                     teapot.draw(program);
                 MV.popMatrix();
 
-                //testing
+                //TESTING
                 plusUltraTesting = new thingSphere(teapot);
-                plusUltraTesting.resetPosition(1.2, -1.3, -1.0)
-                plusUltraTesting.resetScale(1.2, 0.8, 1.0);
-                plusUltraTesting.resetRotation(1.5, 0.5, 0.450);
+                // plusUltraTesting.resetPosition(0, 0, 1.0)
+                // plusUltraTesting.resetScale(1.2, 0.8, 1.0);
+                // plusUltraTesting.resetRotation(1.5, 0.5, 0.450);
                 plusUltraTesting.material.setKA(0.0, 0.2, 0.0);
                 plusUltraTesting.material.setKD(0.0, 0.5, 0.0);
                 plusUltraTesting.material.setKS(1.0, 1.0, 1.0);
                 plusUltraTesting.material.s = 50.0;
                 plusUltraTesting.material.applyGL(program);
                 plusUltraTesting.draw(MV, program);
+
+                //variables needed for intersect call testing
+                o = vec3.create();
+                o = vec3.fromValues(0.0, 0.0, 3.0);
+
+                d = vec3.create();
+                d = vec3.fromValues(0.0, 0.0, -1.0);
+
+                let s = 1e9;
+
+                pos = vec3.create();
+
+                nor = vec3.create();
+
+                materialTesting = new Material();
+                let back;
+
+
                 
-                plusUltraTesting.intersect();
+                
+                console.log(plusUltraTesting.intersect(o, d, s, pos, nor, materialTesting, back));
 
 
                 testing = new thing(teapot);
@@ -457,7 +506,7 @@ var Scene5 = function(camera, program, teapot, eva, light0)
                 testing.material.applyGL(program);
                 testing.draw(MV, program);
                 
-                //end of testing
+                //END OF TESTING
 
             MV.popMatrix();
         MV.popMatrix();

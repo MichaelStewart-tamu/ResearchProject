@@ -24,16 +24,27 @@ class Light
     }
 
 
-    draw(MV, prog)
+    draw(MV, prog, sphere)
     {
-        // if(this.intesity == 0.0)
-        // {
-        //     return;
-        // }
-        // gl.glUniform3f(prog.getUniform("kd"), 0.0, 0.0, 0.0);
+        if(this.intesity == 0.0)
+        {
+            return;
+        }
+        gl.uniform3f(prog.getUniform("kd"), 0.0, 0.0, 0.0);
+        gl.uniform3f(prog.getUniform("ks"), 0.0, 0.0, 0.0);
+        gl.uniform3f(prog.getUniform("ka"), 1.0, 1.0, 0.5);
+        gl.uniform1f(prog.getUniform("s"), 1.0);
+
+        MV.pushMatrix();
+        MV.translate(this.position[0], this.position[1], this.position[2]);
+        var scaleFloat = 0.1;
+        MV.scale(scaleFloat, scaleFloat, scaleFloat);
+        gl.uniformMatrix4fv(prog.getUniform("MV"), gl.FALSE, MV.topMatrix());
+        sphere.draw(prog);
+        MV.popMatrix();
 
         //create variables to store calculations into
-        var tempCameraPos = vec4.create();  //final calculation of light position in camera space
+        let tempCameraPos = vec4.create();  //final calculation of light position in camera space
         var tempPos = vec4.create();    //light position in world space
         vec4.set(tempPos, this.position[0], this.position[1], this.position[2], 1.0);   //placing the values into the vec4
 

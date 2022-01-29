@@ -69,7 +69,7 @@ class thing
         MV.popMatrix();
     }
 
-    getMatrices(E, Ei, Eit)
+    getMatrices()
     {
         //do not have toRotationMatrix which is in the .cpp eigen library, so I am going to have to reproduce it myself
         //going to go out on a limb here and say that it is just applying the transforms in order
@@ -81,10 +81,7 @@ class thing
         tmpALL.scale(this.scaleX, this.scaleY, this.scaleZ);
 
         //after this compute varients and output
-        E = tmpALL.topMatrix();
-        Ei = tmpALL.topMatrixI();
-        Eit = tmpALL.topMatrixIT();
-        
+        return tmpALL.topMatrix();
     }
 }
 

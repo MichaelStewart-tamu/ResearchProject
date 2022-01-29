@@ -373,7 +373,7 @@ var RealTimeView = function (vertexShaderText, fragmentShaderText, simpleFragTex
 		testingProgram.bind();
 		if("0" == camera.keyNumber)
 		{
-			Scene5(camera, testingProgram, teapotShape, evaShape, light0);
+			Scene5(camera, testingProgram, sphereShape, teapotShape, evaShape, light0);
 		}
 		else if(camera.keyNumber == "1")
 		{
