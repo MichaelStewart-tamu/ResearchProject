@@ -420,6 +420,7 @@ var Scene5 = function(camera, program, sphere, teapot, eva, light0)
                 MV.pushMatrix();
                     MV.scale(0.5, 0.5, 0.5);
                     light0.draw(MV, program, sphere);
+                    light0.applyGL(MV, program);
                 MV.popMatrix();
 
                 angle = performance.now() / 1000 / 6 * 2 * Math.PI;

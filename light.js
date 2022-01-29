@@ -36,13 +36,17 @@ class Light
         gl.uniform1f(prog.getUniform("s"), 1.0);
 
         MV.pushMatrix();
-        MV.translate(this.position[0], this.position[1], this.position[2]);
-        var scaleFloat = 0.1;
-        MV.scale(scaleFloat, scaleFloat, scaleFloat);
-        gl.uniformMatrix4fv(prog.getUniform("MV"), gl.FALSE, MV.topMatrix());
-        sphere.draw(prog);
-        MV.popMatrix();
+            MV.translate(this.position[0], this.position[1], this.position[2]);
+            var scaleFloat = 0.1;
+            MV.scale(scaleFloat, scaleFloat, scaleFloat);
+            gl.uniformMatrix4fv(prog.getUniform("MV"), gl.FALSE, MV.topMatrix());
 
+            sphere.draw(prog);
+        MV.popMatrix();
+    }
+
+    applyGL(MV, prog)
+    {
         //create variables to store calculations into
         let tempCameraPos = vec4.create();  //final calculation of light position in camera space
         var tempPos = vec4.create();    //light position in world space
@@ -53,16 +57,11 @@ class Light
         
         //calculate camera space position
         vec4.transformMat4(tempCameraPos, tempPos, MV.topMatrix());
-        gl.uniform3f(prog.getUniform("lPos0"), tempCameraPos[0], tempCameraPos[1], tempCameraPos[2]);        
+        gl.uniform3f(prog.getUniform("lPos0"), tempCameraPos[0], tempCameraPos[1], tempCameraPos[2]); 
     }
-
-    testing()
-    {
-        console.log("testing Light");
-    }
-
-    //constructor
-    //draw
-    //applyGL
     
+    clearCount()
+    {
+        this.count = 0;
+    }
 }
