@@ -53,11 +53,13 @@ class Light
         vec4.set(tempPos, this.position[0], this.position[1], this.position[2], 1.0);   //placing the values into the vec4
 
         //move MV
-        MV.translate(this.position[0], this.position[1], this.position[2]);
+        MV.pushMatrix();
+        // MV.translate(this.position[0], this.position[1], this.position[2]);
         
         //calculate camera space position
         vec4.transformMat4(tempCameraPos, tempPos, MV.topMatrix());
         gl.uniform3f(prog.getUniform("lPos0"), tempCameraPos[0], tempCameraPos[1], tempCameraPos[2]); 
+        MV.popMatrix();
     }
     
     clearCount()

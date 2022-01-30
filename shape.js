@@ -52,7 +52,7 @@ class Shape
         let glErr = gl.getError();
         if(glErr != gl.NO_ERROR) 
         {
-            console.log("GL_ERROR from inside draw of shape = %s.\n", glErr);
+            console.log("GL_ERROR from inside init of shape = %s.\n", glErr);
 	    }
     }
 

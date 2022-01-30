@@ -175,6 +175,7 @@ const keyPress = function(cam, event)
 	{
 		cam.keyNumber = 0;
 		cam.reset();
+
 	}
 	if("1" === event.key)
 	{
@@ -290,7 +291,7 @@ var RealTimeView = function (vertexShaderText, fragmentShaderText, simpleFragTex
 	testingProgram.addUniform('lInt1');
 	testingProgram.addUniform('alpha');
 	//add phong values to program
-	gl.uniform3f(testingProgram.getUniform("kd"), 0.3, 0.3, 0.3);
+	gl.uniform3f(testingProgram.getUniform("kd"), 0.3, 0.3, 0.0);
 	gl.uniform3f(testingProgram.getUniform("ks"), 0.5, 0.5, 0.5);
 	gl.uniform3f(testingProgram.getUniform("ka"), 0.01, 0.01, 0.01);
 	gl.uniform1f(testingProgram.getUniform("s"), 5.0);
@@ -357,6 +358,9 @@ var RealTimeView = function (vertexShaderText, fragmentShaderText, simpleFragTex
 	// MAIN RENDER LOOP
 	//
 
+	//testing new scene class
+	let sceneTest = new Scene();
+
 	var loopIterations = 0;
 	var infinite = true;
 
@@ -365,54 +369,71 @@ var RealTimeView = function (vertexShaderText, fragmentShaderText, simpleFragTex
 		gl.clearColor(0.40, 0.40, 0.40, 1.0);
 		gl.clear(gl.DEPTH_BUFFER_BIT | gl.COLOR_BUFFER_BIT);	//clear buffers
 
-		//drawing the camera
-		lineProgram.bind();
-		camera.draw(lineProgram);
-		lineProgram.unbind();
+		P = new MatrixStack();
+    	MV = new MatrixStack();
 
-		testingProgram.bind();
-		if("0" == camera.keyNumber)
-		{
-			Scene5(camera, testingProgram, sphereShape, teapotShape, evaShape, light0);
-		}
-		else if(camera.keyNumber == "1")
-		{
-			Scene0(camera, testingProgram, sphereShape, testingShape, planeShape, light0);
-		}
-		else if("2" == camera.keyNumber)
-		{
-			Scene2(camera, testingProgram, bunnyShape, testingShape, light0);
-		}
-		else if("3" == camera.keyNumber)
-		{
-			Scene3(camera, testingProgram, teapotShape, evaShape, light0);
-		}
-		else if("4" == camera.keyNumber)
-		{
-			Scene4(camera, testingProgram, teapotShape, evaShape, light0);
-		}
-		else if("5" == camera.keyNumber)
-		{
-			Scene1(camera, testingProgram, bunnyShape, testingShape, light0);
-		}
-		else if("6" == camera.keyNumber)
-		{
-			Scene6(camera, testingProgram, bunnyShape, light0);
-		}
-		else if("7" == camera.keyNumber)
-		{
-			Scene7(camera, testingProgram, bunnyShape, light0);
-		}
-		else
-		{
-			Scene5(camera, testingProgram, teapotShape, evaShape, light0);
-		}
+		P.pushMatrix();
+        camera.applyProjectionMatrix(P);
+			MV.pushMatrix();
+				MV.loadIdentity();
+				camera.applyViewMatrix(MV);
+				gl.uniformMatrix4fv(testingProgram.getUniform("P"), gl.FALSE, P.topMatrix());
+				// gl.uniformMatrix4fv(program.getUniform("P"), gl.FALSE, P.topMatrix());
 
-		if(loopIterations < 50 || infinite === true)
-		{
-			requestAnimationFrame(loop);	//calling this function again
-			loopIterations += 1;
-		}
+				//drawing the camera
+				lineProgram.bind();
+				camera.draw(lineProgram);
+				lineProgram.unbind();
+
+				
+
+				testingProgram.bind();
+				if("0" == camera.keyNumber)
+				{
+					sceneTest.load(1, CylModel, bunnyModel, planeModel, sphereModel, teapotModel, evaModel);
+					sceneTest.draw(MV, testingProgram);
+					// Scene5(camera, testingProgram, sphereShape, teapotShape, evaShape, light0);
+				}
+				else if(camera.keyNumber == "1")
+				{
+					Scene0(camera, testingProgram, sphereShape, testingShape, planeShape, light0);
+				}
+				else if("2" == camera.keyNumber)
+				{
+					Scene2(camera, testingProgram, bunnyShape, testingShape, light0);
+				}
+				else if("3" == camera.keyNumber)
+				{
+					Scene3(camera, testingProgram, teapotShape, evaShape, light0);
+				}
+				else if("4" == camera.keyNumber)
+				{
+					Scene4(camera, testingProgram, teapotShape, evaShape, light0);
+				}
+				else if("5" == camera.keyNumber)
+				{
+					Scene1(camera, testingProgram, bunnyShape, testingShape, light0);
+				}
+				else if("6" == camera.keyNumber)
+				{
+					Scene6(camera, testingProgram, bunnyShape, light0);
+				}
+				else if("7" == camera.keyNumber)
+				{
+					Scene7(camera, testingProgram, bunnyShape, light0);
+				}
+				else
+				{
+					Scene5(camera, testingProgram, teapotShape, evaShape, light0);
+				}
+
+				if(loopIterations < 50 || infinite === true)
+				{
+					requestAnimationFrame(loop);	//calling this function again
+					loopIterations += 1;
+				}
+			MV.popMatrix();
+		P.popMatrix();
 	};
 	requestAnimationFrame(loop);
 };

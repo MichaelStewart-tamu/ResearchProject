@@ -53,7 +53,7 @@ class thing
 
     draw(MV, prog)
     {
-        //material->applyGL(prog)
+        this.material.applyGL(prog)
         MV.pushMatrix();
             MV.pushMatrix();    //to get the E matrix
                 MV.loadIdentity();
