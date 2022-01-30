@@ -1,3 +1,6 @@
+
+
+
 class Scene
 {
     #lights = [];
@@ -157,13 +160,177 @@ class Scene
             let back;
 
             //pack into an object the values passed into intersect
-            if(thing.intersect(rayOrig, rayDir, s, pos, nor, mat, back))
+            let rayInfo = {
+                origin: rayOrig,
+                direction: rayDir,
+                s: BIG,
+                pos: vec3.create(),
+                nor: vec3.create(),
+                mat: new Material(),
+                back: true
+            };
+
+            // console.log("testing that values were input correctly, at thing", thing, "rayinfo", rayInfo);
+
+            if(thing.intersect(rayInfo))
             {
                 //unpack the values from intersect object and reapply to variables
-                
-                console.log("i believe an intersection has been met");
+                // console.log("i believe an intersection has been met at thing", thing, rayInfo);
+                s = rayInfo.s;
+                pos = rayInfo.pos;
+                nor = rayInfo.nor;
+                mat.copy(rayInfo.mat);
+                back = rayInfo.back;
+
+                //now can continue
+                //if this is the ray from the camera, check for view frustum
+                if(s < s_)
+                {
+                    //If this is the ray from the camera, check for view frustum
+                    if(depth > 0 || (camera.znear < s && s < camera.zfar))
+                    {
+                        //store data needed for color calculation
+                        s_ = s;
+                        vec3.copy(pos_, pos);
+                        vec3.copy(nor_, nor);
+                        mat_.copy(mat);
+                        back_ = back;
+                    }
+                }
             }
         }
+
+        if(s_ < BIG)
+        {
+            if(storePoints)
+            {
+                points.push(pos_);
+            }
+
+            if(mat_.type === "PHONG")
+            {
+                color = [mat_.kar, mat_.kag, mat_.kab];
+                
+                for(const light of this.#lights)
+                {
+                    if(light.intensity === 0.0)
+                    {
+                        continue;
+                    }
+
+                    //the normal must be pointing toward the light
+                    let lpos = vec3.create();
+                    vec3.copy(lpos, light.position);
+
+                    let tempSublposPos = vec3.create();
+                    vec3.sub(tempSublposPos, lpos, pos_);
+                    let lDist = Math.sqrt(vec3.squaredLength(tempSublposPos));
+                    let lDir = vec3.fromValues((tempSublposPos[0]/lDist), (tempSublposPos[1]/lDist), (tempSublposPos[2]/lDist));
+                    if(vec3.dot(lDir, nor_) < 0.0)
+                    {
+                        console.log("entered");
+                        continue;
+                    }
+
+                    if(this.#shadowing === false)
+                    {
+                        //DEBUG STATEMENT
+                        // console.log("inside of trace in scene, phong, if shadowing is false color originally is ", color);
+                        color = mat_.applyDS(pos_, nor_, light, rayOrig, color);
+                        //DEBUG STATEMENT
+                        // console.log("after applyDS", color);
+                        continue;
+                    }
+
+                    //light ray start
+                    if(storePoints === true)
+                    {
+                        points.push(pos_);
+                    }
+
+                    let s_1 = BIG;
+                    let pos_1 = vec3.create();
+                    //set the ray origin to be slightly toward the light so that the point itself will not occlude it
+                    // Vector3d lOrig = pos_ + 1e-4*lDir;
+                    let lOrig = vec3.create();
+                    vec3.add(lOrig, pos_, (vec3.fromValues((1e-4 * lDir[0]), (1e-4 * lDir[1]), (1e-4 * lDir[2]))));
+                    
+                    for(const thing of this.#things)
+                    {
+                        if(thing.material === "REFRACT")
+                        {
+                            //transparent so do not cast shadows
+                            continue;
+                        }
+                        var s = BIG;
+                        let pos = vec3.create();
+                        let nor = vec3.create();
+                        let mat = new Material();
+                        let back;   //boolian
+
+                        //pack into an object the values passed into intersect
+                        let rayInfo1 = {
+                            origin: lOrig,
+                            direction: lDir,
+                            s: BIG,
+                            pos: vec3.create(),
+                            nor: vec3.create(),
+                            mat: new Material(),
+                            back: true
+                        };
+
+                        // console.log("testing that values were input correctly, at thing", thing, "rayinfo", rayInfo);
+
+                        if(thing.intersect(rayInfo1))
+                        {
+                            //unpack the values from intersect object and reapply to variables
+                            // console.log("i believe an intersection has been met at thing", thing, rayInfo);
+                            s = rayInfo1.s;
+                            pos = rayInfo1.pos;
+                            nor = rayInfo1.nor;
+                            mat.copy(rayInfo1.mat);
+                            back = rayInfo1.back;
+
+                            //now can continue
+                            let front = (vec3.dot(lDir, nor) < 0.0);    //front facing
+                            if(front && (s < s_1))
+                            {
+                                //closest s so far
+                                s_1 = s;
+                                vec3.copy(pos_1, pos);
+                            }
+                        }
+                        //DEBUG STATEMENT
+                        // console.log("all the way to the end of phong", pos_1);
+                    }
+
+                    if(s_1 < lDist)
+                    {
+                        //in shadow
+                        if(storePoints === true)
+                        {
+                            points.push(pos_1); //light ray end
+                        }
+                    }
+                    else
+                    {
+                        //apply material
+                        color = mat_.applyDS(pos_, nor_, light, rayOrig, color);
+                        if(storePoints === true)
+                        {
+                            points.push(lpos);  //light ray end
+                        }
+                    }
+
+
+                    //for testing
+                    console.log(tempSublposPos, lDist, lDir);
+                }
+                console.log(4);
+            }
+            console.log(5);
+        }
+        console.log(6, points);
     }
 }
 

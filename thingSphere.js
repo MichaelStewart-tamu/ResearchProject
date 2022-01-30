@@ -1,3 +1,4 @@
+
 class thingSphere extends thing
 {
 
@@ -8,8 +9,17 @@ class thingSphere extends thing
 
     
 
-    intersect(o, d, s, pos, nor, mat, back)
+    intersect(obj)
     {
+        //unpack from object
+        let o = obj.origin;
+        let d = obj.direction
+        let s;
+        let pos = vec3.create();
+        let nor = vec3.create();
+        let back;
+
+
         //DEBUG STATEMENT
         //console.log("entered intersect function");
                 // Matrix4d E, Ei, Eit;
@@ -145,7 +155,8 @@ class thingSphere extends thing
         //console.log("after nor is multiplied", nor);
 
         // mat.copy(material);
-        this.material.copy(mat);
+        // this.material.copy(mat);
+        obj.mat.copy(this.material);
 
         // Convert to world space
         // tmp = E*Vector4d(pos(0), pos(1), pos(2), 1.0);
@@ -153,8 +164,9 @@ class thingSphere extends thing
         vec4.transformMat4(tmp, tempP, E);
 
         // pos = tmp.segment<3>(0);
+        // console.log("before transformation", pos);
         pos = vec3.fromValues(tmp[0], tmp[1], tmp[2]);
-
+        // console.log("after transformation", pos);
         // tmp = Eit*Vector4d(nor(0), nor(1), nor(2), 0.0);
         let tempN = vec4.fromValues(nor[0], nor[1], nor[2], 0.0);
         vec4.transformMat4(tmp, tempN, Eit);
@@ -163,13 +175,20 @@ class thingSphere extends thing
         vec3.normalize(nor, vec3.fromValues(tmp[0], tmp[1], tmp[2]))
 
         // s = (pos - o).norm();
+        //the norm referenced in the line above is not calculating the normal, but instead the magnitude of the vector
         let tempPminusO = vec3.create();
         vec3.sub(tempPminusO, pos, o);
-        vec3.normalize(s, tempPminusO);
+        s = Math.sqrt(vec3.squaredLength(tempPminusO));
 
         // return true;
         //DEBUG STATEMENT
-        //console.log("testing outputs of intersect inside sphere, pos =", pos, "nor", nor, "s", s, "back", back);
+        // console.log("testing outputs of intersect inside sphere, pos =", pos, "nor", nor, "s", s, "back", back, "obj.mat", obj.mat, "this.mat", this.material);
+
+        //pack variables back into object
+        obj.s = s;
+        obj.pos = pos;
+        obj.nor = nor;
+        obj.back = back;
         return true;
         
     }

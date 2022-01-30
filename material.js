@@ -1,3 +1,5 @@
+
+
 class Material
 {
     //public variables
@@ -88,7 +90,41 @@ class Material
 
     applyDS(vPos, vNor, light, cPos, color) //TODO: come back to this when doing scene
     {
+        let lPos = vec3.fromValues(light.position[0], light.position[1], light.position[2]);
+        let lInt = light.intesity;
+        let n = vec3.create();
+        vec3.normalize(n, vNor);
+        // Vector3d l = (lPos - vPos).normalized();
+        let l = vec3.create();
+        let lposMinusVPos = vec3.create();
+        vec3.sub(lposMinusVPos, lPos, vPos);
+        vec3.normalize(l, lposMinusVPos);
+        // Vector3d v = (cPos - vPos).normalized();
+        let cPosMinusvPos = vec3.create();
+        vec3.sub(cPosMinusvPos, cPos, vPos);
+        let v = vec3.create();
+        vec3.normalize(v, cPosMinusvPos);
+        // Vector3d h = (l + v).normalized();
+        let lPlusv = vec3.create();
+        vec3.add(lPlusv, l, v);
+        let h = vec3.create();
+        vec3.normalize(h, lPlusv);
+        //DEBUG STATEMENT
+        // console.log("outputing test values", l, h, n, v, this);
+        let tempCalc = Math.max(vec3.dot(l, n), 0.0);
+        let diffuse = vec3.fromValues(tempCalc * this.kdr, tempCalc * this.kdg, tempCalc * this.kdb);
+        let tempPowCalc = Math.pow(Math.max(vec3.dot(h, n), 0.0), this.s);
+        let specular = vec3.fromValues(tempPowCalc * this.ksr, tempPowCalc * this.ksg, tempPowCalc * this.ksb);
         
+        //color += lInt*(diffuse + specular);
+        let difPlusSpec = vec3.create();
+        vec3.add(difPlusSpec, diffuse, specular);
+        //DEBUG STATEMENT
+        // console.log("diffuse + specular", difPlusSpec, diffuse, specular,"tempCalc", tempCalc,"tempPoweCalc", tempPowCalc);
+        color = vec3.fromValues((color[0] + (lInt * color[0])), (color[1] + (lInt * color[1])), (color[2] + (lInt * color[2])));
+        //DEBUG STATEMENT
+        // console.log("inside apply DS color at the end", color, "lInt", lInt, light.intesity);
+        return color;
     }
 
     copy(that)
