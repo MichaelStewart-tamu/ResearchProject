@@ -1,3 +1,4 @@
+
 //This function will be called from the index.html page
 var InitDemo = function () 
 {
@@ -392,6 +393,16 @@ var RealTimeView = function (vertexShaderText, fragmentShaderText, simpleFragTex
 				{
 					sceneTest.load(1, CylModel, bunnyModel, planeModel, sphereModel, teapotModel, evaModel);
 					sceneTest.draw(MV, testingProgram);
+					//variables needed for intersect call testing
+					origin = vec3.create();
+					origin = vec3.fromValues(0.0, 0.0, 3.0);
+	
+					direction = vec3.create();
+					direction = vec3.fromValues(0.0, 0.0, -1.0);
+
+					colorInput = vec3.create();
+
+					sceneTest.trace(camera, origin, direction, colorInput, 500, 4.0, true);
 					// Scene5(camera, testingProgram, sphereShape, teapotShape, evaShape, light0);
 				}
 				else if(camera.keyNumber == "1")

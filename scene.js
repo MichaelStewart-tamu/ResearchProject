@@ -67,7 +67,7 @@ class Scene
                 sphere1.material.setKA(0.1, 0.1, 0.1);
                 sphere1.material.s = 100.0;
 
-                let sphere2 = new thingSphere(sphereShape);
+                let sphere2 = new thingSphere(this.#shapeSphere);
                 this.#things.push(sphere2);
                 sphere2.resetPosition(0.5, -1.0, -1.0);
                 sphere2.resetScale(2.0, 2.0, 2.0);
@@ -88,7 +88,7 @@ class Scene
                 sphere3.material.s = 100.0;
 
                 //DEBUG STATEMENT
-                console.log(this.#things);
+                // console.log(this.#things);
 
 
                 break;
@@ -118,7 +118,7 @@ class Scene
         {
             if(thing.material.type != "REFRACT")
             {
-                console.log("drawing things which are phong", thing);
+                // console.log("drawing things which are phong", thing);
                 thing.draw(MV, prog);
             }
         }
@@ -127,15 +127,43 @@ class Scene
         {
             if(thing.material.type === "REFRACT")
             {
-                console.log("drawing things which are refracting", thing);
+                // console.log("drawing things which are refracting", thing);
                 thing.draw(MV, prog);
             }
         }
     }
 
-    trace()
+    trace(camera, rayOrig, rayDir, color, depth, n0, storePoints)
     {
+        var BIG = 1e9;
+        let points = [];
+        if(storePoints === true)
+        {
+            points.push(rayOrig);   //ray start
+        }
+        var s_ = BIG;
+        let pos_ = vec3.create();
+        let nor_ = vec3.create();
+        let mat_ = new Material();
+        let back_;
 
+        //find the closest intersection point along the ray
+        for(const thing of this.#things)
+        {
+            var s = BIG;
+            let pos = vec3.create();
+            let nor = vec3.create();
+            let mat = new Material();
+            let back;
+
+            //pack into an object the values passed into intersect
+            if(thing.intersect(rayOrig, rayDir, s, pos, nor, mat, back))
+            {
+                //unpack the values from intersect object and reapply to variables
+                
+                console.log("i believe an intersection has been met");
+            }
+        }
     }
 }
 
