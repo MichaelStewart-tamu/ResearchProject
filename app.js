@@ -170,6 +170,7 @@ const keyPress = function(cam, event)
 	if("Shift" === event.key)	//check if the key in quotes is one that the event is currently changing, NOTE:: three equation marks in javaScript acts as a check of definite certainty
 	{
 		cam.shiftBool = true;
+		cam.toggleShowAll();
 	}
 
 	if("0" === event.key)
@@ -374,7 +375,7 @@ var RealTimeView = function (vertexShaderText, fragmentShaderText, simpleFragTex
     	MV = new MatrixStack();
 
 		P.pushMatrix();
-        camera.applyProjectionMatrix(P);
+        	camera.applyProjectionMatrix(P);
 			MV.pushMatrix();
 				MV.loadIdentity();
 				camera.applyViewMatrix(MV);
@@ -383,7 +384,7 @@ var RealTimeView = function (vertexShaderText, fragmentShaderText, simpleFragTex
 
 				//drawing the camera
 				lineProgram.bind();
-				camera.draw(lineProgram);
+				camera.draw(MV, lineProgram);
 				lineProgram.unbind();
 
 				
@@ -402,7 +403,8 @@ var RealTimeView = function (vertexShaderText, fragmentShaderText, simpleFragTex
 
 					colorInput = vec3.create();
 
-					sceneTest.trace(camera, origin, direction, colorInput, 500, 4.0, true);
+					// sceneTest.trace(camera, origin, direction, colorInput, 500, 4.0, true);
+					camera.raytrace(sceneTest);
 					// Scene5(camera, testingProgram, sphereShape, teapotShape, evaShape, light0);
 				}
 				else if(camera.keyNumber == "1")

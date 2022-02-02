@@ -14,7 +14,7 @@ class thingSphere extends thing
         //unpack from object
         let o = obj.origin;
         let d = obj.direction
-        let s;
+        let s = obj.s;
         let pos = vec3.create();
         let nor = vec3.create();
         let back;

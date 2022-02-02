@@ -1,6 +1,3 @@
-
-
-
 class Scene
 {
     #lights = [];
@@ -136,8 +133,17 @@ class Scene
         }
     }
 
-    trace(camera, rayOrig, rayDir, color, depth, n0, storePoints)
+    trace(camera, obj)
     {
+        //unpack the object passed in
+        let rayOrig = obj.rayOrig;
+        let rayDir = obj.rayDir;
+        let color = obj.color;
+        let depth = obj.depth;
+        let n0 = obj.n0;
+        let storePoints = obj.storePoints;
+
+
         var BIG = 1e9;
         let points = [];
         if(storePoints === true)
@@ -327,10 +333,26 @@ class Scene
                     console.log(tempSublposPos, lDist, lDir);
                 }
                 console.log(4);
-            }
+            }   //will continue with reflect and refract
             console.log(5);
         }
-        console.log(6, points);
+        else
+        {
+            if(storePoints === true)
+            {
+                // points.push_back(rayOrig + camera->zfar*rayDir);
+                let zfarTIMESrayDir = vec3.create();
+                zfarTIMESrayDir[0] = camera.zfar * rayDir[0];
+                zfarTIMESrayDir[1] = camera.zfar * rayDir[1];
+                zfarTIMESrayDir[2] = camera.zfar * rayDir[2];
+                let summation = vec3.create();
+                vec3.add(summation, rayOrig, zfarTIMESrayDir);
+
+                points.push(summation);
+            }
+        }
+        // console.log(6, points);
+        return points;
     }
 }
 
