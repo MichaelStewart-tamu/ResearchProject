@@ -47,8 +47,8 @@ class Camera
         //this.#rotationsInit = this.#rotations;
         vec2.set(this.#rotationsInit, 0.0, 0.0);
         this.#resetting = false;
-        this.numx = 10;
-        this.numy = 10;
+        this.numx = 2;
+        this.numy = 2;
         this.#currx = 0;
         this.#curry = 0;
         this.#showAll = false;
@@ -287,6 +287,17 @@ class Camera
                     }
                 }
             }
+            else    //draw just one line TODO: come back and finish, this is just a simple to see the result
+            {
+                console.log("inside camera", this.#rayPts[0][0]);
+                if(this.#rayPts[0][0] != undefined)
+                {
+                    let rayPtsCurr = this.#rayPts[this.#curry][this.#currx];
+                    vertices.push(rayPtsCurr[0][0], rayPtsCurr[0][1], rayPtsCurr[0][2]);
+                    vertices.push(rayPtsCurr[1][0], rayPtsCurr[1][1], rayPtsCurr[1][2]);
+                }
+                
+            }
             
             
             
@@ -333,9 +344,9 @@ class Camera
         ray03x1 = vec3.fromValues(0.0, 0.0, 0.0);
 
         let R = new MatrixStack();
-        this.applyProjectionMatrix(R);
-        // R.translate((-1.0 * this.#translationsInit[0]), (-1.0 * this.#translationsInit[1]), (-1.0 * this.#translationsInit[2]));
-        // R.rotate((-1.0 * this.#rotationsInit[1]), (-1.0 * this.#rotationsInit[0]), 0.0);
+        // this.applyProjectionMatrix(R);
+        R.translate((-1.0 * this.#translationsInit[0]), (-1.0 * this.#translationsInit[1]), (-1.0 * this.#translationsInit[2]));
+        R.rotate((-1.0 * this.#rotationsInit[1]), (-1.0 * this.#rotationsInit[0]), 0.0);
         let tempFirst = vec3.create();
         vec3.transformMat4(tempFirst, ray03x1, R.topMatrix());  //calculating the initial ray
         rays.push(tempFirst);
