@@ -60,7 +60,7 @@ class Scene
                 let sphere1 = new thingSphere(this.#shapeSphere);
                 this.#things.push(sphere1);
                 sphere1.resetPosition(-0.5, -1.0, 1.0);
-                sphere1.resetScale(2.0, 2.0, 2.0);
+                sphere1.resetScale(1.0, 1.0, 1.0);
                 sphere1.resetRotation(0.0, 0.0, 0.0);
                 sphere1.material.setKD(1.0, 0.0, 0.0);
                 sphere1.material.setKS(1.0, 1.0, 0.5);
@@ -70,7 +70,7 @@ class Scene
                 let sphere2 = new thingSphere(this.#shapeSphere);
                 this.#things.push(sphere2);
                 sphere2.resetPosition(0.5, -1.0, -1.0);
-                sphere2.resetScale(2.0, 2.0, 2.0);
+                sphere2.resetScale(1.0, 1.0, 1.0);
                 sphere1.resetRotation(0.0, 0.0, 0.0);
                 sphere2.material.setKD(0.0, 1.0, 0.0);
                 sphere2.material.setKS(1.0, 1.0, 0.5);
@@ -80,7 +80,7 @@ class Scene
                 let sphere3 = new thingSphere(sphereShape);
                 this.#things.push(sphere3);
                 sphere3.resetPosition(0.0, 1.0, 0.0);
-                sphere3.resetScale(2.0, 2.0, 2.0);
+                sphere3.resetScale(1.0, 1.0, 1.0);
                 sphere1.resetRotation(0.0, 0.0, 0.0);
                 sphere3.material.setKD(0.0, 0.0, 1.0);
                 sphere3.material.setKS(1.0, 1.0, 0.5);
@@ -352,6 +352,8 @@ class Scene
             }
         }
         // console.log(6, points);
+        //push back into object to be sent out
+        vec3.copy(obj.color, color);
         return points;
     }
 }

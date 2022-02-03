@@ -343,13 +343,20 @@ class Camera
         let ray03x1 = vec3.create();
         ray03x1 = vec3.fromValues(0.0, 0.0, 0.0);
 
-        let R = new MatrixStack();
+        let E = new MatrixStack();
         // this.applyProjectionMatrix(R);
-        R.translate((-1.0 * this.#translationsInit[0]), (-1.0 * this.#translationsInit[1]), (-1.0 * this.#translationsInit[2]));
-        R.rotate((-1.0 * this.#rotationsInit[1]), (-1.0 * this.#rotationsInit[0]), 0.0);
+        E.translate((-1.0 * this.#translationsInit[0]), (-1.0 * this.#translationsInit[1]), (-1.0 * this.#translationsInit[2]));
+        E.rotate((-1.0 * this.#rotationsInit[1]), (-1.0 * this.#rotationsInit[0]), 0.0);
         let tempFirst = vec3.create();
-        vec3.transformMat4(tempFirst, ray03x1, R.topMatrix());  //calculating the initial ray
+        vec3.transformMat4(tempFirst, ray03x1, E.topMatrix());  //calculating the initial ray
         rays.push(tempFirst);
+
+        //now reduce to 3x3
+        let R = mat3.create();
+        mat3.fromMat4(R, E.topMatrix());
+        // console.log("output from reducing the 3x3 matrix", R, "the original", E);
+
+
 
         //now computing the rays for the x,y tiles
         let ray1 = vec3.create();
@@ -379,11 +386,11 @@ class Camera
                 ray1 = vec3.fromValues(x, y, z1);
 
                 // 	Vector3d ray = (ray1.segment<3>(0) - ray0.segment<3>(0)).normalized();
-                vec3.subtract(tempSub, ray03x1, ray1);
+                vec3.subtract(tempSub, ray1, ray03x1);
                 vec3.normalize(tempNorm, tempSub);
                 // 	rays.push_back(R*ray);
                 let tempMult = vec3.create();
-                vec3.transformMat4(tempMult, tempNorm, R.topMatrix());
+                vec3.transformMat3(tempMult, tempNorm, R);
                 rays.push(tempMult);
             }
         }
