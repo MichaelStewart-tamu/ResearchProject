@@ -47,8 +47,8 @@ class Camera
         //this.#rotationsInit = this.#rotations;
         vec2.set(this.#rotationsInit, 0.0, 0.0);
         this.#resetting = false;
-        this.numx = 2;
-        this.numy = 2;
+        this.numx = 20;
+        this.numy = 20;
         this.#currx = 0;
         this.#curry = 0;
         this.#showAll = false;
@@ -192,10 +192,11 @@ class Camera
         this.#showAll = !this.#showAll;
     }
 
-    draw(MV, program)
+    draw(MV, program, quadsProgram, planeShape)
     {
         MV.pushMatrix();
 
+            program.bind();
             gl.uniformMatrix4fv(program.getUniform("P"), gl.FALSE, P.topMatrix());
             gl.uniformMatrix4fv(program.getUniform("MV"), gl.FALSE, MV.topMatrix());
 
@@ -219,16 +220,24 @@ class Camera
             }
             else    //draw just one line TODO: come back and finish, this is just a simple to see the result
             {
-                console.log("inside camera", this.#rayPts[0][0]);
+                // console.log("inside camera", this.#rayPts[0][0]);
                 if(this.#rayPts[0][0] != undefined)
                 {
                     let rayPtsCurr = this.#rayPts[this.#curry][this.#currx];
-                    rayVertices.push(rayPtsCurr[0][0], rayPtsCurr[0][1], rayPtsCurr[0][2]);
-                    rayVertices.push(rayPtsCurr[1][0], rayPtsCurr[1][1], rayPtsCurr[1][2]);
+                    // rayVertices.push(rayPtsCurr[0][0], rayPtsCurr[0][1], rayPtsCurr[0][2]);
+                    // rayVertices.push(rayPtsCurr[1][0], rayPtsCurr[1][1], rayPtsCurr[1][2]);
+
+                    for(var k = 1; k < rayPtsCurr.length; k++)
+                        {
+                            rayVertices.push(rayPtsCurr[k - 1][0], rayPtsCurr[k - 1][1], rayPtsCurr[k - 1][2]);
+                            rayVertices.push(rayPtsCurr[k][0], rayPtsCurr[k][1], rayPtsCurr[k][2]);
+                            
+                        }
                 }
                 
             }
 
+            //NEEDED to output without interfeering with the other lines
             // Create an empty buffer object
             var vertex_buffer_rays = gl.createBuffer();
     
@@ -364,6 +373,47 @@ class Camera
 
             var lineNo = vertices.length / 3;
             gl.drawArrays(gl.LINES, 0, lineNo);
+            program.unbind();
+
+            //drawing the color tiles
+            if(this.#rayPts[0][0] != undefined)
+            {
+                quadsProgram.bind();
+
+                MV.pushMatrix();
+                    MV.translate(0.0, 0.0, -1.0);   //position the plane to be the same scale and position as the whole view frustum
+                    MV.scale(0.415/this.numx, 0.415/this.numy, 0.415);
+
+                    // MV.pushMatrix();
+                        // MV.scale((1.0), (1.0/this.numy), (1.0));     //reduce the plane to be the same scale as a tile
+                        for(var i = 0; i < this.numy; i++)
+                        {
+                            for(var j = 0; j < this.numx; j++)
+                            {
+                                MV.pushMatrix();
+                                    MV.translate(((this.numx - 1) - (j * 2.0)), ((this.numx - 1) - (i * 2.0)), 0.0);
+                            
+                                    gl.uniformMatrix4fv(quadsProgram.getUniform("P"), gl.FALSE, P.topMatrix());
+                                    gl.uniformMatrix4fv(quadsProgram.getUniform("MV"), gl.FALSE, MV.topMatrix());
+                                    // console.log(this.#colors);
+                                    gl.uniform3f(quadsProgram.getUniform("ka"), this.#colors[i][j][0], this.#colors[i][j][1], this.#colors[i][j][2]);
+                                    planeShape.draw(quadsProgram);
+                                MV.popMatrix();
+                            }
+                        }
+                        
+                        
+                    // MV.popMatrix();
+
+                    
+                MV.popMatrix();
+                
+
+
+
+                quadsProgram.unbind();
+            }
+
             
         MV.popMatrix();
     }
@@ -509,11 +559,6 @@ class Camera
                     
                     let points = scene.trace(this, sceneObj);
                     
-                    if(sceneObj.color[0] > 0.0)
-                    {
-                        console.log(i, j, "has returned a red value", sceneObj.color);
-                    }
-                    
                     vec3.copy(color, sceneObj.color);
                     this.#colors[i][j] = color;
                     // console.log("made it to this point in raytrace camera", color);
@@ -523,7 +568,7 @@ class Camera
                 }
 
             }
-            console.log("made it to this point in raytrace camera", this.#colors, this.#rayPts);
+            // console.log("made it to this point in raytrace camera", this.#colors, this.#rayPts);
         }
     }
 }

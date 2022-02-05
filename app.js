@@ -360,6 +360,7 @@ var RealTimeView = function (vertexShaderText, fragmentShaderText, simpleFragTex
 	// MAIN RENDER LOOP
 	//
 
+	let firstTimeRendering = false;	//TODO: come back and fix calling the raytrace function
 	//testing new scene class
 	let sceneTest = new Scene();
 
@@ -383,16 +384,20 @@ var RealTimeView = function (vertexShaderText, fragmentShaderText, simpleFragTex
 				// gl.uniformMatrix4fv(program.getUniform("P"), gl.FALSE, P.topMatrix());
 
 				//drawing the camera
-				lineProgram.bind();
-				camera.draw(MV, lineProgram);
-				lineProgram.unbind();
+				camera.draw(MV, lineProgram, testingProgram, planeShape);
 
 				
 
 				testingProgram.bind();
 				if("0" == camera.keyNumber)
 				{
-					sceneTest.load(1, CylModel, bunnyModel, planeModel, sphereModel, teapotModel, evaModel);
+					if(firstTimeRendering === false)
+					{
+						sceneTest.load(1, CylModel, bunnyModel, planeModel, sphereModel, teapotModel, evaModel);
+						camera.raytrace(sceneTest);
+						firstTimeRendering = true;
+					}
+
 					sceneTest.draw(MV, testingProgram);
 					//variables needed for intersect call testing
 					origin = vec3.create();
@@ -404,7 +409,6 @@ var RealTimeView = function (vertexShaderText, fragmentShaderText, simpleFragTex
 					colorInput = vec3.create();
 
 					// sceneTest.trace(camera, origin, direction, colorInput, 500, 4.0, true);
-					camera.raytrace(sceneTest);
 					// Scene5(camera, testingProgram, sphereShape, teapotShape, evaShape, light0);
 				}
 				else if(camera.keyNumber == "1")

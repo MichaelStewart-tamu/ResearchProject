@@ -121,7 +121,7 @@ class Material
         vec3.add(difPlusSpec, diffuse, specular);
         //DEBUG STATEMENT
         // console.log("diffuse + specular", difPlusSpec, diffuse, specular,"tempCalc", tempCalc,"tempPoweCalc", tempPowCalc);
-        color = vec3.fromValues((color[0] + (lInt * color[0])), (color[1] + (lInt * color[1])), (color[2] + (lInt * color[2])));
+        color = vec3.fromValues((color[0] + (lInt * difPlusSpec[0])), (color[1] + (lInt * difPlusSpec[1])), (color[2] + (lInt * difPlusSpec[2])));
         //DEBUG STATEMENT
         // console.log("inside apply DS color at the end", color, "lInt", lInt, light.intesity);
         return color;

@@ -234,7 +234,7 @@ class Scene
                     let lDir = vec3.fromValues((tempSublposPos[0]/lDist), (tempSublposPos[1]/lDist), (tempSublposPos[2]/lDist));
                     if(vec3.dot(lDir, nor_) < 0.0)
                     {
-                        console.log("entered");
+                        // console.log("entered");
                         continue;
                     }
 
@@ -330,11 +330,11 @@ class Scene
 
 
                     //for testing
-                    console.log(tempSublposPos, lDist, lDir);
+                    // console.log(tempSublposPos, lDist, lDir);
                 }
-                console.log(4);
+                // console.log(4);
             }   //will continue with reflect and refract
-            console.log(5);
+            // console.log(5);
         }
         else
         {
