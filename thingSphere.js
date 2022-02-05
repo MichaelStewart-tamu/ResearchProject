@@ -77,10 +77,10 @@ class thingSphere extends thing
         //console.log("tca", tca, "dl", dl, "L", L);
 
         // // if (tca < 0) return false;
-        if(tca < 0)
-        {
-            return false;
-        }
+        // if(tca < 0)
+        // {
+        //     return false;
+        // }
 
         // double d2 = L.dot(L) - tca * tca;
         let d2 = vec3.dot(L, L) - tca * tca;
@@ -160,7 +160,7 @@ class thingSphere extends thing
 
         // Convert to world space
         // tmp = E*Vector4d(pos(0), pos(1), pos(2), 1.0);
-        let tempP = vec4.fromValues(pos[0], pos[1], pos[2], 0.0);
+        let tempP = vec4.fromValues(pos[0], pos[1], pos[2], 1.0);
         vec4.transformMat4(tmp, tempP, E);
 
         // pos = tmp.segment<3>(0);

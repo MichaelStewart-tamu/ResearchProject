@@ -71,7 +71,7 @@ class Scene
                 this.#things.push(sphere2);
                 sphere2.resetPosition(0.5, -1.0, -1.0);
                 sphere2.resetScale(1.0, 1.0, 1.0);
-                sphere1.resetRotation(0.0, 0.0, 0.0);
+                sphere2.resetRotation(0.0, 0.0, 0.0);
                 sphere2.material.setKD(0.0, 1.0, 0.0);
                 sphere2.material.setKS(1.0, 1.0, 0.5);
                 sphere2.material.setKA(0.1, 0.1, 0.1);
@@ -81,7 +81,7 @@ class Scene
                 this.#things.push(sphere3);
                 sphere3.resetPosition(0.0, 1.0, 0.0);
                 sphere3.resetScale(1.0, 1.0, 1.0);
-                sphere1.resetRotation(0.0, 0.0, 0.0);
+                sphere3.resetRotation(0.0, 0.0, 0.0);
                 sphere3.material.setKD(0.0, 0.0, 1.0);
                 sphere3.material.setKS(1.0, 1.0, 0.5);
                 sphere3.material.setKA(0.1, 0.1, 0.1);
