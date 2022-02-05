@@ -195,6 +195,69 @@ class Camera
     draw(MV, program)
     {
         MV.pushMatrix();
+
+            gl.uniformMatrix4fv(program.getUniform("P"), gl.FALSE, P.topMatrix());
+            gl.uniformMatrix4fv(program.getUniform("MV"), gl.FALSE, MV.topMatrix());
+
+            //draw rays in world space
+            var rayVertices = [];
+
+            if(this.#showAll === true)
+            {
+                //draw all in white
+                for(var i = 0; i < this.numy; i++)
+                {
+                    for(var j = 0; j < this.numx; j++)
+                    {
+                        for(var k = 1; k < this.#rayPts[i][j].length; k++)
+                        {
+                            rayVertices.push(this.#rayPts[i][j][k - 1][0], this.#rayPts[i][j][k - 1][1], this.#rayPts[i][j][k - 1][2]);    //push the starting point of the line
+                            rayVertices.push(this.#rayPts[i][j][k][0], this.#rayPts[i][j][k][1], this.#rayPts[i][j][k][2]);                //push the ending point of the line
+                        }
+                    }
+                }
+            }
+            else    //draw just one line TODO: come back and finish, this is just a simple to see the result
+            {
+                console.log("inside camera", this.#rayPts[0][0]);
+                if(this.#rayPts[0][0] != undefined)
+                {
+                    let rayPtsCurr = this.#rayPts[this.#curry][this.#currx];
+                    rayVertices.push(rayPtsCurr[0][0], rayPtsCurr[0][1], rayPtsCurr[0][2]);
+                    rayVertices.push(rayPtsCurr[1][0], rayPtsCurr[1][1], rayPtsCurr[1][2]);
+                }
+                
+            }
+
+            // Create an empty buffer object
+            var vertex_buffer_rays = gl.createBuffer();
+    
+            // Bind appropriate array buffer to it
+            gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer_rays);
+        
+            // Pass the vertex data to the buffer
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(rayVertices), gl.STATIC_DRAW);
+    
+            // Unbind the buffer
+            gl.bindBuffer(gl.ARRAY_BUFFER, null);
+
+            // Bind vertex buffer object
+            gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer_rays);
+
+            // Get the attribute location
+            var coord = program.getAttribute("vertPosition");
+
+            // Point an attribute to the currently bound VBO
+            gl.vertexAttribPointer(coord, 3, gl.FLOAT, false, 0, 0);
+
+            // Enable the attribute
+            gl.enableVertexAttribArray(coord);
+
+            var lineNo = rayVertices.length / 3;
+            gl.drawArrays(gl.LINES, 0, lineNo);
+
+
+
             MV.translate(this.#translationsInit[0], this.#translationsInit[1], -1.0 * this.#translationsInit[2])
             gl.uniformMatrix4fv(program.getUniform("P"), gl.FALSE, P.topMatrix());
             gl.uniformMatrix4fv(program.getUniform("MV"), gl.FALSE, MV.topMatrix());
@@ -271,33 +334,7 @@ class Camera
             }
 
 
-            //draw rays in world space
-            if(this.#showAll === true)
-            {
-                //draw all in white
-                for(var i = 0; i < this.numy; i++)
-                {
-                    for(var j = 0; j < this.numx; j++)
-                    {
-                        for(var k = 1; k < this.#rayPts[i][j].length; k++)
-                        {
-                            vertices.push(this.#rayPts[i][j][k - 1][0], this.#rayPts[i][j][k - 1][1], this.#rayPts[i][j][k - 1][2]);    //push the starting point of the line
-                            vertices.push(this.#rayPts[i][j][k][0], this.#rayPts[i][j][k][1], this.#rayPts[i][j][k][2]);                //push the ending point of the line
-                        }
-                    }
-                }
-            }
-            else    //draw just one line TODO: come back and finish, this is just a simple to see the result
-            {
-                console.log("inside camera", this.#rayPts[0][0]);
-                if(this.#rayPts[0][0] != undefined)
-                {
-                    let rayPtsCurr = this.#rayPts[this.#curry][this.#currx];
-                    vertices.push(rayPtsCurr[0][0], rayPtsCurr[0][1], rayPtsCurr[0][2]);
-                    vertices.push(rayPtsCurr[1][0], rayPtsCurr[1][1], rayPtsCurr[1][2]);
-                }
-                
-            }
+            
             
             
             
