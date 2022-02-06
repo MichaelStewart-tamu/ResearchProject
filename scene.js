@@ -21,20 +21,20 @@ class Scene
         this.#lights.splice(0, this.#lights.length);
         this.#things.splice(0, this.#things.length);
 
-        testingShape = new Shape();
-        testingShape.init(CylModel);
-
-        bunnyShape = new Shape();
-        bunnyShape.init(bunnyModel);
-
-        planeShape = new Shape();
-        planeShape.init(planeModel);
-
         sphereShape = new Shape();
         sphereShape.init(sphereModel);
 
         this.#shapeSphere = new Shape();
         this.#shapeSphere.init(sphereModel);
+
+        testingShape = new Shape();
+        testingShape.init(CylModel);
+
+        planeShape = new Shape();
+        planeShape.init(planeModel);
+        
+        bunnyShape = new Shape();
+        bunnyShape.init(bunnyModel);
 
         teapotShape = new Shape();
         teapotShape.init(teapotModel);
@@ -57,45 +57,15 @@ class Scene
                 //DEBUG STATEMENT
                 // console.log(this.#lights);
 
-                let cyl = new thingCylinder(testingShape);
-                this.#things.push(cyl);
-                cyl.resetPosition(1.0, 0.0, 0.0);
-                cyl.resetScale(2.0, 2.0, 10.0);
-                cyl.resetRotation(-0.5 * Math.PI, 0.0, 0.0);
-                cyl.material.setKD(0.0, 0.0, 1.0);
-                cyl.material.setKS(1.0, 1.0, 0.5);
-                cyl.material.setKA(0.1, 0.1, 0.1);
-                cyl.material.s = 100.0;
-
-                let sphere1 = new thingSphere(this.#shapeSphere);
-                this.#things.push(sphere1);
-                sphere1.resetPosition(-0.5, -1.0, 1.0);
-                sphere1.resetScale(1.0, 1.0, 1.0);
-                sphere1.resetRotation(0.0, 0.0, 0.0);
-                sphere1.material.setKD(1.0, 0.0, 0.0);
-                sphere1.material.setKS(1.0, 1.0, 0.5);
-                sphere1.material.setKA(0.1, 0.1, 0.1);
-                sphere1.material.s = 100.0;
-
-                let sphere2 = new thingSphere(this.#shapeSphere);
-                this.#things.push(sphere2);
-                sphere2.resetPosition(0.5, -1.0, -1.0);
-                sphere2.resetScale(1.0, 1.0, 1.0);
-                sphere2.resetRotation(0.0, 0.0, 0.0);
-                sphere2.material.setKD(0.0, 1.0, 0.0);
-                sphere2.material.setKS(1.0, 1.0, 0.5);
-                sphere2.material.setKA(0.1, 0.1, 0.1);
-                sphere2.material.s = 100.0;
-
-                let sphere3 = new thingSphere(sphereShape);
-                this.#things.push(sphere3);
-                sphere3.resetPosition(0.0, 1.0, 0.0);
-                sphere3.resetScale(1.0, 1.0, 1.0);
-                sphere3.resetRotation(0.0, 0.0, 0.0);
-                sphere3.material.setKD(0.0, 0.0, 1.0);
-                sphere3.material.setKS(1.0, 1.0, 0.5);
-                sphere3.material.setKA(0.1, 0.1, 0.1);
-                sphere3.material.s = 100.0;
+                let teapot = new thingObj(teapotShape);
+                this.#things.push(teapot);
+                teapot.resetPosition(0.0, 0.0, 0.0);
+                teapot.resetScale(2.0, 2.0, 2.0);
+                teapot.resetRotation(0.0, 0.0, 0.0);
+                teapot.material.setKD(0.5, 0.4, 0.5);
+                teapot.material.setKS(1.0, 1.0, 0.5);
+                teapot.material.setKA(0.1, 0.1, 0.1);
+                teapot.material.s = 100.0;
 
                 let plane = new thingPlane(planeShape);
                 this.#things.push(plane);

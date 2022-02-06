@@ -9,7 +9,7 @@ class Shape
     #norBuf     //normal buffer
     // #texBuf    //texture buffer
     #indBuf     //index buffer
-
+    bsphere;
 
     //default constructor
     constructor()
@@ -19,6 +19,7 @@ class Shape
         this.#posBufID = null;
         // this.#texBufID = null;   //needed for texture
         this.#indBufID = null;
+        this.bsphere = vec4.create();
     }
 
     //initialization
@@ -54,6 +55,29 @@ class Shape
         {
             console.log("GL_ERROR from inside init of shape = %s.\n", glErr);
 	    }
+
+        //compute bounding sphere
+        let nverts = this.#posBuf.length;
+        let c = vec3.create();  //center
+        let r = 0;  //radius
+        for(var i = 0; i < nverts; i += 3)
+        {
+            vec3.add(c, c, vec3.fromValues(this.#posBuf[i], this.#posBuf[i + 1], this.#posBuf[i + 2]));
+        }
+        vec3.divide(c, c, vec3.fromValues(nverts, nverts, nverts));
+
+        for(var i = 0; i < nverts; i += 3)
+        {
+            let v = vec3.fromValues(this.#posBuf[i], this.#posBuf[i + 1], this.#posBuf[i + 2]);
+            let vMinusc = vec3.create();
+            vec3.subtract(vMinusc, v, c);
+            let ri = vec3.length(vMinusc);
+            if(ri > r)
+            {
+                r = ri;
+            }
+        }
+        this.bsphere = vec4.fromValues(c[0], c[1], c[2], r);
     }
 
     //draws the shape
