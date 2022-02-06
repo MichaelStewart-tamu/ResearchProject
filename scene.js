@@ -57,6 +57,16 @@ class Scene
                 //DEBUG STATEMENT
                 // console.log(this.#lights);
 
+                let cyl = new thingCylinder(testingShape);
+                this.#things.push(cyl);
+                cyl.resetPosition(1.0, 0.0, 0.0);
+                cyl.resetScale(2.0, 2.0, 10.0);
+                cyl.resetRotation(-0.5 * Math.PI, 0.0, 0.0);
+                cyl.material.setKD(0.0, 0.0, 1.0);
+                cyl.material.setKS(1.0, 1.0, 0.5);
+                cyl.material.setKA(0.1, 0.1, 0.1);
+                cyl.material.s = 100.0;
+
                 let sphere1 = new thingSphere(this.#shapeSphere);
                 this.#things.push(sphere1);
                 sphere1.resetPosition(-0.5, -1.0, 1.0);
@@ -106,6 +116,8 @@ class Scene
                 plane1.material.setKS(1.0, 1.0, 0.5);
                 plane1.material.setKA(0.1, 0.0, 0.0);
                 plane1.material.s = 100.0;
+
+                
 
                 //DEBUG STATEMENT
                 // console.log(this.#things);
