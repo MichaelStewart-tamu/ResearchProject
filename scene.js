@@ -87,6 +87,26 @@ class Scene
                 sphere3.material.setKA(0.1, 0.1, 0.1);
                 sphere3.material.s = 100.0;
 
+                let plane = new thingPlane(planeShape);
+                this.#things.push(plane);
+                plane.resetPosition(1.0, 0.0, 0.0);
+                plane.resetScale(3.0, 3.0, 3.0);
+                plane.resetRotation(0.0, 0.0, 0.0);
+                plane.material.setKD(1.0, 0.0, 0.0);
+                plane.material.setKS(1.0, 1.0, 0.5);
+                plane.material.setKA(0.1, 0.0, 0.0);
+                plane.material.s = 100.0;
+
+                let plane1 = new thingPlane(planeShape);
+                this.#things.push(plane1);
+                plane1.resetPosition(1.0, 0.0, 0.0);
+                plane1.resetScale(1.0, 1.0, 1.0);
+                plane1.resetRotation(0.0, -1.57, 0.0);
+                plane1.material.setKD(0.0, 1.0, 0.0);
+                plane1.material.setKS(1.0, 1.0, 0.5);
+                plane1.material.setKA(0.1, 0.0, 0.0);
+                plane1.material.s = 100.0;
+
                 //DEBUG STATEMENT
                 // console.log(this.#things);
 

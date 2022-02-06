@@ -1,5 +1,5 @@
 
-class thingSphere extends thing
+class thingPlane extends thing
 {
 
     constructor(s)
@@ -32,7 +32,55 @@ class thingSphere extends thing
         mat4.invert(Ei, E); //first invert and then store into Ei
         mat4.transpose(Eit, Ei);    //then transpose and store into Eit
 
+        let R = mat3.create();
+        mat3.fromMat4(R, E);
+        let p = vec3.create();
+        p = vec3.fromValues(E[12], E[13], E[14]);
+        let Rt = mat3.create();
+        mat3.transpose(Rt, R);
+        let Rtp = vec3.create();
+        vec3.transformMat3(Rtp, p, Rt);
+        let rayOrig = vec3.fromValues(o[0], o[1], o[2]);
+        let tempMult = vec3.create();
+        vec3.transformMat3(tempMult, rayOrig, Rt);
+        let orig = vec3.create();
+        vec3.subtract(orig, tempMult, Rtp);
+        let dir = vec3.create();
+        let rayDir = vec3.fromValues(d[0], d[1], d[2]);
+        vec3.transformMat3(dir, rayDir, Rt);
+        let zorig = orig[2];
+        let zdir = dir[2];
+        if((zorig * zdir) < 0)
+        {
+            //collision!
+            s = (Math.abs(zorig)) / (Math.abs(zdir));
+            //compute in world space
+            let sTimesRayDir = vec3.fromValues(s * d[0], s * d[1], s * d[2]);
+            vec3.add(pos, sTimesRayDir, rayOrig);
+            back = (zdir > 0.0);
+            let tempNor = vec3.create();
+            vec3.normalize(tempNor, vec3.fromValues(R[6], R[7], R[8]));
+            // nor *= (back ? -1.0 : 1.0);
+            let negative1 = vec3.fromValues(-1.0, -1.0, -1.0);
+            let positive1 = vec3.fromValues(1.0, 1.0, 1.0);
+            (back ? vec3.multiply(nor, tempNor, negative1): vec3.multiply(nor, tempNor, positive1));
 
+            // this.material.copy(mat);
+            obj.mat.copy(this.material);
+
+            //pack variables back into object
+            obj.s = s;
+            obj.pos = pos;
+            obj.nor = nor;
+            obj.back = back;
+            return true;
+        }
+        return false;
+
+
+
+
+        //OLD
         // Vector4d tmp = Ei*Vector4d(o(0), o(1), o(2), 1.0);
         let tempO = vec4.fromValues(o[0], o[1], o[2], 1.0);
         let tmp = vec4.create();
@@ -172,7 +220,7 @@ class thingSphere extends thing
         vec4.transformMat4(tmp, tempN, Eit);
 
         // nor = tmp.segment<3>(0).normalized();
-        vec3.normalize(nor, vec3.fromValues(tmp[0], tmp[1], tmp[2]));
+        vec3.normalize(nor, vec3.fromValues(tmp[0], tmp[1], tmp[2]))
 
         // s = (pos - o).norm();
         //the norm referenced in the line above is not calculating the normal, but instead the magnitude of the vector

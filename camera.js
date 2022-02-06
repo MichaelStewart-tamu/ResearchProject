@@ -47,8 +47,7 @@ class Camera
         //this.#rotationsInit = this.#rotations;
         vec2.set(this.#rotationsInit, 0.0, 0.0);
         this.#resetting = false;
-        this.numx = 20;
-        this.numy = 20;
+        this.numx = this.numy = 10;
         this.#currx = 0;
         this.#curry = 0;
         this.#showAll = false;
@@ -380,6 +379,11 @@ class Camera
             {
                 quadsProgram.bind();
 
+                gl.uniform3f(quadsProgram.getUniform("kd"), 0.0, 0.0, 0.0);
+                gl.uniform3f(quadsProgram.getUniform("ks"), 0.0, 0.0, 0.0);
+                // gl.uniform3f(quadsProgram.getUniform("ka"), 0.00, 0.00, 0.00);
+                gl.uniform1f(quadsProgram.getUniform("s"), 0.0);
+
                 MV.pushMatrix();
                     MV.translate(0.0, 0.0, -1.0);   //position the plane to be the same scale and position as the whole view frustum
                     MV.scale(0.415/this.numx, 0.415/this.numy, 0.415);
@@ -397,6 +401,11 @@ class Camera
                                     gl.uniformMatrix4fv(quadsProgram.getUniform("MV"), gl.FALSE, MV.topMatrix());
                                     // console.log(this.#colors);
                                     gl.uniform3f(quadsProgram.getUniform("ka"), this.#colors[i][j][0], this.#colors[i][j][1], this.#colors[i][j][2]);
+                                    planeShape.draw(quadsProgram);
+
+                                    MV.rotate(0.0, 3.14, 0.0);  //now flip it 180 to have a backside
+                                    gl.uniformMatrix4fv(quadsProgram.getUniform("P"), gl.FALSE, P.topMatrix());
+                                    gl.uniformMatrix4fv(quadsProgram.getUniform("MV"), gl.FALSE, MV.topMatrix());
                                     planeShape.draw(quadsProgram);
                                 MV.popMatrix();
                             }
