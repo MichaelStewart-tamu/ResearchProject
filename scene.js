@@ -613,6 +613,46 @@ class Scene
                 }
                 // console.log(4);
             }   //will continue with reflect and refract
+            else if(mat_.type === "REFLECT")
+            {
+                if(depth < this.#depthMax)
+                {
+                    // Compute reflected ray: R = 2*(V.N)N-V
+				    // Vector3d rDir = 2.0*(-rayDir.dot(nor_))*nor_ + rayDir;
+                    let negativeRayDir = vec3.fromValues((-1.0 * rayDir[0]), (-1.0 * rayDir[1]), (-1.0 * rayDir[2]));
+                    let tempDotProduct = 2.0 * vec3.dot(negativeRayDir, nor_);
+                    let nor_Mult = vec3.fromValues((tempDotProduct * nor_[0]), (tempDotProduct * nor_[1]), (tempDotProduct * nor_[2]));
+                    let rDir = vec3.create();
+                    vec3.add(rDir, nor_Mult, rayDir);
+
+                    // Advance the ray origin slightly so that
+				    // the point itself will not occlude it
+                    let rOrig = vec3.fromValues((pos_[0] + (1e-4 * rDir[0])), (pos_[1] + (1e-4 * rDir[1])), (pos_[2] + (1e-4 * rDir[2])));
+                    
+                    //pack into an object the values
+                    // let color = vec3.create();
+                    // color = vec3.fromValues(0.0, 0.0, 0.0);
+                    let sceneObj = {
+                        rayOrig: rOrig,
+                        rayDir: rDir,
+                        color: color,
+                        depth: depth + 1,
+                        n0: n0,
+                        storePoints: storePoints
+                    };
+                    let morePoints = this.trace(this, sceneObj);
+
+                    color = sceneObj.color;
+
+                    if(storePoints)
+                    {
+                        for(var i = 0; i < morePoints.length; i++)  //push in each returned point one at a time
+                        {
+                            points.push(morePoints[i]);
+                        }
+                    }
+                }
+            }
             // console.log(5);
         }
         else
