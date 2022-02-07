@@ -9,29 +9,54 @@
     </head>
 
     <body onload="InitDemo();">
-        <canvas id="game-surface" width="650" height="650">
-            Your browser does not support HTML5
-        </canvas>
-        <br/>
-        <i>Demo is above this text</i>
-        <h1>Controls</h1>
-        <p>Shift - Left Click --> Move camera</p>
-        <p>Left Click --> Rotate camera around orbit</p>
-        <p>Scroll Wheel --> Zoom in and out</p>
-        <p>Space --> Render current Scene and display on view frustum</p>
-        <p>a --> toggle showing all or one ray from view frustum</p>
-        <p>Arrow Keys --> move the selected pixel on the view frustum in display window</p>
-        <h3>Number Keys</h3>
-        <p>0 - Scene 0 = Cornell Box</p>
-        <p>1 - Scene 1 = 3 spheres with no shadowing</p>
-        <p>2 - Scene 2 = 3 spheres with shadowing from other models</p>
-        <p>3 - Scene 3 = spheres and planes, multiple lights</p>
-        <p>4 - Scene 4 = mirror balls with only one bounce</p>
-        <p>5 - Scene 5 = mirror bounce with multiple bounces</p>
-        <p>6 - Scene 6 = Bunny(OBJ) zoomed out (quick render) </p>
-        <p>7 - Scene 7 = Bunny(OBJ) Closer</p>
-        <p>8 - Scene 8 = Utah TeaPot(OBJ)</p>
-        <p>9 - Scene 9 = Robot(OBJ)</p>
+        <!-- viewport + full image -->
+        <div>
+            <div style="width: 650px; display: inline-block; height:650px; background:yellow; margin:10px">
+                <canvas id="game-surface" width="650" height="650">
+                    Your browser does not support HTML5
+                </canvas>
+            </div>
+            
+            <div style="width: 650px; display: inline-block; height:650px; background:gray; margin:10px">
+                    <img src=imageshown alt="Full Render" id="img" style = "width: 650px; height: 650px;">
+            </div>
+        </div>
+
+        <!-- descriptions -->
+        <div>
+            <div style="display: inline-block; width: 605px; padding-left: 190px;">
+                <i>The Realtime viewport is above this text</i>
+            </div>
+
+            <div style="display: inline-block;">
+                <i>Full Resolution RayTraced Image from Default camera position</i>
+            </div>
+        </div>
+    
+        <!-- controls -->
+        <div style="display: inline-block; background:rgb(237, 237, 237); margin:10px; padding: 10px;">
+            <h1>Controls</h1>
+            <p>Shift - Left Click --> Move camera</p>
+            <p>Left Click --> Rotate camera around orbit</p>
+            <p>Scroll Wheel --> Zoom in and out</p>
+            <p>Space --> Render current Scene and display on view frustum</p>
+            <p>a --> toggle showing all or one ray from view frustum</p>
+            <p>Arrow Keys --> move the selected pixel on the view frustum in display window</p>
+        </div>
+        <div style="display: inline-block; background:rgb(233, 233, 233); margin:10px; padding: 10px;">
+            <h1>Number Keys</h1>
+            <p>0 - Scene 0 = Cornell Box<br>
+            1 - Scene 1 = 3 spheres with no shadowing<br>
+            2 - Scene 2 = 3 spheres with shadowing from other models<br>
+            3 - Scene 3 = spheres and planes, multiple lights<br>
+            4 - Scene 4 = mirror balls with only one bounce<br>
+            5 - Scene 5 = mirror bounce with multiple bounces<br>
+            6 - Scene 6 = Bunny(OBJ) zoomed out (quick render) <br>
+            7 - Scene 7 = Bunny(OBJ) Closer<br>
+            8 - Scene 8 = Utah TeaPot(OBJ)<br>
+            9 - Scene 9 = Robot(OBJ)</p>
+        </div>
+        
         <script src="MatrixStack.js"></script>
         <script src="gl-matrix.js"></script>
         <script src="util.js"></script>

@@ -166,7 +166,7 @@ const keyPress = function(obj, event)
 {
 	//DEBUG STATEMENT
 	// console.log("have entered key press, and pressed ", event.key);
-
+	
 	if("Shift" === event.key)	//check if the key in quotes is one that the event is currently changing, NOTE:: three equation marks in javaScript acts as a check of definite certainty
 	{
 		obj.camera.shiftBool = true;
@@ -177,42 +177,51 @@ const keyPress = function(obj, event)
 		obj.camera.keyNumber = 0;
 		obj.scene.load(0, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva);				
 		obj.camera.reset();
+		document.getElementById('img').src = "s0.png";
+		
 	}
 	if("1" === event.key)
 	{
 		obj.camera.keyNumber = 1;
 		obj.scene.load(1, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva);
 		obj.camera.reset();
+		document.getElementById('img').src = "s1.png";
 	}
 	if("2" === event.key)
 	{
 		obj.scene.load(2, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva);				
 		obj.camera.reset();
+		document.getElementById('img').src = "s2.png";
 	}
 	if("3" === event.key)
 	{
 		obj.scene.load(3, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva);
 		obj.camera.reset();
+		document.getElementById('img').src = "s3.png";
 	}
 	if("4" === event.key)
 	{
 		obj.scene.load(4, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva);
 		obj.camera.reset();
+		document.getElementById('img').src = "s5.png";
 	}
 	if("5" === event.key)
 	{
 		obj.scene.load(5, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva);
 		obj.camera.reset();
+		document.getElementById('img').src = "s5.png";
 	}
 	if("6" === event.key)
 	{
 		obj.scene.load(6, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva);
 		obj.camera.reset();
+		document.getElementById('img').src = "s6.png";
 	}
 	if("7" === event.key)
 	{
 		obj.scene.load(7, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva);
 		obj.camera.reset();
+		document.getElementById('img').src = "s7.png";
 	}
 	if("8" === event.key)
 	{
@@ -250,6 +259,8 @@ const keyPress = function(obj, event)
 	{
 		obj.camera.toggleShowAll();
 	}
+
+	
 }
 
 //detecting when a key is no longer being pressed
@@ -257,7 +268,7 @@ const keyReleased = function(cam, event)
 {
 	if("Shift" === event.key)	//checking if it is the shift key being released
 	{
-		cam.shiftBool = false;
+		cam.camera.shiftBool = false;
 	}
 
 	//DEBUG STATEMENT
@@ -355,14 +366,13 @@ var RealTimeView = function (vertexShaderText, fragmentShaderText, simpleFragTex
 	//creating camera
 	camera = new Camera();
 
+	//creating the scene
 	let sceneTest = new Scene();
-
+	//need to initially load so that something shows up on screen without the user needing to interact first
 	sceneTest.load(0, CylModel, bunnyModel, planeModel, sphereModel, teapotModel, evaModel);
-						
+	document.getElementById('img').src = "s0.png";	//initiallizing the full render				
 
-	camera.scene = sceneTest;
-
-	let obj = {
+	let obj = {	//used for the keyboard call back, can bring in an object, cannot pass by reference
 		camera: camera,
 		scene: sceneTest,
 		cyl: CylModel,
@@ -392,21 +402,14 @@ var RealTimeView = function (vertexShaderText, fragmentShaderText, simpleFragTex
 	 {
 		 console.log("GL_ERROR from before render loop = %s.\n", glErr);
 	 }
-
-	//
-	// MAIN RENDER LOOP
-	//
-
-	let firstTimeRendering = false;	//TODO: come back and fix calling the raytrace function
-	//testing new scene class
 	
 
-	var loopIterations = 0;
-	var infinite = true;
+	var loopIterations = 0;	//can set how many frames in the viewport to render
+	var infinite = true;	//determines if the viewport goes on forever
 
 	var loop = function () {
 		//reset the background color
-		gl.clearColor(0.40, 0.40, 0.40, 1.0);
+		gl.clearColor(0.00, 0.00, 0.00, 1.0);
 		gl.clear(gl.DEPTH_BUFFER_BIT | gl.COLOR_BUFFER_BIT);	//clear buffers
 
 		P = new MatrixStack();
@@ -423,64 +426,8 @@ var RealTimeView = function (vertexShaderText, fragmentShaderText, simpleFragTex
 				//drawing the camera
 				camera.draw(MV, lineProgram, testingProgram, planeShape);
 
-				
-
-				testingProgram.bind();
+				testingProgram.bind();	//bind the program needed
 				sceneTest.draw(MV, testingProgram);
-				// if("0" == camera.keyNumber)
-				// {
-				// 	if(firstTimeRendering === false)
-				// 	{
-				// 		sceneTest.load(1, CylModel, bunnyModel, planeModel, sphereModel, teapotModel, evaModel);
-				// 		camera.raytrace(sceneTest);
-				// 		firstTimeRendering = true;
-				// 	}
-
-				// 	sceneTest.draw(MV, testingProgram);
-				// 	//variables needed for intersect call testing
-				// 	origin = vec3.create();
-				// 	origin = vec3.fromValues(0.0, 0.0, 3.0);
-	
-				// 	direction = vec3.create();
-				// 	direction = vec3.fromValues(0.0, 0.0, -1.0);
-
-				// 	colorInput = vec3.create();
-
-				// 	// sceneTest.trace(camera, origin, direction, colorInput, 500, 4.0, true);
-				// 	// Scene5(camera, testingProgram, sphereShape, teapotShape, evaShape, light0);
-				// }
-				// else if(camera.keyNumber == "1")
-				// {
-				// 	Scene0(camera, testingProgram, sphereShape, testingShape, planeShape, light0);
-				// }
-				// else if("2" == camera.keyNumber)
-				// {
-				// 	Scene2(camera, testingProgram, bunnyShape, testingShape, light0);
-				// }
-				// else if("3" == camera.keyNumber)
-				// {
-				// 	Scene3(camera, testingProgram, teapotShape, evaShape, light0);
-				// }
-				// else if("4" == camera.keyNumber)
-				// {
-				// 	Scene4(camera, testingProgram, teapotShape, evaShape, light0);
-				// }
-				// else if("5" == camera.keyNumber)
-				// {
-				// 	Scene1(camera, testingProgram, bunnyShape, testingShape, light0);
-				// }
-				// else if("6" == camera.keyNumber)
-				// {
-				// 	Scene6(camera, testingProgram, bunnyShape, light0);
-				// }
-				// else if("7" == camera.keyNumber)
-				// {
-				// 	Scene7(camera, testingProgram, bunnyShape, light0);
-				// }
-				// else
-				// {
-				// 	Scene5(camera, testingProgram, teapotShape, evaShape, light0);
-				// }
 
 				if(loopIterations < 50 || infinite === true)
 				{
