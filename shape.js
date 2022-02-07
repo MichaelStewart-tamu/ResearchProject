@@ -10,6 +10,8 @@ class Shape
     // #texBuf    //texture buffer
     #indBuf     //index buffer
     bsphere;
+    truePosBuf;
+    trueNorBuf;
 
     //default constructor
     constructor()
@@ -25,6 +27,7 @@ class Shape
     //initialization
     init(modelInfo)
     {
+        console.log("outputing the model vertecies,", modelInfo.meshes[0].vertices.length, modelInfo.meshes[0].vertices);
         this.#posBuf = modelInfo.meshes[0].vertices;
         this.#norBuf = modelInfo.meshes[0].normals;
         // this.#texBuf = modelInfo.meshes[0].texturecoords;
@@ -55,6 +58,30 @@ class Shape
         {
             console.log("GL_ERROR from inside init of shape = %s.\n", glErr);
 	    }
+
+        //push into the truePosBuf
+        //every triangle in order acording to the faces
+        //face = [[0, 1, 2], [], ...] 2464 arrays inside each array contains 3 numbers indicating a point
+        //face 0 has x y z =  22176
+        //vertecies starts at 0 and goes to 3876
+        this.truePosBuf = [];
+        this.trueNorBuf = [];
+        var temp;
+
+        for(var i = 0; i < modelInfo.meshes[0].faces.length; i++)   //loop through all arrays in vertecies
+        {
+            for(var j = 0; j < 3; j++)  //loop through each grouping of three inside the vertecies
+            {
+                temp = modelInfo.meshes[0].faces[i][j];
+                this.truePosBuf.push(modelInfo.meshes[0].vertices[(3 * temp) + 0]);
+                this.truePosBuf.push(modelInfo.meshes[0].vertices[(3 * temp) + 1]);
+                this.truePosBuf.push(modelInfo.meshes[0].vertices[(3 * temp) + 2]);
+
+                this.trueNorBuf.push(modelInfo.meshes[0].normals[(3 * temp) + 0]);
+                this.trueNorBuf.push(modelInfo.meshes[0].normals[(3 * temp) + 1]);
+                this.trueNorBuf.push(modelInfo.meshes[0].normals[(3 * temp) + 2]);
+            }
+        }
 
         //compute bounding sphere
         let nverts = this.#posBuf.length;
@@ -144,5 +171,17 @@ class Shape
         {
             console.log("GL_ERROR = %s.\n", glErr);
 	    }
+    }
+
+    getPosBuf()
+    {
+        console.log("length of the posBuf", this.#posBuf.length);
+        console.log("the posBuf", this.#posBuf);
+        return this.#posBuf;
+    }
+
+    getNorBuf()
+    {
+        return this.#norBuf;
     }
 }

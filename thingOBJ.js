@@ -76,7 +76,7 @@ class thingObj extends thing
             s = rayInfo.s;
             pos = rayInfo.pos;
             nor = rayInfo.nor;
-            mat.copy(rayInfo.mat);
+            obj.mat.copy(rayInfo.mat);
             back = rayInfo.back;
             
             return false;
@@ -86,7 +86,7 @@ class thingObj extends thing
         s = rayInfo.s;
         pos = rayInfo.pos;
         nor = rayInfo.nor;
-        mat.copy(rayInfo.mat);
+        // mat.copy(rayInfo.mat);
         back = rayInfo.back;
 
         back = false;
@@ -95,6 +95,7 @@ class thingObj extends thing
         let dir = vec3.create();
         let pos0 = vec3.create();
         let pos1 = vec3.create();
+        let pos2 = vec3.create();
         let tout;
         let uout;
         let vout;
@@ -102,8 +103,15 @@ class thingObj extends thing
         orig = vec3.fromValues(pp[0], pp[1], pp[2]);
         dir = vec3.fromValues(vv[0], vv[1], vv[2]);
 
-        let posBuf = this.shape.#posBuf;
-        let norBuf = this.shape.#norBuf;
+        // let posBuf = this.shape.#posBuf;
+        // let norBuf = this.shape.#norBuf;
+        // let posBuf = this.shape.getPosBuf();
+        // let norBuf = this.shape.getNorBuf();
+        let posBuf = this.shape.truePosBuf;
+        let norBuf = this.shape.trueNorBuf;
+        // let posBuf = vec3.create();
+        // this.shape;
+        // let norBuf = vec3.create();
         
         for(var i = 0; i < posBuf.length; i += 9)
         {
@@ -115,20 +123,31 @@ class thingObj extends thing
             }
 
             //pack into an object
-            hitInfo = {
+            let hitInfo = {
                 t: tout,
                 u: uout,
                 v: vout
             };
 
-            let hit = intersect_triangle1(orig, dir, pos0, pos1, pos2, hitInfo);
+            // if((pos0[0] == -0.712) && )
 
+            let hit = this.intersect_triangle1(orig, dir, pos0, pos1, pos2, hitInfo);
+
+            if(hit == 1)
+            {
+                console.log("there is a hit, dir", dir, ", i:", i,  ", pos0", pos0, ", pos1", pos1, ", pos2", pos2, hitInfo);
+            }
             //unpack
             tout = hitInfo.t;
             uout = hitInfo.u;
             vout = hitInfo.v;
 
-            if(hit && tout > 0 && tout << ss)
+            // if(i === 8100)
+            // {
+            //     console.log("at triangle 8100");
+            // }
+
+            if(hit && tout > 0 && tout < ss)
             {
                 ss = tout;
                 obj.mat.copy(this.material);
