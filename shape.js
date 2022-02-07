@@ -27,7 +27,7 @@ class Shape
     //initialization
     init(modelInfo)
     {
-        console.log("outputing the model vertecies,", modelInfo.meshes[0].vertices.length, modelInfo.meshes[0].vertices);
+        // console.log("outputing the model vertecies,", modelInfo.meshes[0].vertices.length, modelInfo.meshes[0].vertices);
         this.#posBuf = modelInfo.meshes[0].vertices;
         this.#norBuf = modelInfo.meshes[0].normals;
         // this.#texBuf = modelInfo.meshes[0].texturecoords;

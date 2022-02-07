@@ -162,74 +162,93 @@ const scrollWheel = function(cam, event)
 //FUNCTIONS FOR KEYBOARD INPUT
 
 //detecting key presses
-const keyPress = function(cam, event)
+const keyPress = function(obj, event)
 {
 	//DEBUG STATEMENT
 	// console.log("have entered key press, and pressed ", event.key);
 
 	if("Shift" === event.key)	//check if the key in quotes is one that the event is currently changing, NOTE:: three equation marks in javaScript acts as a check of definite certainty
 	{
-		cam.shiftBool = true;
-		cam.toggleShowAll();
+		obj.camera.shiftBool = true;
 	}
 
 	if("0" === event.key)
 	{
-		cam.keyNumber = 0;
-		cam.reset();
-
+		obj.camera.keyNumber = 0;
+		obj.scene.load(0, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva);				
+		obj.camera.reset();
 	}
 	if("1" === event.key)
 	{
-		cam.keyNumber = 1;
-		cam.reset();
+		obj.camera.keyNumber = 1;
+		obj.scene.load(1, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva);
+		obj.camera.reset();
 	}
 	if("2" === event.key)
 	{
-		cam.keyNumber = 2;
-		cam.reset();
+		obj.scene.load(2, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva);				
+		obj.camera.reset();
 	}
 	if("3" === event.key)
 	{
-		cam.keyNumber = 3;
-		cam.reset();
+		obj.scene.load(3, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva);
+		obj.camera.reset();
 	}
 	if("4" === event.key)
 	{
-		cam.keyNumber = 4;
-		cam.reset();
+		obj.scene.load(4, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva);
+		obj.camera.reset();
 	}
 	if("5" === event.key)
 	{
-		cam.keyNumber = 5;
-		cam.reset();
+		obj.scene.load(5, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva);
+		obj.camera.reset();
 	}
 	if("6" === event.key)
 	{
-		cam.keyNumber = 6;
-		cam.reset();
+		obj.scene.load(6, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva);
+		obj.camera.reset();
 	}
 	if("7" === event.key)
 	{
-		cam.keyNumber = 7;
-		cam.reset();
+		obj.scene.load(7, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva);
+		obj.camera.reset();
+	}
+	if("8" === event.key)
+	{
+		obj.scene.load(8, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva);
+		obj.camera.reset();
+	}
+	if("9" === event.key)
+	{
+		obj.scene.load(9, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva);
+		obj.camera.reset();
 	}
 	
 	if("ArrowUp" === event.key)
 	{
-		cam.moveCurr(0, -1);
+		obj.camera.moveCurr(0, -1);
 	}
 	if("ArrowDown" === event.key)
 	{
-		cam.moveCurr(0, 1);
+		obj.camera.moveCurr(0, 1);
 	}
 	if("ArrowLeft" === event.key)
 	{
-		cam.moveCurr(1, 0);
+		obj.camera.moveCurr(1, 0);
 	}
 	if("ArrowRight" === event.key)
 	{
-		cam.moveCurr(-1, 0);
+		obj.camera.moveCurr(-1, 0);
+	}
+
+	if(" " === event.key)
+	{
+		obj.camera.raytrace(obj.scene);
+	}
+	if("a" === event.key)
+	{
+		obj.camera.toggleShowAll();
 	}
 }
 
@@ -336,6 +355,24 @@ var RealTimeView = function (vertexShaderText, fragmentShaderText, simpleFragTex
 	//creating camera
 	camera = new Camera();
 
+	let sceneTest = new Scene();
+
+	sceneTest.load(0, CylModel, bunnyModel, planeModel, sphereModel, teapotModel, evaModel);
+						
+
+	camera.scene = sceneTest;
+
+	let obj = {
+		camera: camera,
+		scene: sceneTest,
+		cyl: CylModel,
+		bunny: bunnyModel,
+		plane: planeModel,
+		sphere: sphereModel,
+		teapot: teapotModel,
+		eva: evaModel
+	}
+
 	//Mouse Detection
 	canvas.addEventListener( "mousemove", movingMouse.bind(null, camera));
 	canvas.addEventListener( "mousedown", clickingMouse.bind(null, camera));
@@ -345,8 +382,8 @@ var RealTimeView = function (vertexShaderText, fragmentShaderText, simpleFragTex
 
 	//keyboard detection
 	const bodyElement = document.querySelector( "body" );
-	bodyElement.addEventListener( "keydown", keyPress.bind(null, camera));
-	bodyElement.addEventListener( "keyup", keyReleased.bind(null, camera));
+	bodyElement.addEventListener( "keydown", keyPress.bind(null, obj));
+	bodyElement.addEventListener( "keyup", keyReleased.bind(null, obj));
 	//end of keyboard detection
 
 	 //checking for errors
@@ -362,7 +399,7 @@ var RealTimeView = function (vertexShaderText, fragmentShaderText, simpleFragTex
 
 	let firstTimeRendering = false;	//TODO: come back and fix calling the raytrace function
 	//testing new scene class
-	let sceneTest = new Scene();
+	
 
 	var loopIterations = 0;
 	var infinite = true;
@@ -389,60 +426,61 @@ var RealTimeView = function (vertexShaderText, fragmentShaderText, simpleFragTex
 				
 
 				testingProgram.bind();
-				if("0" == camera.keyNumber)
-				{
-					if(firstTimeRendering === false)
-					{
-						sceneTest.load(1, CylModel, bunnyModel, planeModel, sphereModel, teapotModel, evaModel);
-						camera.raytrace(sceneTest);
-						firstTimeRendering = true;
-					}
+				sceneTest.draw(MV, testingProgram);
+				// if("0" == camera.keyNumber)
+				// {
+				// 	if(firstTimeRendering === false)
+				// 	{
+				// 		sceneTest.load(1, CylModel, bunnyModel, planeModel, sphereModel, teapotModel, evaModel);
+				// 		camera.raytrace(sceneTest);
+				// 		firstTimeRendering = true;
+				// 	}
 
-					sceneTest.draw(MV, testingProgram);
-					//variables needed for intersect call testing
-					origin = vec3.create();
-					origin = vec3.fromValues(0.0, 0.0, 3.0);
+				// 	sceneTest.draw(MV, testingProgram);
+				// 	//variables needed for intersect call testing
+				// 	origin = vec3.create();
+				// 	origin = vec3.fromValues(0.0, 0.0, 3.0);
 	
-					direction = vec3.create();
-					direction = vec3.fromValues(0.0, 0.0, -1.0);
+				// 	direction = vec3.create();
+				// 	direction = vec3.fromValues(0.0, 0.0, -1.0);
 
-					colorInput = vec3.create();
+				// 	colorInput = vec3.create();
 
-					// sceneTest.trace(camera, origin, direction, colorInput, 500, 4.0, true);
-					// Scene5(camera, testingProgram, sphereShape, teapotShape, evaShape, light0);
-				}
-				else if(camera.keyNumber == "1")
-				{
-					Scene0(camera, testingProgram, sphereShape, testingShape, planeShape, light0);
-				}
-				else if("2" == camera.keyNumber)
-				{
-					Scene2(camera, testingProgram, bunnyShape, testingShape, light0);
-				}
-				else if("3" == camera.keyNumber)
-				{
-					Scene3(camera, testingProgram, teapotShape, evaShape, light0);
-				}
-				else if("4" == camera.keyNumber)
-				{
-					Scene4(camera, testingProgram, teapotShape, evaShape, light0);
-				}
-				else if("5" == camera.keyNumber)
-				{
-					Scene1(camera, testingProgram, bunnyShape, testingShape, light0);
-				}
-				else if("6" == camera.keyNumber)
-				{
-					Scene6(camera, testingProgram, bunnyShape, light0);
-				}
-				else if("7" == camera.keyNumber)
-				{
-					Scene7(camera, testingProgram, bunnyShape, light0);
-				}
-				else
-				{
-					Scene5(camera, testingProgram, teapotShape, evaShape, light0);
-				}
+				// 	// sceneTest.trace(camera, origin, direction, colorInput, 500, 4.0, true);
+				// 	// Scene5(camera, testingProgram, sphereShape, teapotShape, evaShape, light0);
+				// }
+				// else if(camera.keyNumber == "1")
+				// {
+				// 	Scene0(camera, testingProgram, sphereShape, testingShape, planeShape, light0);
+				// }
+				// else if("2" == camera.keyNumber)
+				// {
+				// 	Scene2(camera, testingProgram, bunnyShape, testingShape, light0);
+				// }
+				// else if("3" == camera.keyNumber)
+				// {
+				// 	Scene3(camera, testingProgram, teapotShape, evaShape, light0);
+				// }
+				// else if("4" == camera.keyNumber)
+				// {
+				// 	Scene4(camera, testingProgram, teapotShape, evaShape, light0);
+				// }
+				// else if("5" == camera.keyNumber)
+				// {
+				// 	Scene1(camera, testingProgram, bunnyShape, testingShape, light0);
+				// }
+				// else if("6" == camera.keyNumber)
+				// {
+				// 	Scene6(camera, testingProgram, bunnyShape, light0);
+				// }
+				// else if("7" == camera.keyNumber)
+				// {
+				// 	Scene7(camera, testingProgram, bunnyShape, light0);
+				// }
+				// else
+				// {
+				// 	Scene5(camera, testingProgram, teapotShape, evaShape, light0);
+				// }
 
 				if(loopIterations < 50 || infinite === true)
 				{

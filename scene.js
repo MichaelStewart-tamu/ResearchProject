@@ -27,8 +27,8 @@ class Scene
         this.#shapeSphere = new Shape();
         this.#shapeSphere.init(sphereModel);
 
-        testingShape = new Shape();
-        testingShape.init(CylModel);
+        let cylinderShape = new Shape();
+        cylinderShape.init(CylModel);
 
         planeShape = new Shape();
         planeShape.init(planeModel);
@@ -45,11 +45,295 @@ class Scene
 
         switch(scene)
         {
-            case 0:
+            case 0: //cornell box
                 console.log("have entered scene 0");
+
+
+                light0 = new Light();
+                this.#lights.push(light0);
+                light0.position = [-0.3, 0.6, 0.3];
+
+                let cylinder = new thingCylinder(cylinderShape);
+                this.#things.push(cylinder);
+                cylinder.resetRotation((-0.5 * Math.PI), 0.0, 0.0)
+                cylinder.resetScale(0.2, 0.2, 2.0);
+                cylinder.resetPosition(0.0, 0.0, 0.0);  //TODO: make random
+                cylinder.material.setKD(0.5, 0.0, 0.5);
+                cylinder.material.setKS(1.0, 1.0, 0.5);
+                cylinder.material.setKA(0.1, 0.1, 0.1);
+                cylinder.material.s = 100.0;
+
+                let sphere0 = new thingSphere(sphereShape);
+                this.#things.push(sphere0);
+                sphere0.resetRotation(0.0, 0.0, 0.0)
+                sphere0.resetScale(0.25, 0.25, 0.25);
+                sphere0.resetPosition(0.5, -0.75, 0.3);  //TODO: make random
+                sphere0.material.setKD(0.5, 0.0, 0.0);
+                sphere0.material.setKS(1.0, 1.0, 0.5);
+                sphere0.material.setKA(0.1, 0.1, 0.1);
+                sphere0.material.s = 100.0;
+
+                let sphere1 = new thingSphere(sphereShape);
+                this.#things.push(sphere1);
+                sphere1.resetRotation(0.0, 0.0, 0.0)
+                sphere1.resetScale(0.25, 0.25, 0.25);
+                sphere1.resetPosition(-0.1, -0.75, 0.43);  //TODO: make random
+                sphere1.material.setKD(0.5, 0.5, 0.0);
+                sphere1.material.setKS(1.0, 1.0, 0.5);
+                sphere1.material.setKA(0.1, 0.1, 0.1);
+                sphere1.material.s = 100.0;
+
+                let sphere2 = new thingSphere(sphereShape);
+                this.#things.push(sphere2);
+                sphere2.resetRotation(0.0, 0.0, 0.0)
+                sphere2.resetScale(0.25, 0.25, 0.25);
+                sphere2.resetPosition(-0.5, -0.75, 0.0);  //TODO: make random
+                sphere2.material.setKD(0.0, 0.5, 0.5);
+                sphere2.material.setKS(1.0, 1.0, 0.5);
+                sphere2.material.setKA(0.1, 0.1, 0.1);
+                sphere2.material.s = 100.0;
+
+                let floor = new thingPlane(planeShape);
+                this.#things.push(floor);
+                floor.resetRotation((-0.5 * Math.PI), 0.0, 0.0)
+                floor.resetScale(1.0, 1.0, 1.0);
+                floor.resetPosition(0.0, -1.0, 0.0);
+                floor.material.setKD(1.0, 1.0, 1.0);
+                floor.material.setKS(0.0, 0.0, 0.0);
+                floor.material.setKA(0.1, 0.1, 0.1);
+                floor.material.s = 200.0;
+
+                let ceiling = new thingPlane(planeShape);
+                this.#things.push(ceiling);
+                ceiling.resetRotation((0.5 * Math.PI), 0.0, 0.0)
+                ceiling.resetScale(1.0, 1.0, 1.0);
+                ceiling.resetPosition(0.0, 1.0, 0.0);
+                ceiling.material.setKD(1.0, 1.0, 1.0);
+                ceiling.material.setKS(0.0, 0.0, 0.0);
+                ceiling.material.setKA(0.1, 0.1, 0.1);
+                ceiling.material.s = 200.0;
+
+                let backWall = new thingPlane(planeShape);
+                this.#things.push(backWall);
+                backWall.resetRotation((0.0 * Math.PI), 0.0, 0.0)
+                backWall.resetScale(1.0, 1.0, 1.0);
+                backWall.resetPosition(0.0, 0.0, -1.0);
+                backWall.material.setKD(1.0, 1.0, 1.0);
+                backWall.material.setKS(0.0, 0.0, 0.0);
+                backWall.material.setKA(0.1, 0.1, 0.1);
+                backWall.material.s = 200.0;
+
+                let leftWall = new thingPlane(planeShape);
+                this.#things.push(leftWall);
+                leftWall.resetRotation(0.0, (0.5 * Math.PI), 0.0)
+                leftWall.resetScale(1.0, 1.0, 1.0);
+                leftWall.resetPosition(-1.0, 0.0, 0.0);
+                leftWall.material.setKD(1.0, 0.0, 0.0);
+                leftWall.material.setKS(0.0, 0.0, 0.0);
+                leftWall.material.setKA(0.1, 0.1, 0.1);
+                leftWall.material.s = 200.0;
+
+                let rightWall = new thingPlane(planeShape);
+                this.#things.push(rightWall);
+                rightWall.resetRotation(0.0, (-0.5 * Math.PI), 0.0)
+                rightWall.resetScale(1.0, 1.0, 1.0);
+                rightWall.resetPosition(1.0, 0.0, 0.0);
+                rightWall.material.setKD(0.0, 1.0, 0.0);
+                rightWall.material.setKS(0.0, 0.0, 0.0);
+                rightWall.material.setKA(0.1, 0.1, 0.1);
+                rightWall.material.s = 200.0;
+
                 break;
             case 1:
-                console.log("have entered scene 1");
+            case 2:
+                if(scene === 2)
+                {
+                    this.#shadowing = true;
+                }
+                else{
+                    this.#shadowing = false;
+                }
+
+                console.log("have entered scene 2");
+
+                light0 = new Light();
+                this.#lights.push(light0);
+                light0.position = [-2.0, 1.0, 1.0];
+
+                // let plane = new thingPlane(planeShape);
+                // this.#things.push(plane);
+                // plane.resetPosition(1.0, 0.0, 0.0);
+                // plane.resetScale(3.0, 3.0, 3.0);
+                // plane.resetRotation(0.0, 0.0, 0.0);
+                // plane.material.setKD(1.0, 0.0, 0.0);
+                // plane.material.setKS(1.0, 1.0, 0.5);
+                // plane.material.setKA(0.1, 0.0, 0.0);
+                // plane.material.s = 100.0;
+
+                let sphere4 = new thingSphere(sphereShape);
+                this.#things.push(sphere4);
+                sphere4.resetPosition(-0.5, -1.0, 1.0);
+                sphere4.resetScale(1.0, 1.0, 1.0);
+                sphere4.material.setKD(1.0, 0.0, 0.0);
+                sphere4.material.setKS(1.0, 1.0, 0.5);
+                sphere4.material.setKA(0.1, 0.1, 0.1);
+                sphere4.material.s = 100.0;
+
+                let sphere5 = new thingSphere(sphereShape);
+                this.#things.push(sphere5);
+                sphere5.resetPosition(0.5, -1.0, -1.0);
+                sphere5.resetScale(1.0, 1.0, 1.0);
+                sphere5.material.setKD(0.0, 0.5, 0.0);
+                sphere5.material.setKS(1.0, 1.0, 0.5);
+                sphere5.material.setKA(0.1, 0.1, 0.1);
+                sphere5.material.s = 100.0;
+
+                let sphere3 = new thingSphere(sphereShape);
+                this.#things.push(sphere3);
+                sphere3.resetPosition(0.0, 1.0, 0.0);
+                sphere3.resetScale(1.0, 1.0, 1.0);
+                sphere3.material.setKD(0.0, 0.0, 1.0);
+                sphere3.material.setKS(1.0, 1.0, 0.5);
+                sphere3.material.setKA(0.1, 0.1, 0.1);
+                sphere3.material.s = 100.0;
+
+
+                break;
+            case 3:
+                console.log("have entered scene 3");
+
+                light0 = new Light();
+                this.#lights.push(light0);
+                light0.position = [-2.0, 1.0, 1.0];
+
+                let plane = new thingPlane(planeShape);
+                this.#things.push(plane);
+                plane.resetPosition(0.0, -1.0, 0.0);
+                plane.resetScale(100.0, 100.0, 100.0);
+                plane.resetRotation((-0.5 * Math.PI), 0.0, 0.0);
+                plane.material.setKD(1.0, 1.0, 1.0);
+                plane.material.setKS(0.0, 0.0, 0.0);
+                plane.material.setKA(0.1, 0.1, 0.1);
+                plane.material.s = 200.0;
+
+                let sphere6 = new thingSphere(sphereShape);
+                this.#things.push(sphere6);
+                sphere6.resetPosition(0.5, 0.0, 0.5);
+                sphere6.resetScale(0.5, 0.6, 0.2);
+                sphere6.material.setKD(1.0, 0.0, 0.0);
+                sphere6.material.setKS(1.0, 1.0, 0.5);
+                sphere6.material.setKA(0.1, 0.1, 0.1);
+                sphere6.material.s = 100.0;
+
+                let sphere7 = new thingSphere(sphereShape);
+                this.#things.push(sphere7);
+                sphere7.resetPosition(-0.5, 0.0, -0.5);
+                sphere7.resetScale(1.0, 1.0, 1.0);
+                sphere7.material.setKD(0.0, 1.0, 0.0);
+                sphere7.material.setKS(1.0, 1.0, 0.5);
+                sphere7.material.setKA(0.1, 0.1, 0.1);
+                sphere7.material.s = 100.0;
+
+                break;
+            case 4:
+            case 5:
+                if(scene === 4)
+                {
+                    this.#depthMax = 1;
+                }
+                else{
+                    this.#depthMax = 5;
+                }
+
+                light0 = new Light();
+                this.#lights.push(light0);
+                light0.position = [-2.0, 1.0, 1.0];
+
+                let sphere8 = new thingSphere(sphereShape);
+                this.#things.push(sphere8);
+                sphere8.resetPosition(0.5, -0.7, 0.5);
+                sphere8.resetScale(0.3, 0.3, 0.3);
+                sphere8.material.setKD(1.0, 0.0, 0.0);
+                sphere8.material.setKS(1.0, 1.0, 0.5);
+                sphere8.material.setKA(0.1, 0.1, 0.1);
+                sphere8.material.s = 100.0;
+
+                let sphere9 = new thingSphere(sphereShape);
+                this.#things.push(sphere9);
+                sphere9.resetPosition(1.0, -0.7, 0.0);
+                sphere9.resetScale(0.3, 0.3, 0.3);
+                sphere9.material.setKD(0.0, 0.0, 1.0);
+                sphere9.material.setKS(1.0, 1.0, 0.5);
+                sphere9.material.setKA(0.1, 0.1, 0.1);
+                sphere9.material.s = 100.0;
+
+                let sphere10 = new thingSphere(sphereShape);
+                this.#things.push(sphere10);
+                sphere10.resetPosition(-0.5, 0.0, -0.5);
+                sphere10.resetScale(1.0, 1.0, 1.0);
+                sphere10.material.type = "REFLECT";
+                sphere10.material.setKD(0.0, 0.0, 1.0);
+                sphere10.material.setKS(1.0, 1.0, 0.5);
+                sphere10.material.setKA(0.1, 0.1, 0.1);
+                sphere10.material.s = 100.0;
+
+                let sphere11 = new thingSphere(sphereShape);
+                this.#things.push(sphere11);
+                sphere11.resetPosition(1.5, 0.0, -1.5);
+                sphere11.resetScale(1.0, 1.0, 1.0);
+                sphere11.material.type = "REFLECT";
+                sphere11.material.setKD(0.0, 1.0, 0.0);
+                sphere11.material.setKS(1.0, 1.0, 0.5);
+                sphere11.material.setKA(0.1, 0.1, 0.1);
+                sphere11.material.s = 100.0;
+
+                let ground = new thingPlane(planeShape);
+                this.#things.push(ground);
+                ground.resetPosition(0.0, -1.0, 0.0);
+                ground.resetScale(100.0, 100.0, 100.0);
+                ground.resetRotation((-0.5 * Math.PI), 0.0, 0.0);
+                ground.material.setKD(1.0, 1.0, 1.0);
+                ground.material.setKS(0.0, 0.0, 0.0);
+                ground.material.setKA(0.1, 0.1, 0.1);
+                ground.material.s = 200.0;
+                
+                let backGround = new thingPlane(planeShape);
+                this.#things.push(backGround);
+                backGround.resetPosition(0.0, 0.0, -3.0);
+                backGround.resetScale(100.0, 100.0, 100.0);
+                backGround.resetRotation((0.0 * Math.PI), 0.0, 0.0);
+                backGround.material.setKD(1.0, 1.0, 1.0);
+                backGround.material.setKS(0.0, 0.0, 0.0);
+                backGround.material.setKA(0.1, 0.1, 0.1);
+                backGround.material.s = 200.0;
+                
+                break;
+            case 6:
+            case 7:
+                //obj
+                light0 = new Light();
+                this.#lights.push(light0);
+                
+
+                let obj = new thingObj(bunnyShape);
+                this.#things.push(obj);
+                obj.material.setKD(0.0, 0.0, 1.0);
+                obj.material.setKS(1.0, 1.0, 0.5);
+                obj.material.setKA(0.1, 0.1, 0.1);
+                obj.material.s = 100.0;
+                if(scene === 6)
+                {
+                    light0.position = [-1.0, 1.0, 2.0];
+                }
+                else{
+                    light0.position = [1.0, 1.0, 2.0];
+                    obj.resetRotation((20 * Math.PI / 180), 0.0, 0.0);
+                    obj.resetScale(1.5, 1.5, 1.5);
+                    obj.resetPosition(0.3, -1.5, 0.0);
+                }
+                break;
+            case 8:
+                console.log("have entered scene 8");
 
                 light0 = new Light();
                 this.#lights.push(light0);
@@ -66,34 +350,27 @@ class Scene
                 teapot.material.setKS(1.0, 1.0, 0.5);
                 teapot.material.setKA(0.1, 0.1, 0.1);
                 teapot.material.s = 100.0;
-
-                // let plane = new thingPlane(planeShape);
-                // this.#things.push(plane);
-                // plane.resetPosition(1.0, 0.0, 0.0);
-                // plane.resetScale(3.0, 3.0, 3.0);
-                // plane.resetRotation(0.0, 0.0, 0.0);
-                // plane.material.setKD(1.0, 0.0, 0.0);
-                // plane.material.setKS(1.0, 1.0, 0.5);
-                // plane.material.setKA(0.1, 0.0, 0.0);
-                // plane.material.s = 100.0;
-
-                // let plane1 = new thingPlane(planeShape);
-                // this.#things.push(plane1);
-                // plane1.resetPosition(1.0, 0.0, 0.0);
-                // plane1.resetScale(1.0, 1.0, 1.0);
-                // plane1.resetRotation(0.0, -1.57, 0.0);
-                // plane1.material.setKD(0.0, 1.0, 0.0);
-                // plane1.material.setKS(1.0, 1.0, 0.5);
-                // plane1.material.setKA(0.1, 0.0, 0.0);
-                // plane1.material.s = 100.0;
-
-                
-
-                //DEBUG STATEMENT
-                // console.log(this.#things);
-
-
                 break;
+            case 9:
+                console.log("have entered scene 9");
+
+                light0 = new Light();
+                this.#lights.push(light0);
+                light0.position = [-2.0, 1.0, 1.0];
+                //DEBUG STATEMENT
+                // console.log(this.#lights);
+
+                let evaUnit1 = new thingObj(evaShape);
+                this.#things.push(evaUnit1);
+                evaUnit1.resetPosition(0.0, -1.7, 0.0);
+                evaUnit1.resetScale(1.0, 1.0, 1.0);
+                evaUnit1.resetRotation(0.0, 0.0, 0.0);
+                evaUnit1.material.setKD(0.95, 0.0, 0.95);
+                evaUnit1.material.setKS(1.0, 1.0, 0.5);
+                evaUnit1.material.setKA(0.1, 0.1, 0.1);
+                evaUnit1.material.s = 100.0;
+                break;
+
         }
     }
 
