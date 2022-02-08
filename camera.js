@@ -48,7 +48,7 @@ class Camera
         //this.#rotationsInit = this.#rotations;
         vec2.set(this.#rotationsInit, 0.0, 0.0);
         this.#resetting = false;
-        this.numx = this.numy = 20;
+        this.numx = this.numy = 10;
         this.#currx = 0;
         this.#curry = 0;
         this.#showAll = false;

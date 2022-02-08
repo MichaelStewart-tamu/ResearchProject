@@ -1,3 +1,10 @@
+document.getElementById( "game-surface" ).onwheel = function(event){
+    event.preventDefault();
+};
+
+document.getElementById( "game-surface" ).onmousewheel = function(event){
+    event.preventDefault();
+};
 
 //This function will be called from the index.html page
 var InitDemo = function () 

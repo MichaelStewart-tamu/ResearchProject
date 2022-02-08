@@ -62,7 +62,8 @@ class Light
         gl.uniform1f(prog.getUniform("lInt" + this.number.toString()), this.intesity);
         MV.popMatrix();
 
-        console.log("for light ", this.number, "lPos" + this.number.toString(), tempCameraPos[0], tempCameraPos[1], tempCameraPos[2], "lInt" + this.number.toString(), this.intesity);
+        //DEBUG STATEMENT
+        // console.log("for light ", this.number, "lPos" + this.number.toString(), tempCameraPos[0], tempCameraPos[1], tempCameraPos[2], "lInt" + this.number.toString(), this.intesity);
     }
     
     clearCount()
