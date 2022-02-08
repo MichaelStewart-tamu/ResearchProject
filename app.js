@@ -173,7 +173,7 @@ const keyPress = function(obj, event)
 {
 	//DEBUG STATEMENT
 	// console.log("have entered key press, and pressed ", event.key);
-	
+	event.preventDefault();
 	if("Shift" === event.key)	//check if the key in quotes is one that the event is currently changing, NOTE:: three equation marks in javaScript acts as a check of definite certainty
 	{
 		obj.camera.shiftBool = true;
