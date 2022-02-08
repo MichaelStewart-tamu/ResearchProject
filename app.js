@@ -330,6 +330,7 @@ var RealTimeView = function (vertexShaderText, fragmentShaderText, simpleFragTex
 	gl.uniform3f(testingProgram.getUniform("lPos0"), -5.0, 5.0, 5.0);
 	gl.uniform3f(testingProgram.getUniform("lPos1"), 0.01, 0.01, 0.01);
 	gl.uniform1f(testingProgram.getUniform("lInt0"), 0.8);
+	gl.uniform1f(testingProgram.getUniform("lInt1"), 0.0);
 	gl.uniform1f(testingProgram.getUniform("alpha"), 1.0);
 
 	//initialize the program for drawing lines
@@ -409,7 +410,7 @@ var RealTimeView = function (vertexShaderText, fragmentShaderText, simpleFragTex
 
 	var loop = function () {
 		//reset the background color
-		gl.clearColor(0.00, 0.00, 0.00, 1.0);
+		gl.clearColor(0.40, 0.40, 0.40, 1.0);
 		gl.clear(gl.DEPTH_BUFFER_BIT | gl.COLOR_BUFFER_BIT);	//clear buffers
 
 		P = new MatrixStack();

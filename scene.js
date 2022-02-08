@@ -52,6 +52,14 @@ class Scene
                 light0 = new Light();
                 this.#lights.push(light0);
                 light0.position = [-0.3, 0.6, 0.3];
+                light0.intesity = 0.5;
+                light0.number = 0;
+
+                // light1 = new Light();
+                this.#lights.push(new Light());
+                this.#lights[1].position = [0.3, 0.6, -0.3];
+                this.#lights[1].intesity = 0.5;
+                this.#lights[1].number = 1;
 
                 let cylinder = new thingCylinder(cylinderShape);
                 this.#things.push(cylinder);
@@ -159,6 +167,14 @@ class Scene
                 light0 = new Light();
                 this.#lights.push(light0);
                 light0.position = [-2.0, 1.0, 1.0];
+                light0.intesity = 1.0;
+                light0.number = 0;
+
+                // light1 = new Light();
+                this.#lights.push(new Light());
+                this.#lights[1].position = [-2.0, 1.0, 1.0];
+                this.#lights[1].intesity = 0.0;
+                this.#lights[1].number = 1;
 
                 // let plane = new thingPlane(planeShape);
                 // this.#things.push(plane);
@@ -204,7 +220,15 @@ class Scene
 
                 light0 = new Light();
                 this.#lights.push(light0);
-                light0.position = [-2.0, 1.0, 1.0];
+                light0.position = [-1.0, 2.0, 2.0];
+                light0.intesity = 0.5;
+                light0.number = 0;
+
+                // light1 = new Light();
+                this.#lights.push(new Light());
+                this.#lights[1].position = [-1.0, 2.0, -1.0];
+                this.#lights[1].intesity = 0.5;
+                this.#lights[1].number = 1;
 
                 let plane = new thingPlane(planeShape);
                 this.#things.push(plane);
@@ -247,7 +271,15 @@ class Scene
 
                 light0 = new Light();
                 this.#lights.push(light0);
-                light0.position = [-2.0, 1.0, 1.0];
+                light0.position = [-1.0, 2.0, 1.0];
+                light0.intesity = 0.5;
+                light0.number = 0;
+
+                // light1 = new Light();
+                this.#lights.push(new Light());
+                this.#lights[1].position = [0.5, -0.5, 0.0];
+                this.#lights[1].intesity = 0.5;
+                this.#lights[1].number = 1;
 
                 let sphere8 = new thingSphere(sphereShape);
                 this.#things.push(sphere8);
@@ -313,6 +345,15 @@ class Scene
                 //obj
                 light0 = new Light();
                 this.#lights.push(light0);
+                // light0.position = [-1.0, 2.0, 1.0];
+                light0.intesity = 1.0;
+                light0.number = 0;
+
+                // light1 = new Light();
+                this.#lights.push(new Light());
+                // this.#lights[1].position = [0.5, -0.5, 0.0];
+                this.#lights[1].intesity = 0.0;
+                this.#lights[1].number = 1;              
                 
 
                 let obj = new thingObj(bunnyShape);
@@ -324,9 +365,12 @@ class Scene
                 if(scene === 6)
                 {
                     light0.position = [-1.0, 1.0, 2.0];
+                    this.#lights[1].position = [-1.0, 1.0, 2.0];
+                    obj.resetRotation(0.0, 0.0, 0.0);
                 }
                 else{
                     light0.position = [1.0, 1.0, 2.0];
+                    this.#lights[1].position = [1.0, 1.0, 2.0];
                     obj.resetRotation((20 * Math.PI / 180), 0.0, 0.0);
                     obj.resetScale(1.5, 1.5, 1.5);
                     obj.resetPosition(0.3, -1.5, 0.0);
@@ -338,8 +382,14 @@ class Scene
                 light0 = new Light();
                 this.#lights.push(light0);
                 light0.position = [-2.0, 1.0, 1.0];
-                //DEBUG STATEMENT
-                // console.log(this.#lights);
+                light0.intesity = 0.5;
+                light0.number = 0;
+
+                // light1 = new Light();
+                this.#lights.push(new Light());
+                this.#lights[1].position = [0.5, -0.5, 0.0];
+                this.#lights[1].intesity = 0.5;
+                this.#lights[1].number = 1;
 
                 let teapot = new thingObj(teapotShape);
                 this.#things.push(teapot);
@@ -357,8 +407,14 @@ class Scene
                 light0 = new Light();
                 this.#lights.push(light0);
                 light0.position = [-2.0, 1.0, 1.0];
-                //DEBUG STATEMENT
-                // console.log(this.#lights);
+                light0.intesity = 0.5;
+                light0.number = 0;
+
+                // light1 = new Light();
+                this.#lights.push(new Light());
+                this.#lights[1].position = [0.5, -0.5, 0.0];
+                this.#lights[1].intesity = 0.5;
+                this.#lights[1].number = 1;
 
                 let evaUnit1 = new thingObj(evaShape);
                 this.#things.push(evaUnit1);

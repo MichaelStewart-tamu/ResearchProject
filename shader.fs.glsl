@@ -48,6 +48,13 @@ void main()
 	vec3 specular = pow(max(dot(h, n), 0.0), s) * ks;
 	color += lInt0 * (diffuse + specular);
 
+	//second light
+	vec3 l1 = normalize(lPos1 - fragPos);
+	vec3 h1 = normalize(l1 + v);
+	vec3 diffuse1 = max(dot(l1, n), 0.0) * kd;
+	vec3 specular1 = pow(max(dot(h1, n), 0.0), s) * ks;
+	color += lInt1 * (diffuse1 + specular1);
+
 	gl_FragColor = vec4(color, alpha);
 
 
