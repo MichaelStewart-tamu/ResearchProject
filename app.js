@@ -172,7 +172,7 @@ const scrollWheel = function(cam, event)
 const keyPress = function(obj, event)
 {
 	//DEBUG STATEMENT
-	// console.log("have entered key press, and pressed ", event.key);
+	console.log("have entered key press, and pressed ", event.key);
 	event.preventDefault();
 	if("Shift" === event.key)	//check if the key in quotes is one that the event is currently changing, NOTE:: three equation marks in javaScript acts as a check of definite certainty
 	{
@@ -183,7 +183,8 @@ const keyPress = function(obj, event)
 	{
 		obj.camera.keyNumber = 0;
 		obj.scene.load(0, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva);				
-		obj.camera.reset();
+		// obj.camera.reset();
+		obj.camera.raytrace(obj.scene);
 		document.getElementById('img').src = "s0.png";
 		
 	}
@@ -191,54 +192,63 @@ const keyPress = function(obj, event)
 	{
 		obj.camera.keyNumber = 1;
 		obj.scene.load(1, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva);
-		obj.camera.reset();
+		// obj.camera.reset();
+		obj.camera.raytrace(obj.scene);
 		document.getElementById('img').src = "s1.png";
 	}
 	if("2" === event.key)
 	{
 		obj.scene.load(2, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva);				
-		obj.camera.reset();
+		// obj.camera.reset();
+		obj.camera.raytrace(obj.scene);
 		document.getElementById('img').src = "s2.png";
 	}
 	if("3" === event.key)
 	{
 		obj.scene.load(3, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva);
-		obj.camera.reset();
+		// obj.camera.reset();
+		obj.camera.raytrace(obj.scene);
 		document.getElementById('img').src = "s3.png";
 	}
 	if("4" === event.key)
 	{
 		obj.scene.load(4, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva);
-		obj.camera.reset();
-		document.getElementById('img').src = "s5.png";
+		// obj.camera.reset();
+		obj.camera.raytrace(obj.scene);
+		document.getElementById('img').src = "s4.png";
 	}
 	if("5" === event.key)
 	{
 		obj.scene.load(5, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva);
-		obj.camera.reset();
+		// obj.camera.reset();
+		obj.camera.raytrace(obj.scene);
 		document.getElementById('img').src = "s5.png";
 	}
 	if("6" === event.key)
 	{
 		obj.scene.load(6, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva);
-		obj.camera.reset();
+		// obj.camera.reset();
+		obj.camera.raytrace(obj.scene);
 		document.getElementById('img').src = "s6.png";
 	}
 	if("7" === event.key)
 	{
 		obj.scene.load(7, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva);
-		obj.camera.reset();
+		// obj.camera.reset();
+		obj.camera.raytrace(obj.scene);
 		document.getElementById('img').src = "s7.png";
 	}
 	if("8" === event.key)
 	{
 		obj.scene.load(8, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva);
-		obj.camera.reset();
+		// obj.camera.reset();
+		obj.camera.raytrace(obj.scene);
 	}
 	if("9" === event.key)
 	{
 		obj.scene.load(9, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva);
-		obj.camera.reset();
+		obj.camera.raytrace(obj.scene);
+		document.getElementById('img').src = "s9.png";
 	}
 	
 	if("ArrowUp" === event.key)
@@ -261,10 +271,37 @@ const keyPress = function(obj, event)
 	if(" " === event.key)
 	{
 		obj.camera.raytrace(obj.scene);
+		obj.camera.toggleSquares = true;
 	}
 	if("a" === event.key)
 	{
+		obj.camera.raytrace(obj.scene);
+		obj.camera.toggleSquares = true;
 		obj.camera.toggleShowAll();
+	}
+	if("r" === event.key)
+	{
+		obj.camera.reset();
+		obj.camera.toggleSquares = false;
+	}
+	
+	if("=" === event.key)	//equals because the plus button requires shift
+	{
+		obj.camera.changeSize(true);	
+		if(obj.camera.toggleSquares === true)	//in case the frustum is clear this is to keep it clear
+		{
+			obj.camera.raytrace(obj.scene);	//ray trace the scene to show on tiles
+			obj.camera.toggleSquares = true;	//allow the tiles to be displayed
+		}
+	}
+	if("-" === event.key)	//equals because the plus button requires shift
+	{
+		obj.camera.changeSize(false);
+		if(obj.camera.toggleSquares === true)	//in case the frustum is clear this is to keep it clear
+		{
+			obj.camera.raytrace(obj.scene);	//ray trace the scene to show on tiles
+			obj.camera.toggleSquares = true;	//allow the tiles to be displayed
+		}
 	}
 
 	

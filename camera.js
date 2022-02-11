@@ -27,6 +27,7 @@ class Camera
     #curry;
     #showAll;
     scene;
+    frameNo;
 
     constructor()
     {
@@ -48,7 +49,7 @@ class Camera
         //this.#rotationsInit = this.#rotations;
         vec2.set(this.#rotationsInit, 0.0, 0.0);
         this.#resetting = false;
-        this.numx = this.numy = 20;
+        this.numx = this.numy = 13;
         this.#currx = 0;
         this.#curry = 0;
         this.#showAll = false;
@@ -68,6 +69,8 @@ class Camera
         // }
         this.#rayPts = Array.from(Array(this.numx), () => new Array(this.numy))
         console.log("now outputing the constructor for rayPts", this.#rayPts);
+        this.frameNo = 0;
+        this.toggleSquares === false;
     }
 
     //this function will record the position of the mouse and change the state of the button press
@@ -175,6 +178,8 @@ class Camera
         {
             this.#curry = 0;
         }
+
+        this.frameNo = 0;
     }
 
     reset()
@@ -194,6 +199,8 @@ class Camera
 
     draw(MV, program, quadsProgram, planeShape)
     {
+        var timePerBounce = 20;
+
         MV.pushMatrix();
 
             program.bind();
@@ -203,7 +210,7 @@ class Camera
             //draw rays in world space
             var rayVertices = [];
 
-            if(this.#showAll === true)
+            if(this.#showAll === true)  //show all rays
             {
                 //draw all in white
                 for(var i = 0; i < this.numy; i++)
@@ -212,8 +219,10 @@ class Camera
                     {
                         for(var k = 1; k < this.#rayPts[i][j].length; k++)
                         {
-                            rayVertices.push(this.#rayPts[i][j][k - 1][0], this.#rayPts[i][j][k - 1][1], this.#rayPts[i][j][k - 1][2]);    //push the starting point of the line
-                            rayVertices.push(this.#rayPts[i][j][k][0], this.#rayPts[i][j][k][1], this.#rayPts[i][j][k][2]);                //push the ending point of the line
+                            // rayVertices.push(this.#rayPts[i][j][k - 1][0], this.#rayPts[i][j][k - 1][1], this.#rayPts[i][j][k - 1][2]);    //push the starting point of the line
+                            // rayVertices.push(this.#rayPts[i][j][k][0], this.#rayPts[i][j][k][1], this.#rayPts[i][j][k][2]);                //push the ending point of the line
+                            this.animateLine(this.#rayPts[i][j][k - 1], this.#rayPts[i][j][k], 0, 20, 21 , program, false);
+                            
                         }
                     }
                 }
@@ -227,51 +236,28 @@ class Camera
                     // rayVertices.push(rayPtsCurr[0][0], rayPtsCurr[0][1], rayPtsCurr[0][2]);
                     // rayVertices.push(rayPtsCurr[1][0], rayPtsCurr[1][1], rayPtsCurr[1][2]);
 
-                    for(var k = 1; k < rayPtsCurr.length; k++)
+                    for(var k = 1; k < rayPtsCurr.length; k+=2)
                         {
-                            rayVertices.push(rayPtsCurr[k - 1][0], rayPtsCurr[k - 1][1], rayPtsCurr[k - 1][2]);
-                            rayVertices.push(rayPtsCurr[k][0], rayPtsCurr[k][1], rayPtsCurr[k][2]);
+                            // rayVertices.push(rayPtsCurr[k - 1][0], rayPtsCurr[k - 1][1], rayPtsCurr[k - 1][2]);
+                            // rayVertices.push(rayPtsCurr[k][0], rayPtsCurr[k][1], rayPtsCurr[k][2]);
                             
+                            this.animateLine(rayPtsCurr[k - 1], rayPtsCurr[k], ((k - 1)/2 * timePerBounce), (((k - 1)/2 * timePerBounce) + timePerBounce), this.frameNo, program, true);
+                            // console.log("DEBUG: info on frame time start", ((k - 1)/2 * 60), "time end", (((k - 1)/2 * 60) + 60), "info on ray, start", rayPtsCurr[k - 1], "ray end", rayPtsCurr[k], "frame number ", this.frameNo);
                         }
+                    
+                    this.frameNo +=1;
+                    if(this.frameNo > (((rayPtsCurr.length/2) * timePerBounce) + timePerBounce))   //reset after the end of the animation
+                    {
+                        this.frameNo = 0;
+                    }
                 }
                 
             }
 
-            gl.uniform3f(program.getUniform("inputColor"), 0.85, 0.85, 0.85);
-            //NEEDED to output without interfeering with the other lines
-            // Create an empty buffer object
-            var vertex_buffer_rays = gl.createBuffer();
-    
-            // Bind appropriate array buffer to it
-            gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer_rays);
-        
-            // Pass the vertex data to the buffer
-            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(rayVertices), gl.STATIC_DRAW);
-    
-            // Unbind the buffer
-            gl.bindBuffer(gl.ARRAY_BUFFER, null);
-
-            // Bind vertex buffer object
-            gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer_rays);
-
-            // Get the attribute location
-            var coord = program.getAttribute("vertPosition");
-
-            // Point an attribute to the currently bound VBO
-            gl.vertexAttribPointer(coord, 3, gl.FLOAT, false, 0, 0);
-
-            // Enable the attribute
-            gl.enableVertexAttribArray(coord);
-
-            var lineNo = rayVertices.length / 3;
-            gl.drawArrays(gl.LINES, 0, lineNo);
-
-
-
             MV.translate(this.#translationsInit[0], this.#translationsInit[1], -1.0 * this.#translationsInit[2])
             gl.uniformMatrix4fv(program.getUniform("P"), gl.FALSE, P.topMatrix());
             gl.uniformMatrix4fv(program.getUniform("MV"), gl.FALSE, MV.topMatrix());
-
+            gl.uniform3f(program.getUniform("inputColor"), 0.7, 0.7, 0.7);
             
 
             //drawing frustum
@@ -323,30 +309,6 @@ class Camera
                 vertices.push(x, -y0, z0);
                 vertices.push(x, y0, z0);
             } 
-
-            //the highlighted square TODO needs to be a differnet color
-            //TODO, make this not showAll
-            if(this.#showAll === false) {
-                // Highlight selected tile
-                gl.lineWidth(2);
-                var sy = this.#curry/this.numy;
-                var sx = this.#currx/this.numx;
-                var y = (1.0 - sy)*(-y0) + sy*y0;
-                var x = (1.0 - sx)*(-x0) + sx*x0;
-                var dz = 2e-4;
-                var dy = 2.0*y0/this.numy;
-                var dx = 2.0*x0/this.numx;
-                var wiggleRoom = 0.002;
-                vertices.push(x + wiggleRoom, y + wiggleRoom, z0-dz , x+dx + wiggleRoom, y + wiggleRoom, z0-dz );   //top
-                vertices.push(x+dx + wiggleRoom, y+dy + wiggleRoom, z0-dz , x + wiggleRoom, y+dy + wiggleRoom, z0-dz ); //bottom
-                vertices.push(x + wiggleRoom, y + wiggleRoom, z0-dz , x + wiggleRoom, y + dy + wiggleRoom, z0-dz );//right
-                vertices.push(x + dx + wiggleRoom, y + wiggleRoom, z0-dz , x + dx + wiggleRoom, y + dy + wiggleRoom, z0-dz );
-            }
-
-
-            
-            
-            
             
             // Create an empty buffer object
             var vertex_buffer = gl.createBuffer();
@@ -374,10 +336,62 @@ class Camera
 
             var lineNo = vertices.length / 3;
             gl.drawArrays(gl.LINES, 0, lineNo);
+
+
+            if(this.#showAll === false) {
+                var selection = []
+                // Highlight selected tile
+                gl.lineWidth(2);
+                var sy = this.#curry/this.numy;
+                var sx = this.#currx/this.numx;
+                var y = (1.0 - sy)*(-y0) + sy*y0;
+                var x = (1.0 - sx)*(-x0) + sx*x0;
+                var dz = 2e-4;
+                var dy = 2.0*y0/this.numy;
+                var dx = 2.0*x0/this.numx;
+                var wiggleRoom = 0.002;
+                //behind the frustum
+                selection.push(x + wiggleRoom, y + wiggleRoom, z0 , x+dx + wiggleRoom, y + wiggleRoom, z0 );   //top
+                selection.push(x+dx + wiggleRoom, y+dy + wiggleRoom, z0 , x + wiggleRoom, y+dy + wiggleRoom, z0 ); //bottom
+                selection.push(x + wiggleRoom, y + wiggleRoom, z0 , x + wiggleRoom, y + dy + wiggleRoom, z0 );//right
+                selection.push(x + dx + wiggleRoom, y + wiggleRoom, z0 , x + dx + wiggleRoom, y + dy + wiggleRoom, z0 );
+
+                //infront of the frustum
+
+                //color
+                gl.uniform3f(program.getUniform("inputColor"), 1.0, 1.0, 1.0);
+
+                // Create an empty buffer object
+                var vertex_buffer = gl.createBuffer();
+        
+                // Bind appropriate array buffer to it
+                gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
+            
+                // Pass the vertex data to the buffer
+                gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(selection), gl.STATIC_DRAW);
+        
+                // Unbind the buffer
+                gl.bindBuffer(gl.ARRAY_BUFFER, null);
+
+                // Bind vertex buffer object
+                gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
+
+                // Get the attribute location
+                var coord = program.getAttribute("vertPosition");
+
+                // Point an attribute to the currently bound VBO
+                gl.vertexAttribPointer(coord, 3, gl.FLOAT, false, 0, 0);
+
+                // Enable the attribute
+                gl.enableVertexAttribArray(coord);
+
+                var lineNo = selection.length / 3;
+                gl.drawArrays(gl.LINES, 0, lineNo);
+            }
             program.unbind();
 
             //drawing the color tiles
-            if(this.#rayPts[0][0] != undefined)
+            if(this.#rayPts[0][0] != undefined && this.toggleSquares === true)
             {
                 program.bind();
 
@@ -581,5 +595,100 @@ class Camera
             }
             // console.log("made it to this point in raytrace camera", this.#colors, this.#rayPts);
         }
+    }
+
+    animateLine(rayStart, rayEnd, timeStart, timeEnd, currTime, program, yellowColor)
+    {
+        if(currTime > timeEnd)  //just draw the line
+        {
+            var linePoints = [];
+            linePoints.push(rayStart[0], rayStart[1], rayStart[2]); //push the start point
+            linePoints.push(rayEnd[0], rayEnd[1], rayEnd[2]);   //push endpoint
+        }
+        else if(currTime > timeStart)   //animate
+        {
+            //interpolate based on time with axis X, Y, and Z
+            var linePoints = [];
+            linePoints.push(rayStart[0], rayStart[1], rayStart[2]); //push the start point
+
+            //start of interpolation
+            var alpha = (currTime - timeStart) / (timeEnd - timeStart);
+            var x = (rayEnd[0] * alpha) + (rayStart[0] * (1.0 - alpha));
+            var y = (rayEnd[1] * alpha) + (rayStart[1] * (1.0 - alpha));
+            var z = (rayEnd[2] * alpha) + (rayStart[2] * (1.0 - alpha));
+
+            linePoints.push(x, y, z);   //push the end point
+        }
+        //if time < timeStart do not draw the line
+
+
+        if(yellowColor === true)
+        {
+            gl.uniform3f(program.getUniform("inputColor"), 1.0, 1.0, 0.0);
+        }
+        else
+        {
+            gl.uniform3f(program.getUniform("inputColor"), 1.0, 1.0, 1.0);
+        }
+        
+        //NEEDED to output without interfeering with the other lines
+        // Create an empty buffer object
+        var vertex_buffer_rays = gl.createBuffer();
+
+        // Bind appropriate array buffer to it
+        gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer_rays);
+    
+        // Pass the vertex data to the buffer
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(linePoints), gl.STATIC_DRAW);
+
+        // Unbind the buffer
+        gl.bindBuffer(gl.ARRAY_BUFFER, null);
+
+        // Bind vertex buffer object
+        gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer_rays);
+
+        // Get the attribute location
+        var coord = program.getAttribute("vertPosition");
+
+        // Point an attribute to the currently bound VBO
+        gl.vertexAttribPointer(coord, 3, gl.FLOAT, false, 0, 0);
+
+        // Enable the attribute
+        gl.enableVertexAttribArray(coord);
+
+        var lineNo = 2;
+        gl.drawArrays(gl.LINES, 0, lineNo);
+    }
+
+    changeSize(plusBool)
+    {
+        if(plusBool === true)
+        {
+            this.numx = this.numy += 1; //increase the number of squares
+            this.#currx += 1;
+            this.#curry += 1;
+        }
+        else
+        {
+            if(this.numy > 1)   //prevent from getting a frustum less than 1x1
+            {
+                this.numx = this.numy -= 1; //decrease the number of sqaures
+                
+                //if the current position is outside of current resolution decrease it
+                if(this.#currx > this.numx - 1) 
+                {
+                    this.#currx = this.numx - 1;
+                }
+
+                if(this.#curry > this.numy - 1)
+                {
+                    this.#curry = this.numy - 1;
+                }
+            }
+        }
+
+        //readjust arrays to hold this new data
+        this.#colors = Array.from(Array(this.numx), () => new Array(this.numy)); //a vector of vectors of 3 coordinates, so an 2d array for storing vectors containg RGB values
+        this.#rayPts = Array.from(Array(this.numx), () => new Array(this.numy))
     }
 }

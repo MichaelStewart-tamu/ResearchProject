@@ -25,11 +25,11 @@
         <!-- descriptions -->
         <div>
             <div style="display: inline-block; width: 605px; padding-left: 190px;">
-                <i>The Realtime viewport is above this text</i>
+                <i>The real-time viewport is above this text</i>
             </div>
 
             <div style="display: inline-block;">
-                <i>Full Resolution RayTraced Image from Default camera position</i>
+                <i>Full resolution ray traced image from default camera position</i>
             </div>
         </div>
     
@@ -42,20 +42,35 @@
             <p>Space --> Render current Scene and display on view frustum</p>
             <p>a --> toggle showing all or one ray from view frustum</p>
             <p>Arrow Keys --> move the selected pixel on the view frustum in display window</p>
+            <p>r --> realign real time view with the camera position, and make the color tiles invisible</p>
+            <p>+ --> increase the resolution of the frustum</p>
+            <p>- --> decrease the resolution of the frustum</p>
         </div>
-        <div style="display: inline-block; background:rgb(233, 233, 233); margin:10px; padding: 10px;">
-            <h1>Number Keys</h1>
-            <p>0 - Scene 0 = Cornell Box<br>
-            1 - Scene 1 = 3 spheres with no shadowing<br>
-            2 - Scene 2 = 3 spheres with shadowing from other models<br>
-            3 - Scene 3 = spheres and planes, multiple lights<br>
-            4 - Scene 4 = mirror balls with a single light bounce<br>
-            5 - Scene 5 = mirror bounce with multiple bounces<br>
-            6 - Scene 6 = Bunny (OBJ) zoomed out (quick render) <br>
-            7 - Scene 7 = Bunny (OBJ) zoomed in (longer time to render)<br>
-            8 - Scene 8 = Utah TeaPot (OBJ)<br>
-            9 - Scene 9 = Robot (OBJ)</p>
+
+        <div style="display: inline-block;">
+            <div style="background:rgb(233, 233, 233); margin:10px; padding-left: 10px;">
+                <h1>Warning</h1>
+                <p>If you encounter any problems reload the page<br>
+                    increasing the resolution of the frustum will decrease the<br> 
+                    performance of the real-time view. You will increase very <br>
+                    slow performance once you pass 80x80 or so.</p>
+            </div>
+            
+            <div style="background:rgb(233, 233, 233); margin:10px; padding-inline: 10px;"">
+                <h1>Number Keys</h1>
+                <p>0 - Scene 0 = Cornell Box<br>
+                1 - Scene 1 = 3 spheres with no shadowing<br>
+                2 - Scene 2 = 3 spheres with shadowing from other models<br>
+                3 - Scene 3 = spheres and planes, multiple lights<br>
+                4 - Scene 4 = mirror balls with a single light bounce<br>
+                5 - Scene 5 = mirror bounce with multiple bounces<br>
+                6 - Scene 6 = Bunny (OBJ) zoomed out (quick render) <br>
+                7 - Scene 7 = Bunny (OBJ) zoomed in (longer time to render)<br>
+                8 - Scene 8 = Utah TeaPot (OBJ)<br>
+                9 - Scene 9 = Robot (OBJ)</p>
+            </div>
         </div>
+
         
         <script src="MatrixStack.js"></script>
         <script src="gl-matrix.js"></script>

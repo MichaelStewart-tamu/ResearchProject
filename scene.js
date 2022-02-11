@@ -86,6 +86,7 @@ class Scene
                 sphere1.resetRotation(0.0, 0.0, 0.0)
                 sphere1.resetScale(0.25, 0.25, 0.25);
                 sphere1.resetPosition(-0.1, -0.75, 0.43);  //TODO: make random
+                sphere1.material.type = "REFLECT";
                 sphere1.material.setKD(0.5, 0.5, 0.0);
                 sphere1.material.setKS(1.0, 1.0, 0.5);
                 sphere1.material.setKA(0.1, 0.1, 0.1);
@@ -190,6 +191,7 @@ class Scene
                 this.#things.push(sphere4);
                 sphere4.resetPosition(-0.5, -1.0, 1.0);
                 sphere4.resetScale(1.0, 1.0, 1.0);
+                sphere4.resetRotation(0.00, 0.0, 0.0);
                 sphere4.material.setKD(1.0, 0.0, 0.0);
                 sphere4.material.setKS(1.0, 1.0, 0.5);
                 sphere4.material.setKA(0.1, 0.1, 0.1);
@@ -199,6 +201,7 @@ class Scene
                 this.#things.push(sphere5);
                 sphere5.resetPosition(0.5, -1.0, -1.0);
                 sphere5.resetScale(1.0, 1.0, 1.0);
+                sphere5.resetRotation(0.00, 0.0, 0.0);
                 sphere5.material.setKD(0.0, 0.5, 0.0);
                 sphere5.material.setKS(1.0, 1.0, 0.5);
                 sphere5.material.setKA(0.1, 0.1, 0.1);
@@ -208,6 +211,7 @@ class Scene
                 this.#things.push(sphere3);
                 sphere3.resetPosition(0.0, 1.0, 0.0);
                 sphere3.resetScale(1.0, 1.0, 1.0);
+                sphere3.resetRotation(0.00, 0.0, 0.0);
                 sphere3.material.setKD(0.0, 0.0, 1.0);
                 sphere3.material.setKS(1.0, 1.0, 0.5);
                 sphere3.material.setKA(0.1, 0.1, 0.1);
@@ -244,6 +248,7 @@ class Scene
                 this.#things.push(sphere6);
                 sphere6.resetPosition(0.5, 0.0, 0.5);
                 sphere6.resetScale(0.5, 0.6, 0.2);
+                sphere6.resetRotation(0.00, 0.0, 0.0);
                 sphere6.material.setKD(1.0, 0.0, 0.0);
                 sphere6.material.setKS(1.0, 1.0, 0.5);
                 sphere6.material.setKA(0.1, 0.1, 0.1);
@@ -253,6 +258,7 @@ class Scene
                 this.#things.push(sphere7);
                 sphere7.resetPosition(-0.5, 0.0, -0.5);
                 sphere7.resetScale(1.0, 1.0, 1.0);
+                sphere7.resetRotation(0.00, 0.0, 0.0);
                 sphere7.material.setKD(0.0, 1.0, 0.0);
                 sphere7.material.setKS(1.0, 1.0, 0.5);
                 sphere7.material.setKA(0.1, 0.1, 0.1);
@@ -266,7 +272,7 @@ class Scene
                     this.#depthMax = 1;
                 }
                 else{
-                    this.#depthMax = 5;
+                    this.#depthMax = 7;
                 }
 
                 light0 = new Light();
@@ -285,6 +291,7 @@ class Scene
                 this.#things.push(sphere8);
                 sphere8.resetPosition(0.5, -0.7, 0.5);
                 sphere8.resetScale(0.3, 0.3, 0.3);
+                sphere8.resetRotation(0.00, 0.0, 0.0);
                 sphere8.material.setKD(1.0, 0.0, 0.0);
                 sphere8.material.setKS(1.0, 1.0, 0.5);
                 sphere8.material.setKA(0.1, 0.1, 0.1);
@@ -294,6 +301,7 @@ class Scene
                 this.#things.push(sphere9);
                 sphere9.resetPosition(1.0, -0.7, 0.0);
                 sphere9.resetScale(0.3, 0.3, 0.3);
+                sphere9.resetRotation(0.00, 0.0, 0.0);
                 sphere9.material.setKD(0.0, 0.0, 1.0);
                 sphere9.material.setKS(1.0, 1.0, 0.5);
                 sphere9.material.setKA(0.1, 0.1, 0.1);
@@ -303,6 +311,7 @@ class Scene
                 this.#things.push(sphere10);
                 sphere10.resetPosition(-0.5, 0.0, -0.5);
                 sphere10.resetScale(1.0, 1.0, 1.0);
+                sphere10.resetRotation(0.00, 0.0, 0.0);
                 sphere10.material.type = "REFLECT";
                 sphere10.material.setKD(0.0, 0.0, 1.0);
                 sphere10.material.setKS(1.0, 1.0, 0.5);
@@ -313,6 +322,7 @@ class Scene
                 this.#things.push(sphere11);
                 sphere11.resetPosition(1.5, 0.0, -1.5);
                 sphere11.resetScale(1.0, 1.0, 1.0);
+                sphere11.resetRotation(0.00, 0.0, 0.0);
                 sphere11.material.type = "REFLECT";
                 sphere11.material.setKD(0.0, 1.0, 0.0);
                 sphere11.material.setKS(1.0, 1.0, 0.5);
@@ -406,24 +416,24 @@ class Scene
 
                 light0 = new Light();
                 this.#lights.push(light0);
-                light0.position = [-2.0, 1.0, 1.0];
+                light0.position = [-2.0, 10.0, 1.0];
                 light0.intesity = 0.5;
                 light0.number = 0;
 
                 // light1 = new Light();
                 this.#lights.push(new Light());
-                this.#lights[1].position = [0.5, -0.5, 0.0];
+                this.#lights[1].position = [0.5, 10, 0.0];
                 this.#lights[1].intesity = 0.5;
                 this.#lights[1].number = 1;
 
                 let evaUnit1 = new thingObj(evaShape);
                 this.#things.push(evaUnit1);
-                evaUnit1.resetPosition(0.0, -1.7, 0.0);
-                evaUnit1.resetScale(1.0, 1.0, 1.0);
+                evaUnit1.resetPosition(0.0, -1.9, 0.0);
+                evaUnit1.resetScale(1.2, 1.2, 1.2);
                 evaUnit1.resetRotation(0.0, 0.0, 0.0);
-                evaUnit1.material.setKD(0.95, 0.0, 0.95);
+                evaUnit1.material.setKD(74/255, 25/255, 255/255);
                 evaUnit1.material.setKS(1.0, 1.0, 0.5);
-                evaUnit1.material.setKA(0.1, 0.1, 0.1);
+                evaUnit1.material.setKA(0.0, 0.0, 0.0);
                 evaUnit1.material.s = 100.0;
                 break;
 
