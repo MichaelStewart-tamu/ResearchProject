@@ -186,7 +186,7 @@ const keyPress = function(obj, event)
 		// obj.camera.reset();
 		obj.camera.raytrace(obj.scene);
 		document.getElementById('img').src = "s0.png";
-		
+		obj.camera.frameNo = 0;	//reset the time for a new scene
 	}
 	if("1" === event.key)
 	{
@@ -195,6 +195,7 @@ const keyPress = function(obj, event)
 		// obj.camera.reset();
 		obj.camera.raytrace(obj.scene);
 		document.getElementById('img').src = "s1.png";
+		obj.camera.frameNo = 0;	//reset the time for a new scene
 	}
 	if("2" === event.key)
 	{
@@ -202,6 +203,7 @@ const keyPress = function(obj, event)
 		// obj.camera.reset();
 		obj.camera.raytrace(obj.scene);
 		document.getElementById('img').src = "s2.png";
+		obj.camera.frameNo = 0;	//reset the time for a new scene
 	}
 	if("3" === event.key)
 	{
@@ -209,6 +211,7 @@ const keyPress = function(obj, event)
 		// obj.camera.reset();
 		obj.camera.raytrace(obj.scene);
 		document.getElementById('img').src = "s3.png";
+		obj.camera.frameNo = 0;	//reset the time for a new scene
 	}
 	if("4" === event.key)
 	{
@@ -216,6 +219,7 @@ const keyPress = function(obj, event)
 		// obj.camera.reset();
 		obj.camera.raytrace(obj.scene);
 		document.getElementById('img').src = "s4.png";
+		obj.camera.frameNo = 0;	//reset the time for a new scene
 	}
 	if("5" === event.key)
 	{
@@ -223,6 +227,7 @@ const keyPress = function(obj, event)
 		// obj.camera.reset();
 		obj.camera.raytrace(obj.scene);
 		document.getElementById('img').src = "s5.png";
+		obj.camera.frameNo = 0;	//reset the time for a new scene
 	}
 	if("6" === event.key)
 	{
@@ -230,6 +235,7 @@ const keyPress = function(obj, event)
 		// obj.camera.reset();
 		obj.camera.raytrace(obj.scene);
 		document.getElementById('img').src = "s6.png";
+		obj.camera.frameNo = 0;	//reset the time for a new scene
 	}
 	if("7" === event.key)
 	{
@@ -237,18 +243,21 @@ const keyPress = function(obj, event)
 		// obj.camera.reset();
 		obj.camera.raytrace(obj.scene);
 		document.getElementById('img').src = "s7.png";
+		obj.camera.frameNo = 0;	//reset the time for a new scene
 	}
 	if("8" === event.key)
 	{
 		obj.scene.load(8, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva);
 		// obj.camera.reset();
 		obj.camera.raytrace(obj.scene);
+		obj.camera.frameNo = 0;	//reset the time for a new scene
 	}
 	if("9" === event.key)
 	{
 		obj.scene.load(9, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva);
 		obj.camera.raytrace(obj.scene);
 		document.getElementById('img').src = "s9.png";
+		obj.camera.frameNo = 0;	//reset the time for a new scene
 	}
 	
 	if("ArrowUp" === event.key)
