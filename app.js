@@ -465,7 +465,7 @@ var RealTimeView = function (vertexShaderText, fragmentShaderText, simpleFragTex
 
 	var loop = function () {
 		//reset the background color
-		gl.clearColor(0.04, 0.04, 0.04, 1.0);
+		gl.clearColor(0.0, 0.0, 0.0, 1.0);
 		gl.clear(gl.DEPTH_BUFFER_BIT | gl.COLOR_BUFFER_BIT);	//clear buffers
 
 		P = new MatrixStack();
