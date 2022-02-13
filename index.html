@@ -40,40 +40,40 @@
         </div>
     
         <!-- controls -->
-        <div style="display: inline-block; background:rgb(43, 43, 43); margin:10px; padding: 10px;">
+        <div style="display: inline-block; background:rgb(43, 43, 43); margin:10px; padding: 10px; border-radius: 15px">
             <h1>Controls</h1>
-            <p>Shift - Left Click --> Move camera</p>
-            <p>Left Click --> Rotate camera around orbit</p>
-            <p>Scroll Wheel --> Zoom in and out</p>
-            <p>Space --> Render current Scene and display on view frustum</p>
-            <p>a --> toggle showing all or one ray from view frustum</p>
-            <p>Arrow Keys --> move the selected pixel on the view frustum in display window</p>
-            <p>r --> realign real time view with the camera position, and make the color tiles invisible</p>
-            <p>+ --> increase the resolution of the frustum</p>
+            <p>Shift-Left click and move mouse—> Moves the camera view</p>
+            <p>Left click —> Rotates the camera around the object</p>
+            <p>Scroll wheel movement —> Zooms the view in or out</p>
+            <p>Space bar —> Render the current scene and display on the view frustum</p>
+            <p>a —> toggle the view between all or a single light ray from the view frustum/p>
+            <p>Arrow keys —> moves the selected pixel on the view frustum in the display window</p>
+            <p>r —> realigns the real-time view camera position</p>
+            <p>+ —> increases the resolution of the frustum</p>
             <p>- --> decrease the resolution of the frustum</p>
         </div>
 
         <div style="display: inline-block;">
-            <div style="background:rgb(249, 200, 8); color: black; margin:10px; padding-left: 10px;">
-                <h1>Warning</h1>
-                <p>If you encounter any problems reload the page<br>
-                    increasing the resolution of the frustum will decrease the<br> 
-                    performance of the real-time view. You will increase very <br>
-                    slow performance once you pass 80x80 or so.</p>
-            </div>
-            
-            <div style="background:rgb(43, 43, 43); margin:10px; padding-inline: 10px; padding-bottom: 1px;"">
-                <h1>Number Keys</h1>
-                <p>0 - Scene 0 = Cornell Box<br>
+            <div style="background:rgb(43, 43, 43); margin:10px; padding: 10px; border-radius: 10px;"">
+                <h1 style="margin-block-end: 0em;">Number Keys</h1>
+                <p style="margin-block-start: 0em;">0 - Scene 0 = Cornell Box<br>
                 1 - Scene 1 = 3 spheres with no shadowing<br>
-                2 - Scene 2 = 3 spheres with shadowing from other models<br>
+                2 - Scene 2 = 3 spheres with shadowing from other spheres<br>
                 3 - Scene 3 = spheres and planes, multiple lights<br>
                 4 - Scene 4 = mirror balls with a single light bounce<br>
                 5 - Scene 5 = mirror bounce with multiple bounces<br>
-                6 - Scene 6 = Bunny (OBJ) zoomed out (quick render) <br>
-                7 - Scene 7 = Bunny (OBJ) zoomed in (longer time to render)<br>
-                8 - Scene 8 = Utah TeaPot (OBJ)<br>
-                9 - Scene 9 = Robot (OBJ)</p>
+                6 - Scene 6 = Bunny zoomed out (quick render) <br>
+                7 - Scene 7 = Bunny zoomed in (longer time to render)<br>
+                8 - Scene 8 = Utah Teapot<br>
+                9 - Scene 9 = Robot</p>
+            </div>
+
+            <div style="background:rgb(249, 200, 8); color: black; margin-top:10px; margin-left: 10px; padding-left: 10px; padding-bottom: 10px; border-radius: 15px">
+                <h1>Warning</h1>
+                <p>Increasing the resolution of the frustum, with + key,<br>
+                   will decrease the performance of the real-time view, <br>
+                   so please be patient. You can expect very slow <br>
+                   performance once you pass 80x80 resolution.</p>
             </div>
         </div>
 

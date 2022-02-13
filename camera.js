@@ -338,7 +338,7 @@ class Camera
             gl.drawArrays(gl.LINES, 0, lineNo);
 
 
-            if(this.#showAll === false) {
+            if((this.#showAll === false) && (this.#colors[0][0] != undefined) && (this.#currx != undefined)) {
                 var selection = []
                 // Highlight selected tile
                 gl.lineWidth(2);
@@ -359,7 +359,12 @@ class Camera
                 //infront of the frustum
 
                 //color
-                gl.uniform3f(program.getUniform("inputColor"), 1.0, 1.0, 1.0);
+                // console.log("inside highlighted square", this.#colors[0][0], this.#currx, this.#curry, (255.0 - this.#colors[this.#curry][this.#currx][0]), (255.0 - this.#colors[this.#curry][this.#currx][1]), (255.0 - this.#colors[this.#curry][this.#currx][2]));
+                // gl.uniform3f(program.getUniform("inputColor"), (this.#colors[this.#curry][this.#currx][0] > 0.5 ? 0.18039 : 0.9453125), (this.#colors[this.#curry][this.#currx][1] > 0.5 ? 0.145098 : 0.772549), (this.#colors[this.#curry][this.#currx][2] > 0.5 ? 0 : 0.0));  //TODO: calculate the inverse color for the current square
+                // gl.uniform3f(program.getUniform("inputColor"), 0.9453125, 0.772549, 0.0 + Math.sin(this.frameNo % 20 / 20));  //TODO: calculate the inverse color for the current square
+                var pulseTime = 20;
+                gl.uniform3f(program.getUniform("inputColor"), 0.5 + Math.sin(this.frameNo % pulseTime/ pulseTime), 0.5 + Math.sin(this.frameNo % pulseTime / pulseTime), Math.sin(this.frameNo % pulseTime / pulseTime));
+
 
                 // Create an empty buffer object
                 var vertex_buffer = gl.createBuffer();
