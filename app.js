@@ -331,7 +331,11 @@ const keyReleased = function(cam, event)
 
 //Rendering the live ViewPort
 var canvas = document.getElementById('game-surface');	//get information about the canvas
-var gl = canvas.getContext('webgl');	//used for webGl calls
+// gl = canvas.getContext("webgl", {
+// 	premultipliedAlpha: false  // Ask for non-premultiplied alpha
+//   });
+gl = canvas.getContext("webgl", { alpha: false });
+// var gl = canvas.getContext('webgl');	//used for webGl calls
 
 if (!gl) {
 	console.log('WebGL not supported, falling back on experimental-webgl');
@@ -354,6 +358,8 @@ var RealTimeView = function (vertexShaderText, fragmentShaderText, simpleFragTex
 	gl.enable(gl.CULL_FACE);
 	gl.frontFace(gl.CCW);
 	gl.cullFace(gl.BACK);	//back of the face of triangles will not be rendered
+	gl.enable(gl.BLEND);
+	gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
 	//initializing the program for rendering
 	testingProgram = new Program();
