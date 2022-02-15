@@ -136,14 +136,15 @@ class thingSphere extends thing
         let tempT0 = vec3.fromValues(t0, t0, t0);
         let tempT0dl = vec3.create();
         vec3.multiply(tempT0dl, tempT0, dl);
-        vec3.add(pos, tempT0dl, ol);
+        vec3.add(pos, ol, tempT0dl);
         // pos = ol + t0*dl;
         //DEBUG STATEMENT
         //console.log("after pos calc", pos);
         // nor = pos;
         //DEBUG STATEMENT
         //console.log("before nor gets reasigned", nor);
-        nor = pos;
+        // nor = pos;
+        vec3.copy(nor, pos);    //to assign the values over as a deep copy not shallow
         //DEBUG STATEMENT
         //console.log("after nor gets reasigned", nor);
 

@@ -61,12 +61,24 @@ class Scene
                 this.#lights[1].intesity = 0.5;
                 this.#lights[1].number = 1;
 
+                let sphereRefract = new thingSphere(sphereShape);
+                this.#things.push(sphereRefract);
+                sphereRefract.resetRotation(0.0, 0.0, 0.0)
+                sphereRefract.resetScale(0.45, 0.45, 0.45);
+                sphereRefract.resetPosition(0.0, 0.0, 3.5);  //TODO: make random
+                sphereRefract.material.type = "REFRACT";
+                // sphereRefract.material.setKD(0.0, 0.5, 0.5);
+                // sphereRefract.material.setKS(1.0, 1.0, 0.5);
+                // sphereRefract.material.setKA(0.1, 0.1, 0.1);
+                // sphereRefract.material.s = 100.0;
+                sphereRefract.material.n = 3.52;
+
                 let cylinder = new thingCylinder(cylinderShape);
                 this.#things.push(cylinder);
                 cylinder.resetRotation((-0.5 * Math.PI), 0.0, 0.0)
                 cylinder.resetScale(0.2, 0.2, 2.0);
-                cylinder.resetPosition(0.0, 0.0, 0.0);  //TODO: make random
-                cylinder.material.setKD(0.5, 0.0, 0.5);
+                cylinder.resetPosition(-0.15, 0.0, -0.65);  //TODO: make random
+                cylinder.material.setKD(1.0, 0.0, 1.0);
                 cylinder.material.setKS(1.0, 1.0, 0.5);
                 cylinder.material.setKA(0.1, 0.1, 0.1);
                 cylinder.material.s = 100.0;
@@ -75,8 +87,8 @@ class Scene
                 this.#things.push(sphere0);
                 sphere0.resetRotation(0.0, 0.0, 0.0)
                 sphere0.resetScale(0.25, 0.25, 0.25);
-                sphere0.resetPosition(0.5, -0.75, 0.3);  //TODO: make random
-                sphere0.material.setKD(0.5, 0.0, 0.0);
+                sphere0.resetPosition(0.25, -0.75, 1.5);  //TODO: make random
+                sphere0.material.setKD(1.0, 1.0, 0.0);
                 sphere0.material.setKS(1.0, 1.0, 0.5);
                 sphere0.material.setKA(0.1, 0.1, 0.1);
                 sphere0.material.s = 100.0;
@@ -85,9 +97,9 @@ class Scene
                 this.#things.push(sphere1);
                 sphere1.resetRotation(0.0, 0.0, 0.0)
                 sphere1.resetScale(0.25, 0.25, 0.25);
-                sphere1.resetPosition(-0.1, -0.75, 0.43);  //TODO: make random
-                sphere1.material.type = "REFLECT";
-                sphere1.material.setKD(0.5, 0.5, 0.0);
+                sphere1.resetPosition(0.5, -0.75, 0.0);  //TODO: make random
+                sphere1.material.type = "PHONG";
+                sphere1.material.setKD(0.75, 0.15, 0.33);
                 sphere1.material.setKS(1.0, 1.0, 0.5);
                 sphere1.material.setKA(0.1, 0.1, 0.1);
                 sphere1.material.s = 100.0;
@@ -95,12 +107,26 @@ class Scene
                 let sphere2 = new thingSphere(sphereShape);
                 this.#things.push(sphere2);
                 sphere2.resetRotation(0.0, 0.0, 0.0)
-                sphere2.resetScale(0.25, 0.25, 0.25);
-                sphere2.resetPosition(-0.5, -0.75, 0.0);  //TODO: make random
-                sphere2.material.setKD(0.0, 0.5, 0.5);
+                sphere2.resetScale(0.33, 0.33, 0.33);
+                sphere2.resetPosition(-0.5, -0.66, -0.25);  //TODO: make random
+                sphere2.material.type = "REFLECT"
+                sphere2.material.setKD(0.0, 1.0, 1.0);
                 sphere2.material.setKS(1.0, 1.0, 0.5);
                 sphere2.material.setKA(0.1, 0.1, 0.1);
                 sphere2.material.s = 100.0;
+
+                let sphereBonus = new thingSphere(sphereShape);
+                this.#things.push(sphereBonus);
+                sphereBonus.resetRotation(0.0, 0.0, 0.0)
+                sphereBonus.resetScale(0.25, 0.25, 0.25);
+                sphereBonus.resetPosition(-0.75, -0.75, 1.5);  //TODO: make random
+                sphereBonus.material.type = "PHONG"
+                sphereBonus.material.setKD(0.0, 0.80, 0.60);
+                sphereBonus.material.setKS(1.0, 1.0, 0.5);
+                sphereBonus.material.setKA(0.1, 0.1, 0.1);
+                sphereBonus.material.s = 100.0;
+
+                
 
                 let floor = new thingPlane(planeShape);
                 this.#things.push(floor);
@@ -708,6 +734,95 @@ class Scene
                     };
                     let morePoints = this.trace(this, sceneObj);
 
+                    color = sceneObj.color;
+
+                    if(storePoints)
+                    {
+                        for(var i = 0; i < morePoints.length; i++)  //push in each returned point one at a time
+                        {
+                            points.push(morePoints[i]);
+                        }
+                    }
+                }
+            }
+            else if(mat_.type="REFRACT")
+            {
+                if(depth < this.#depthMax)
+                {
+                    console.log("entered refract");
+                    //compute refracted ray
+                    let V = vec3.fromValues((-1.0 * rayDir[0]), (-1.0 * rayDir[1]), (-1.0 * rayDir[2]));
+                    let N = vec3.fromValues(nor_[0], nor_[1], nor_[2]);
+                    // The new index of refraction depends on whether the ray
+                    // is entering or exiting the material. If the ray is hitting
+                    // the back of the material (e.g., inside of the sphere), then
+                    // the new index of refraction is 1.0 (air). Otherwise, it is
+                    // from the material.
+                    let n1 = back_ ? 1.0 : mat_.n;
+                    let VN = vec3.dot(V, N);
+                    let tmp = n1*n1 - n0*n0*(1.0 - VN*VN);
+                    let rDir = vec3.create();
+                    let n;
+                    if(tmp < 0.0)
+                    {
+                        console.log("refract temp");
+                        //Total internal reflection
+                        // rDir = 2.0*VN*N - V;
+                        vec3.subtract(rDir, vec3.fromValues((2.0*VN*N[0]), (2.0*VN*N[1]), (2.0*VN*N[2])), V);
+                        n = n0;
+                    }
+                    else
+                    {
+                        console.log("refract else");
+                        // rDir = -(Math.sqrt(tmp)/n1)*N + (n0/n1)*(VN*N - V);
+                        let cooefForN = Math.sqrt(tmp) / n1;
+                        let tempN = vec3.fromValues((cooefForN * N[0]), (cooefForN * N[1]), (cooefForN * N[2]));
+                        let negTempN = vec3.fromValues((-1.0 * tempN[0]), (-1.0 * tempN[1]), (-1.0 * tempN[2]));
+
+                        let VNtimesN = vec3.fromValues((VN * N[0]), (VN * N[1]), (VN * N[2]));
+                        let VNNsubV = vec3.create();
+                        vec3.subtract(VNNsubV, VNtimesN, V);
+                        let n0divn1 = n0/n1;
+                        let rightSide = vec3.fromValues((n0divn1 * VNNsubV[0]), (n0divn1 * VNNsubV[1]), (n0divn1 * VNNsubV[2]));
+
+                        let tempAdd = vec3.create();
+                        vec3.add(tempAdd, negTempN, rightSide);
+                        rDir = vec3.fromValues(tempAdd[0], tempAdd[1], tempAdd[2]);
+
+
+
+                        // let tempN = vec3.fromValues(((Math.sqrt(tmp)/n1) * N[0]), ((Math.sqrt(tmp)/n1) * N[1]), ((Math.sqrt(tmp)/n1) * N[2]));
+                        // let tempSub = vec3.create();
+                        // vec3.subtract(tempSub, vec3.fromValues((VN * N[0]), (VN * N[1]), (VN * N[2])), V);
+                        // vec3.add(rDir, tempN, vec3.fromValues(((n0/n1)* tempSub[0]), ((n0/n1)* tempSub[1]), ((n0/n1)* tempSub[2])));
+                        // rDir = vec3.fromValues((-1.0 * rDir[0]), (-1.0 * rDir[1]), (-1.0 * rDir[2]));
+
+                        n = n1;
+                    }
+                    // DEBUG with builtin refract() function
+                    //                vec3 V_(V(0), V(1), V(2));
+                    //                vec3 N_(N(0), N(1), N(2));
+                    //                vec3 foo = glm::refract(-V_, N_, float(n0/n1));
+                    //                rDir << foo.x, foo.y, foo.z;
+                    // Advance the ray origin slightly so that
+                    // the point itself will not occlude it
+                    // let rOrig = vec3.create();
+                    // vec3.add(rOrig, pos_, vec3.fromValues((1e-4 * rDir[0]), (1e-4 * rDir[1]), (1e-4 * rDir[2])));
+                    let rOrigRefract = vec3.fromValues((pos_[0] + (1e-4 * rDir[0])), (pos_[1] + (1e-4 * rDir[1])), (pos_[2] + (1e-4 * rDir[2])));
+                    
+                    //pack into an object the values
+                    // let color = vec3.create();
+                    // color = vec3.fromValues(0.0, 0.0, 0.0);
+                    let sceneObj = {
+                        rayOrig: rOrigRefract,
+                        rayDir: rDir,
+                        color: color,
+                        depth: depth + 1,
+                        n0: n0,
+                        storePoints: storePoints
+                    };
+                    let morePoints = this.trace(this, sceneObj);
+                    console.log("morePoints");
                     color = sceneObj.color;
 
                     if(storePoints)
