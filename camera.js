@@ -28,6 +28,8 @@ class Camera
     #showAll;
     scene;
     frameNo;
+    showColoumn;
+    showRow;
 
     constructor()
     {
@@ -71,6 +73,8 @@ class Camera
         console.log("now outputing the constructor for rayPts", this.#rayPts);
         this.frameNo = 0;
         this.toggleSquares === false;
+        this.showColoumn = false;
+        this.showRow = false;
     }
 
     //this function will record the position of the mouse and change the state of the button press
@@ -197,6 +201,11 @@ class Camera
         this.#showAll = !this.#showAll;
     }
 
+    toggleOff()
+    {
+        this.#showAll = false;
+    }
+
     draw(MV, program, quadsProgram, planeShape)
     {
         var timePerBounce = 20;
@@ -224,6 +233,26 @@ class Camera
                             this.animateLine(this.#rayPts[i][j][k - 1], this.#rayPts[i][j][k], 0, 20, 21 , program, false);
                             
                         }
+                    }
+                }
+            }
+            else if(this.showColoumn === true)
+            {
+                for(var i = 0; i < this.numx; i++)
+                {
+                    for(var k = 1; k < this.#rayPts[i][this.#currx].length; k++)
+                    {
+                        this.animateLine(this.#rayPts[i][this.#currx][k - 1], this.#rayPts[i][this.#currx][k], 0, 20, 21 , program, false);
+                    }
+                }
+            }
+            else if(this.showRow === true)
+            {
+                for(var i = 0; i < this.numy; i++)
+                {
+                    for(var k = 1; k < this.#rayPts[this.#curry][i].length; k++)
+                    {
+                        this.animateLine(this.#rayPts[this.#curry][i][k - 1], this.#rayPts[this.#curry][i][k], 0, 20, 21 , program, false);
                     }
                 }
             }

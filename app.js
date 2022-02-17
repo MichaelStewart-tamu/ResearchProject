@@ -284,6 +284,8 @@ const keyPress = function(obj, event)
 	}
 	if("a" === event.key)
 	{
+		obj.camera.showRow = false;	//disable showing row
+		obj.camera.showColoumn = false;	//disable showing row
 		obj.camera.raytrace(obj.scene);
 		obj.camera.toggleSquares = true;
 		obj.camera.toggleShowAll();
@@ -310,6 +312,42 @@ const keyPress = function(obj, event)
 		{
 			obj.camera.raytrace(obj.scene);	//ray trace the scene to show on tiles
 			obj.camera.toggleSquares = true;	//allow the tiles to be displayed
+		}
+	}
+	if("c" === event.key)
+	{
+		//allow only coloumn to show
+		obj.camera.showRow = false;	//disable showing row
+		obj.camera.toggleOff();	//disable show all 
+		obj.camera.raytrace(obj.scene);
+		obj.camera.toggleSquares = true;
+
+		//invert whatever the current selection is
+		if(obj.camera.showColoumn === true)
+		{
+			obj.camera.showColoumn = false;
+		}
+		else
+		{
+			obj.camera.showColoumn = true;
+		}
+	}
+	if("h" === event.key)
+	{
+		//allow only row to show
+		obj.camera.showColoumn = false;	//disable showing Coloumn
+		obj.camera.toggleOff();	//disable show all 
+		obj.camera.raytrace(obj.scene);
+		obj.camera.toggleSquares = true;
+
+		//invert whatever the current selection is
+		if(obj.camera.showRow === true)
+		{
+			obj.camera.showRow = false;
+		}
+		else
+		{
+			obj.camera.showRow = true;
 		}
 	}
 
