@@ -16,7 +16,7 @@ class Scene
         this.#depthMax = 5;
     }
 
-    load(scene, CylModel, bunnyModel, planeModel, sphereModel, teapotModel, evaModel)
+    load(scene, CylModel, bunnyModel, planeModel, sphereModel, teapotModel, evaModel, foregroundModel, leftBaseModel, leftDetailsModel, lightBlockModel, rightBaseModel, rightDetailsModel)
     {
         this.#lights.splice(0, this.#lights.length);
         this.#things.splice(0, this.#things.length);
@@ -41,6 +41,24 @@ class Scene
 
         evaShape = new Shape();
         evaShape.init(evaModel);
+
+        let fShape = new Shape();
+        fShape.init(foregroundModel);
+
+        let leftB = new Shape();
+        leftB.init(leftBaseModel);
+
+        let leftD = new Shape();
+        leftD.init(leftDetailsModel);
+
+        let lightShade = new Shape();
+        lightShade.init(lightBlockModel);
+
+        let rightB = new Shape();
+        rightB.init(rightBaseModel);
+
+        let rightD = new Shape();
+        rightD.init(rightDetailsModel);
         
 
         switch(scene)
@@ -250,7 +268,7 @@ class Scene
 
                 light0 = new Light();
                 this.#lights.push(light0);
-                light0.position = [-1.0, 2.0, 2.0];
+                light0.position = [1.0, 2.0, 2.0];
                 light0.intesity = 0.5;
                 light0.number = 0;
 
@@ -400,8 +418,8 @@ class Scene
                 obj.material.s = 100.0;
                 if(scene === 6)
                 {
-                    light0.position = [-1.0, 1.0, 2.0];
-                    this.#lights[1].position = [-1.0, 1.0, 2.0];
+                    light0.position = [-1.0, 1.0, 1.0];
+                    this.#lights[1].position = [-1.0, 1.0, 1.0];
                     obj.resetRotation(0.0, 0.0, 0.0);
                 }
                 else{
@@ -442,27 +460,108 @@ class Scene
 
                 light0 = new Light();
                 this.#lights.push(light0);
-                light0.position = [-2.0, 10.0, 1.0];
-                light0.intesity = 0.5;
+                light0.position = [0.050452, 10.787, -6.9591];
+                light0.intesity = 1.0;
                 light0.number = 0;
 
                 // light1 = new Light();
                 this.#lights.push(new Light());
-                this.#lights[1].position = [0.5, 10, 0.0];
-                this.#lights[1].intesity = 0.5;
+                this.#lights[1].position = [-2.0715, -2.3278, -19.781];
+                this.#lights[1].intesity = 1.0;
                 this.#lights[1].number = 1;
 
                 let evaUnit1 = new thingObj(evaShape);
                 this.#things.push(evaUnit1);
-                evaUnit1.resetPosition(0.0, -1.9, 0.0);
-                evaUnit1.resetScale(1.2, 1.2, 1.2);
-                evaUnit1.resetRotation(0.0, 0.0, 0.0);
-                evaUnit1.material.setKD(74/255, 25/255, 255/255);
-                evaUnit1.material.setKS(1.0, 1.0, 0.5);
-                evaUnit1.material.setKA(0.0, 0.0, 0.0);
-                evaUnit1.material.s = 100.0;
-                break;
+                evaUnit1.resetPosition(0.0, -1.5, -5.0);
+                evaUnit1.resetScale(1.0, 1.0, 1.0);
+                evaUnit1.resetRotation(0.0, Math.PI * 0.5, 0.0);
+                evaUnit1.material.setKD(1.0, 1.0, 1.0);
+                evaUnit1.material.setKS(0.4, 0.4, 0.4);
+                evaUnit1.material.setKA(0.01, 0.01, 0.01);
+                evaUnit1.material.s = 20.0;
 
+                let foreground = new thingObj(fShape);
+                this.#things.push(foreground);
+                foreground.resetPosition(0.0, 0.0, 0.0);
+                foreground.resetScale(1.0, 1.0, 1.0);
+                foreground.resetRotation(0.0, 0.0, 0.0);
+                foreground.material.setKD(1.0, 1.0, 1.0);
+                foreground.material.setKS(0.1, 0.1, 0.1);
+                foreground.material.setKA(0.0, 0.0, 0.0);
+                foreground.material.s = 200.0;
+
+                let leftBase = new thingObj(leftB);
+                this.#things.push(leftBase);
+                leftBase.resetPosition(0.0, 0.0, 0.0);
+                leftBase.resetScale(1.0, 1.0, 1.0);
+                leftBase.resetRotation(0.0, 0.0, 0.0);
+                leftBase.material.setKD(1.0, 1.0, 1.0);
+                leftBase.material.setKS(0.1, 0.1, 0.1);
+                leftBase.material.setKA(0.0, 0.0, 0.0);
+                leftBase.material.s = 200.0;
+
+                let leftDetails = new thingObj(leftD);
+                this.#things.push(leftDetails);
+                leftDetails.resetPosition(0.0, 0.0, 0.0);
+                leftDetails.resetScale(1.0, 1.0, 1.0);
+                leftDetails.resetRotation(0.0, 0.0, 0.0);
+                leftDetails.material.setKD(0.0, 0.0, 0.0);
+                leftDetails.material.setKS(0.8, 0.8, 0.8);
+                leftDetails.material.setKA(0.0, 0.0, 0.0);
+                leftDetails.material.s = 3.0;
+
+                let rightBase = new thingObj(rightB);
+                this.#things.push(rightBase);
+                rightBase.resetPosition(0.0, 0.0, 0.0);
+                rightBase.resetScale(1.0, 1.0, 1.0);
+                rightBase.resetRotation(0.0, 0.0, 0.0);
+                rightBase.material.setKD(0.1, 0.1, 0.1);
+                rightBase.material.setKS(0.1, 0.1, 0.1);
+                rightBase.material.setKA(0.035, 0.035, 0.035);
+                rightBase.material.s = 20.0;
+
+                let rightDetails = new thingObj(rightD);
+                this.#things.push(rightDetails);
+                rightDetails.resetPosition(0.0, 0.0, 0.0);
+                rightDetails.resetScale(1.0, 1.0, 1.0);
+                rightDetails.resetRotation(0.0, 0.0, 0.0);
+                rightDetails.material.setKD(0.75, 0.75, 0.75);
+                rightDetails.material.setKS(0.8, 0.8, 0.8);
+                rightDetails.material.setKA(0.0, 0.0, 0.0);
+                rightDetails.material.s = 50.0;
+
+
+                let lightBlock = new thingObj(lightShade);
+                this.#things.push(lightBlock);
+                lightBlock.resetPosition(0.0, 0.0, 0.0);
+                lightBlock.resetScale(1.0, 1.0, 1.0);
+                lightBlock.resetRotation(0.0, 0.0, 0.0);
+                lightBlock.material.setKD(0.0, 0.0, 0.0);
+                lightBlock.material.setKS(0.8, 0.8, 0.8);
+                lightBlock.material.setKA(0.0, 0.0, 0.0);
+                lightBlock.material.s = 50.0;
+
+                let basegroundPlane = new thingPlane(planeShape);
+                this.#things.push(basegroundPlane);
+                basegroundPlane.resetRotation((-0.5/2.0 * Math.PI), 0.0, 0.0)
+                basegroundPlane.resetScale(100.0, 100.0, 100.0);
+                basegroundPlane.resetPosition(0.0, -24.894, 0.0);
+                basegroundPlane.material.setKD(0.0, 0.0, 0.0);
+                basegroundPlane.material.setKS(0.8, 0.8, 0.8);
+                basegroundPlane.material.setKA(0.075, 0.075, 0.075);
+                basegroundPlane.material.s = 1.75;
+
+                let baseGround = new thingPlane(planeShape);
+                this.#things.push(baseGround);
+                baseGround.resetRotation((-1.044444/2.0* Math.PI), 0.0, 0.0)
+                baseGround.resetScale(100.0, 100.0, 100.0);
+                baseGround.resetPosition(0.0, 0.0, 19.3191);
+                baseGround.material.setKD(0.0, 0.0, 0.0);
+                baseGround.material.setKS(0.0, 0.0, 0.0);
+                baseGround.material.setKA(0.0, 0.0, 0.0);
+                baseGround.material.s = 0.0;
+
+                break;
         }
     }
 

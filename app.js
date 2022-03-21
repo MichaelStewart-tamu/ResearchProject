@@ -99,7 +99,73 @@ var InitDemo = function ()
 																				} 
 																				else
 																				{
-																					RealTimeView(vsText, fsText, simpleFragText, simpleVertText, model0Obj, model1Obj, model2Obj, model3Obj, model4Obj, model5Obj);	//finally calling the next function to render
+																					loadJSONResource('./foreground.json', function (model6Err, model6Obj) //loads teapot model
+																					{
+																						if (model6Err) //if the function loadJSONResource returns an error
+																						{
+																							alert('Fatal error getting teapot model (see console)');
+																							console.error(model6Err);
+																						} 
+																						else
+																						{
+																							loadJSONResource('./leftBase.json', function (model7Err, model7Obj) //loads teapot model
+																							{
+																								if (model7Err) //if the function loadJSONResource returns an error
+																								{
+																									alert('Fatal error getting teapot model (see console)');
+																									console.error(model7Err);
+																								} 
+																								else
+																								{
+																									loadJSONResource('./leftDetails.json', function (model8Err, model8Obj) //loads teapot model
+																									{
+																										if (model8Err) //if the function loadJSONResource returns an error
+																										{
+																											alert('Fatal error getting teapot model (see console)');
+																											console.error(model8Err);
+																										} 
+																										else
+																										{
+																											loadJSONResource('./lightBlock.json', function (model9Err, model9Obj) //loads teapot model
+																											{
+																												if (model9Err) //if the function loadJSONResource returns an error
+																												{
+																													alert('Fatal error getting teapot model (see console)');
+																													console.error(model9Err);
+																												} 
+																												else
+																												{
+																													loadJSONResource('./rightBase.json', function (model10Err, model10Obj) //loads teapot model
+																													{
+																														if (model10Err) //if the function loadJSONResource returns an error
+																														{
+																															alert('Fatal error getting teapot model (see console)');
+																															console.error(model10Err);
+																														} 
+																														else
+																														{
+																															loadJSONResource('./rightDetails.json', function (model11Err, model11Obj) //loads teapot model
+																															{
+																																if (model11Err) //if the function loadJSONResource returns an error
+																																{
+																																	alert('Fatal error getting teapot model (see console)');
+																																	console.error(model11Err);
+																																} 
+																																else
+																																{
+																																	RealTimeView(vsText, fsText, simpleFragText, simpleVertText, model0Obj, model1Obj, model2Obj, model3Obj, model4Obj, model5Obj, model6Obj, model7Obj, model8Obj, model9Obj, model10Obj, model11Obj);	//finally calling the next function to render
+																																}
+																															});
+																														}
+																													});
+																												}
+																											});
+																										}
+																									});
+																								}
+																							});
+																						}
+																					});
 																				}
 																			});
 																		}
@@ -182,7 +248,7 @@ const keyPress = function(obj, event)
 	if("0" === event.key)
 	{
 		obj.camera.keyNumber = 0;
-		obj.scene.load(0, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva);				
+		obj.scene.load(0, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva, obj.foreground, obj.leftB, obj.leftD, obj.lightB, obj.rightB, obj.rightD);				
 		// obj.camera.reset();
 		obj.camera.raytrace(obj.scene);
 		document.getElementById('img').src = "s0.png";
@@ -191,7 +257,7 @@ const keyPress = function(obj, event)
 	if("1" === event.key)
 	{
 		obj.camera.keyNumber = 1;
-		obj.scene.load(1, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva);
+		obj.scene.load(1, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva, obj.foreground, obj.leftB, obj.leftD, obj.lightB, obj.rightB, obj.rightD);
 		// obj.camera.reset();
 		obj.camera.raytrace(obj.scene);
 		document.getElementById('img').src = "s1.png";
@@ -199,7 +265,7 @@ const keyPress = function(obj, event)
 	}
 	if("2" === event.key)
 	{
-		obj.scene.load(2, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva);				
+		obj.scene.load(2, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva, obj.foreground, obj.leftB, obj.leftD, obj.lightB, obj.rightB, obj.rightD);				
 		// obj.camera.reset();
 		obj.camera.raytrace(obj.scene);
 		document.getElementById('img').src = "s2.png";
@@ -207,7 +273,7 @@ const keyPress = function(obj, event)
 	}
 	if("3" === event.key)
 	{
-		obj.scene.load(3, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva);
+		obj.scene.load(3, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva, obj.foreground, obj.leftB, obj.leftD, obj.lightB, obj.rightB, obj.rightD);
 		// obj.camera.reset();
 		obj.camera.raytrace(obj.scene);
 		document.getElementById('img').src = "s3.png";
@@ -215,7 +281,7 @@ const keyPress = function(obj, event)
 	}
 	if("4" === event.key)
 	{
-		obj.scene.load(4, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva);
+		obj.scene.load(4, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva, obj.foreground, obj.leftB, obj.leftD, obj.lightB, obj.rightB, obj.rightD);
 		// obj.camera.reset();
 		obj.camera.raytrace(obj.scene);
 		document.getElementById('img').src = "s4.png";
@@ -223,7 +289,7 @@ const keyPress = function(obj, event)
 	}
 	if("5" === event.key)
 	{
-		obj.scene.load(5, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva);
+		obj.scene.load(5, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva, obj.foreground, obj.leftB, obj.leftD, obj.lightB, obj.rightB, obj.rightD);
 		// obj.camera.reset();
 		obj.camera.raytrace(obj.scene);
 		document.getElementById('img').src = "s5.png";
@@ -231,7 +297,7 @@ const keyPress = function(obj, event)
 	}
 	if("6" === event.key)
 	{
-		obj.scene.load(6, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva);
+		obj.scene.load(6, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva, obj.foreground, obj.leftB, obj.leftD, obj.lightB, obj.rightB, obj.rightD);
 		// obj.camera.reset();
 		obj.camera.raytrace(obj.scene);
 		document.getElementById('img').src = "s6.png";
@@ -239,7 +305,7 @@ const keyPress = function(obj, event)
 	}
 	if("7" === event.key)
 	{
-		obj.scene.load(7, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva);
+		obj.scene.load(7, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva, obj.foreground, obj.leftB, obj.leftD, obj.lightB, obj.rightB, obj.rightD);
 		// obj.camera.reset();
 		obj.camera.raytrace(obj.scene);
 		document.getElementById('img').src = "s7.png";
@@ -247,14 +313,14 @@ const keyPress = function(obj, event)
 	}
 	if("8" === event.key)
 	{
-		obj.scene.load(8, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva);
+		obj.scene.load(8, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva, obj.foreground, obj.leftB, obj.leftD, obj.lightB, obj.rightB, obj.rightD);
 		// obj.camera.reset();
 		obj.camera.raytrace(obj.scene);
 		obj.camera.frameNo = 0;	//reset the time for a new scene
 	}
 	if("9" === event.key)
 	{
-		obj.scene.load(9, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva);
+		obj.scene.load(9, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva, obj.foreground, obj.leftB, obj.leftD, obj.lightB, obj.rightB, obj.rightD);
 		obj.camera.raytrace(obj.scene);
 		document.getElementById('img').src = "s9.png";
 		obj.camera.frameNo = 0;	//reset the time for a new scene
@@ -314,7 +380,7 @@ const keyPress = function(obj, event)
 			obj.camera.toggleSquares = true;	//allow the tiles to be displayed
 		}
 	}
-	if("c" === event.key)
+	if("v" === event.key)
 	{
 		//allow only coloumn to show
 		obj.camera.showRow = false;	//disable showing row
@@ -385,7 +451,7 @@ if (!gl) {
 }
 
 //this acts like main() in c++
-var RealTimeView = function (vertexShaderText, fragmentShaderText, simpleFragText, simpleVertText, CylModel, bunnyModel, planeModel, sphereModel, teapotModel, evaModel) 	//the input arguments to this function are importing models and shader files
+var RealTimeView = function (vertexShaderText, fragmentShaderText, simpleFragText, simpleVertText, CylModel, bunnyModel, planeModel, sphereModel, teapotModel, evaModel, foregroundModel, leftBaseModel, leftDetailsModel, lightBlockModel, rightBaseModel, rightDetailsModel) 	//the input arguments to this function are importing models and shader files
 {
 	console.log('Have entered the RealTimeView Function');	//making sure that the function has been entered
 
@@ -469,7 +535,7 @@ var RealTimeView = function (vertexShaderText, fragmentShaderText, simpleFragTex
 	//creating the scene
 	let sceneTest = new Scene();
 	//need to initially load so that something shows up on screen without the user needing to interact first
-	sceneTest.load(0, CylModel, bunnyModel, planeModel, sphereModel, teapotModel, evaModel);
+	sceneTest.load(0, CylModel, bunnyModel, planeModel, sphereModel, teapotModel, evaModel, foregroundModel, leftBaseModel, leftDetailsModel, lightBlockModel, rightBaseModel, rightDetailsModel);
 	document.getElementById('img').src = "s0.png";	//initiallizing the full render				
 
 	let obj = {	//used for the keyboard call back, can bring in an object, cannot pass by reference
@@ -480,7 +546,13 @@ var RealTimeView = function (vertexShaderText, fragmentShaderText, simpleFragTex
 		plane: planeModel,
 		sphere: sphereModel,
 		teapot: teapotModel,
-		eva: evaModel
+		eva: evaModel,
+		foreground: foregroundModel,
+		leftB: leftBaseModel,
+		leftD: leftDetailsModel,
+		lightB: lightBlockModel,
+		rightB: rightBaseModel,
+		rightD: rightDetailsModel
 	}
 
 	//Mouse Detection
