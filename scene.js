@@ -82,8 +82,8 @@ class Scene
                 let sphereRefract = new thingSphere(sphereShape);
                 this.#things.push(sphereRefract);
                 sphereRefract.resetRotation(0.0, 0.0, 0.0)
-                sphereRefract.resetScale(0.45, 0.45, 0.45);
-                sphereRefract.resetPosition(0.0, 0.0, 3.5);  //TODO: make random
+                sphereRefract.resetScale(0.35, 0.35, 0.35);
+                sphereRefract.resetPosition(0.0, -0.65, 0.5);  //TODO: make random
                 sphereRefract.material.type = "REFRACT";
                 // sphereRefract.material.setKD(0.0, 0.5, 0.5);
                 // sphereRefract.material.setKS(1.0, 1.0, 0.5);
@@ -433,27 +433,136 @@ class Scene
             case 8:
                 console.log("have entered scene 8");
 
+
                 light0 = new Light();
                 this.#lights.push(light0);
-                light0.position = [-2.0, 1.0, 1.0];
+                light0.position = [-0.3, 0.6, 0.3];
                 light0.intesity = 0.5;
                 light0.number = 0;
 
                 // light1 = new Light();
                 this.#lights.push(new Light());
-                this.#lights[1].position = [0.5, -0.5, 0.0];
+                this.#lights[1].position = [0.3, 0.6, -0.3];
                 this.#lights[1].intesity = 0.5;
                 this.#lights[1].number = 1;
 
-                let teapot = new thingObj(teapotShape);
-                this.#things.push(teapot);
-                teapot.resetPosition(0.0, 0.0, 0.0);
-                teapot.resetScale(2.0, 2.0, 2.0);
-                teapot.resetRotation(0.0, 0.0, 0.0);
-                teapot.material.setKD(0.5, 0.4, 0.5);
-                teapot.material.setKS(1.0, 1.0, 0.5);
-                teapot.material.setKA(0.1, 0.1, 0.1);
-                teapot.material.s = 100.0;
+                let sphereRefract2 = new thingSphere(sphereShape);
+                this.#things.push(sphereRefract2);
+                sphereRefract2.resetRotation(0.0, 0.0, 0.0)
+                sphereRefract2.resetScale(0.45, 0.45, 0.45);
+                sphereRefract2.resetPosition(0.0, 0.0, 3.5);  //TODO: make random
+                sphereRefract2.material.type = "REFRACT";
+                // sphereRefract.material.setKD(0.0, 0.5, 0.5);
+                // sphereRefract.material.setKS(1.0, 1.0, 0.5);
+                // sphereRefract.material.setKA(0.1, 0.1, 0.1);
+                // sphereRefract.material.s = 100.0;
+                sphereRefract2.material.n = 3.52;
+
+                let cylinder2 = new thingCylinder(cylinderShape);
+                this.#things.push(cylinder2);
+                cylinder2.resetRotation((-0.5 * Math.PI), 0.0, 0.0)
+                cylinder2.resetScale(0.2, 0.2, 2.0);
+                cylinder2.resetPosition(-0.15, 0.0, -0.65);  //TODO: make random
+                cylinder2.material.setKD(1.0, 0.0, 1.0);
+                cylinder2.material.setKS(1.0, 1.0, 0.5);
+                cylinder2.material.setKA(0.1, 0.1, 0.1);
+                cylinder2.material.s = 100.0;
+
+                let sphere02 = new thingSphere(sphereShape);
+                this.#things.push(sphere02);
+                sphere02.resetRotation(0.0, 0.0, 0.0)
+                sphere02.resetScale(0.25, 0.25, 0.25);
+                sphere02.resetPosition(0.25, -0.75, 1.5);  //TODO: make random
+                sphere02.material.setKD(1.0, 1.0, 0.0);
+                sphere02.material.setKS(1.0, 1.0, 0.5);
+                sphere02.material.setKA(0.1, 0.1, 0.1);
+                sphere02.material.s = 100.0;
+
+                let sphere12 = new thingSphere(sphereShape);
+                this.#things.push(sphere12);
+                sphere12.resetRotation(0.0, 0.0, 0.0)
+                sphere12.resetScale(0.25, 0.25, 0.25);
+                sphere12.resetPosition(0.5, -0.75, 0.0);  //TODO: make random
+                sphere12.material.type = "PHONG";
+                sphere12.material.setKD(0.75, 0.15, 0.33);
+                sphere12.material.setKS(1.0, 1.0, 0.5);
+                sphere12.material.setKA(0.1, 0.1, 0.1);
+                sphere12.material.s = 100.0;
+
+                let sphere22 = new thingSphere(sphereShape);
+                this.#things.push(sphere22);
+                sphere22.resetRotation(0.0, 0.0, 0.0)
+                sphere22.resetScale(0.33, 0.33, 0.33);
+                sphere22.resetPosition(-0.5, -0.66, -0.25);  //TODO: make random
+                sphere22.material.type = "REFLECT"
+                sphere22.material.setKD(0.0, 1.0, 1.0);
+                sphere22.material.setKS(1.0, 1.0, 0.5);
+                sphere22.material.setKA(0.1, 0.1, 0.1);
+                sphere22.material.s = 100.0;
+
+                let sphereBonus2 = new thingSphere(sphereShape);
+                this.#things.push(sphereBonus2);
+                sphereBonus2.resetRotation(0.0, 0.0, 0.0)
+                sphereBonus2.resetScale(0.25, 0.25, 0.25);
+                sphereBonus2.resetPosition(-0.75, -0.75, 1.5);  //TODO: make random
+                sphereBonus2.material.type = "PHONG"
+                sphereBonus2.material.setKD(0.0, 0.80, 0.60);
+                sphereBonus2.material.setKS(1.0, 1.0, 0.5);
+                sphereBonus2.material.setKA(0.1, 0.1, 0.1);
+                sphereBonus2.material.s = 100.0;
+
+                
+
+                let floor2 = new thingPlane(planeShape);
+                this.#things.push(floor2);
+                floor2.resetRotation((-0.5 * Math.PI), 0.0, 0.0)
+                floor2.resetScale(1.0, 1.0, 1.0);
+                floor2.resetPosition(0.0, -1.0, 0.0);
+                floor2.material.setKD(1.0, 1.0, 1.0);
+                floor2.material.setKS(0.0, 0.0, 0.0);
+                floor2.material.setKA(0.1, 0.1, 0.1);
+                floor2.material.s = 200.0;
+
+                let ceiling2 = new thingPlane(planeShape);
+                this.#things.push(ceiling2);
+                ceiling2.resetRotation((0.5 * Math.PI), 0.0, 0.0)
+                ceiling2.resetScale(1.0, 1.0, 1.0);
+                ceiling2.resetPosition(0.0, 1.0, 0.0);
+                ceiling2.material.setKD(1.0, 1.0, 1.0);
+                ceiling2.material.setKS(0.0, 0.0, 0.0);
+                ceiling2.material.setKA(0.1, 0.1, 0.1);
+                ceiling2.material.s = 200.0;
+
+                let backWall2 = new thingPlane(planeShape);
+                this.#things.push(backWall2);
+                backWall2.resetRotation((0.0 * Math.PI), 0.0, 0.0)
+                backWall2.resetScale(1.0, 1.0, 1.0);
+                backWall2.resetPosition(0.0, 0.0, -1.0);
+                backWall2.material.setKD(1.0, 1.0, 1.0);
+                backWall2.material.setKS(0.0, 0.0, 0.0);
+                backWall2.material.setKA(0.1, 0.1, 0.1);
+                backWall2.material.s = 200.0;
+
+                let leftWall2 = new thingPlane(planeShape);
+                this.#things.push(leftWall2);
+                leftWall2.resetRotation(0.0, (0.5 * Math.PI), 0.0)
+                leftWall2.resetScale(1.0, 1.0, 1.0);
+                leftWall2.resetPosition(-1.0, 0.0, 0.0);
+                leftWall2.material.setKD(1.0, 0.0, 0.0);
+                leftWall2.material.setKS(0.0, 0.0, 0.0);
+                leftWall2.material.setKA(0.1, 0.1, 0.1);
+                leftWall2.material.s = 200.0;
+
+                let rightWall2 = new thingPlane(planeShape);
+                this.#things.push(rightWall2);
+                rightWall2.resetRotation(0.0, (-0.5 * Math.PI), 0.0)
+                rightWall2.resetScale(1.0, 1.0, 1.0);
+                rightWall2.resetPosition(1.0, 0.0, 0.0);
+                rightWall2.material.setKD(0.0, 1.0, 0.0);
+                rightWall2.material.setKS(0.0, 0.0, 0.0);
+                rightWall2.material.setKA(0.1, 0.1, 0.1);
+                rightWall2.material.s = 200.0;
+
                 break;
             case 9:
                 console.log("have entered scene 9");

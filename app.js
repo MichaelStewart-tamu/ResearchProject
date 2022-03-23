@@ -316,6 +316,7 @@ const keyPress = function(obj, event)
 		obj.scene.load(8, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva, obj.foreground, obj.leftB, obj.leftD, obj.lightB, obj.rightB, obj.rightD);
 		// obj.camera.reset();
 		obj.camera.raytrace(obj.scene);
+		document.getElementById('img').src = "s8.png";
 		obj.camera.frameNo = 0;	//reset the time for a new scene
 	}
 	if("9" === event.key)
@@ -362,7 +363,7 @@ const keyPress = function(obj, event)
 		obj.camera.toggleSquares = false;
 	}
 	
-	if("=" === event.key)	//equals because the plus button requires shift
+	if("=" === event.key || "+" == event.key)	//equals because the plus button requires shift, so if the user hits the key with a plus on it without hitting shift it will still work
 	{
 		obj.camera.changeSize(true);	
 		if(obj.camera.toggleSquares === true)	//in case the frustum is clear this is to keep it clear
@@ -371,7 +372,7 @@ const keyPress = function(obj, event)
 			obj.camera.toggleSquares = true;	//allow the tiles to be displayed
 		}
 	}
-	if("-" === event.key)	//equals because the plus button requires shift
+	if("-" === event.key || "_" == event.key)	//equals because the plus button requires shift, so if the user hits the key with a minus on it without hitting shift it will still work
 	{
 		obj.camera.changeSize(false);
 		if(obj.camera.toggleSquares === true)	//in case the frustum is clear this is to keep it clear
