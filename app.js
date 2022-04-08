@@ -27,29 +27,29 @@ var InitDemo = function ()
 				} 
 				else 
 				{
-					loadJSONResource('./cylinder.json', function (model0Err, model0Obj) //Loads cylinder model
+					loadJSONResource('./resources/json/cylinder.json', function (model0Err, model0Obj) //Loads cylinder model
 					{
 						if (model0Err) //if the function loadJSONResource returns an error
 						{
-							alert('Fatal error getting Susan model (see console)');
+							alert('Fatal error getting Cylinder model (see console)');
 							console.error(model0Err);
 						} 
 						else 
 						{
-							loadJSONResource('./bunny.json', function (model1Err, model1Obj) //loads bunny model
+							loadJSONResource('./resources/json/bunny.json', function (model1Err, model1Obj) //loads bunny model
 							{
 								if (model1Err) //if the function loadJSONResource returns an error
 								{
-									alert('Fatal error getting Susan model (see console)');
+									alert('Fatal error getting bunny model (see console)');
 									console.error(model1Err);
 								} 
 								else
 								{
-									loadJSONResource('./plane.json', function (model2Err, model2Obj) //loads plane model
+									loadJSONResource('./resources/json/plane.json', function (model2Err, model2Obj) //loads plane model
 									{
 										if (model2Err) //if the function loadJSONResource returns an error
 										{
-											alert('Fatal error getting Susan model (see console)');
+											alert('Fatal error getting plane model (see console)');
 											console.error(model2Err);
 										} 
 										else
@@ -58,7 +58,7 @@ var InitDemo = function ()
 											{
 												if (simplefsErr) //if the function loadTextResource returns an error
 												{
-													alert('Fatal error getting fragment shader (see console)');
+													alert('Fatal error getting simple fragment shader (see console)');
 													console.error(simplefsErr);
 												} 
 												else 
@@ -67,12 +67,12 @@ var InitDemo = function ()
 													{
 														if (simplevsErr) //if the function loadTextResource returns an error
 														{
-															alert('Fatal error getting vertex shader (see console)');
+															alert('Fatal error getting simple vertex shader (see console)');
 															console.error(simplevsErr);
 														} 
 														else 
 														{
-															loadJSONResource('./sphere1.json', function (model3Err, model3Obj) //loads sphere model
+															loadJSONResource('./resources/json/sphere1.json', function (model3Err, model3Obj) //loads sphere model
 															{
 																if (model3Err) //if the function loadJSONResource returns an error
 																{
@@ -81,7 +81,7 @@ var InitDemo = function ()
 																} 
 																else
 																{
-																	loadJSONResource('./teapot.json', function (model4Err, model4Obj) //loads teapot model
+																	loadJSONResource('./resources/json/teapot.json', function (model4Err, model4Obj) //loads teapot model
 																	{
 																		if (model4Err) //if the function loadJSONResource returns an error
 																		{
@@ -90,7 +90,7 @@ var InitDemo = function ()
 																		} 
 																		else
 																		{
-																			loadJSONResource('./evaLow.json', function (model5Err, model5Obj) //loads eva object
+																			loadJSONResource('./resources/json/evaLow.json', function (model5Err, model5Obj) //loads eva object
 																			{
 																				if (model5Err) //if the function loadTextResource returns an error
 																				{
@@ -99,7 +99,7 @@ var InitDemo = function ()
 																				} 
 																				else
 																				{
-																					loadJSONResource('./foreground.json', function (model6Err, model6Obj) //loads teapot model
+																					loadJSONResource('./resources/json/foreground.json', function (model6Err, model6Obj) //loads teapot model
 																					{
 																						if (model6Err) //if the function loadJSONResource returns an error
 																						{
@@ -108,7 +108,7 @@ var InitDemo = function ()
 																						} 
 																						else
 																						{
-																							loadJSONResource('./leftBase.json', function (model7Err, model7Obj) //loads teapot model
+																							loadJSONResource('./resources/json/leftBase.json', function (model7Err, model7Obj) //loads teapot model
 																							{
 																								if (model7Err) //if the function loadJSONResource returns an error
 																								{
@@ -117,7 +117,7 @@ var InitDemo = function ()
 																								} 
 																								else
 																								{
-																									loadJSONResource('./leftDetails.json', function (model8Err, model8Obj) //loads teapot model
+																									loadJSONResource('./resources/json/leftDetails.json', function (model8Err, model8Obj) //loads teapot model
 																									{
 																										if (model8Err) //if the function loadJSONResource returns an error
 																										{
@@ -126,7 +126,7 @@ var InitDemo = function ()
 																										} 
 																										else
 																										{
-																											loadJSONResource('./lightBlock.json', function (model9Err, model9Obj) //loads teapot model
+																											loadJSONResource('./resources/json/lightBlock.json', function (model9Err, model9Obj) //loads teapot model
 																											{
 																												if (model9Err) //if the function loadJSONResource returns an error
 																												{
@@ -135,7 +135,7 @@ var InitDemo = function ()
 																												} 
 																												else
 																												{
-																													loadJSONResource('./rightBase.json', function (model10Err, model10Obj) //loads teapot model
+																													loadJSONResource('./resources/json/rightBase.json', function (model10Err, model10Obj) //loads teapot model
 																													{
 																														if (model10Err) //if the function loadJSONResource returns an error
 																														{
@@ -144,7 +144,7 @@ var InitDemo = function ()
 																														} 
 																														else
 																														{
-																															loadJSONResource('./rightDetails.json', function (model11Err, model11Obj) //loads teapot model
+																															loadJSONResource('./resources/json/rightDetails.json', function (model11Err, model11Obj) //loads teapot model
 																															{
 																																if (model11Err) //if the function loadJSONResource returns an error
 																																{
@@ -248,10 +248,11 @@ const keyPress = function(obj, event)
 	if("0" === event.key)
 	{
 		// obj.camera.keyNumber = 0;
+		document.getElementById('img').src = "resources/images/s0.png";
 		obj.scene.load(0, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva, obj.foreground, obj.leftB, obj.leftD, obj.lightB, obj.rightB, obj.rightD);				
 		// obj.camera.reset();
 		obj.camera.raytrace(obj.scene);
-		document.getElementById('img').src = "s0.png";
+		
 		obj.camera.frameNo = 0;	//reset the time for a new scene
 	}
 	if("1" === event.key)
@@ -260,7 +261,7 @@ const keyPress = function(obj, event)
 		obj.scene.load(1, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva, obj.foreground, obj.leftB, obj.leftD, obj.lightB, obj.rightB, obj.rightD);
 		// obj.camera.reset();
 		obj.camera.raytrace(obj.scene);
-		document.getElementById('img').src = "s1.png";
+		document.getElementById('img').src = "resources/images/s1.png";
 		obj.camera.frameNo = 0;	//reset the time for a new scene
 	}
 	if("2" === event.key)
@@ -268,7 +269,7 @@ const keyPress = function(obj, event)
 		obj.scene.load(2, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva, obj.foreground, obj.leftB, obj.leftD, obj.lightB, obj.rightB, obj.rightD);				
 		// obj.camera.reset();
 		obj.camera.raytrace(obj.scene);
-		document.getElementById('img').src = "s2.png";
+		document.getElementById('img').src = "resources/images/s2.png";
 		obj.camera.frameNo = 0;	//reset the time for a new scene
 	}
 	if("3" === event.key)
@@ -276,7 +277,7 @@ const keyPress = function(obj, event)
 		obj.scene.load(3, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva, obj.foreground, obj.leftB, obj.leftD, obj.lightB, obj.rightB, obj.rightD);
 		// obj.camera.reset();
 		obj.camera.raytrace(obj.scene);
-		document.getElementById('img').src = "s3.png";
+		document.getElementById('img').src = "resources/images/s3.png";
 		obj.camera.frameNo = 0;	//reset the time for a new scene
 	}
 	if("4" === event.key)
@@ -284,7 +285,7 @@ const keyPress = function(obj, event)
 		obj.scene.load(4, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva, obj.foreground, obj.leftB, obj.leftD, obj.lightB, obj.rightB, obj.rightD);
 		// obj.camera.reset();
 		obj.camera.raytrace(obj.scene);
-		document.getElementById('img').src = "s4.png";
+		document.getElementById('img').src = "resources/images/s4.png";
 		obj.camera.frameNo = 0;	//reset the time for a new scene
 	}
 	if("5" === event.key)
@@ -292,7 +293,7 @@ const keyPress = function(obj, event)
 		obj.scene.load(5, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva, obj.foreground, obj.leftB, obj.leftD, obj.lightB, obj.rightB, obj.rightD);
 		// obj.camera.reset();
 		obj.camera.raytrace(obj.scene);
-		document.getElementById('img').src = "s5.png";
+		document.getElementById('img').src = "resources/images/s5.png";
 		obj.camera.frameNo = 0;	//reset the time for a new scene
 	}
 	if("6" === event.key)
@@ -300,7 +301,7 @@ const keyPress = function(obj, event)
 		obj.scene.load(6, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva, obj.foreground, obj.leftB, obj.leftD, obj.lightB, obj.rightB, obj.rightD);
 		// obj.camera.reset();
 		obj.camera.raytrace(obj.scene);
-		document.getElementById('img').src = "s6.png";
+		document.getElementById('img').src = "resources/images/s6.png";
 		obj.camera.frameNo = 0;	//reset the time for a new scene
 	}
 	if("7" === event.key)
@@ -308,7 +309,7 @@ const keyPress = function(obj, event)
 		obj.scene.load(7, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva, obj.foreground, obj.leftB, obj.leftD, obj.lightB, obj.rightB, obj.rightD);
 		// obj.camera.reset();
 		obj.camera.raytrace(obj.scene);
-		document.getElementById('img').src = "s7.png";
+		document.getElementById('img').src = "resources/images/s7.png";
 		obj.camera.frameNo = 0;	//reset the time for a new scene
 	}
 	if("8" === event.key)
@@ -316,14 +317,14 @@ const keyPress = function(obj, event)
 		obj.scene.load(8, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva, obj.foreground, obj.leftB, obj.leftD, obj.lightB, obj.rightB, obj.rightD);
 		// obj.camera.reset();
 		obj.camera.raytrace(obj.scene);
-		document.getElementById('img').src = "s8.png";
+		document.getElementById('img').src = "resources/images/s8.png";
 		obj.camera.frameNo = 0;	//reset the time for a new scene
 	}
 	if("9" === event.key)
 	{
 		obj.scene.load(9, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva, obj.foreground, obj.leftB, obj.leftD, obj.lightB, obj.rightB, obj.rightD);
 		obj.camera.raytrace(obj.scene);
-		document.getElementById('img').src = "s9.png";
+		document.getElementById('img').src = "resources/images/s9.png";
 		obj.camera.frameNo = 0;	//reset the time for a new scene
 	}
 	
@@ -537,7 +538,7 @@ var RealTimeView = function (vertexShaderText, fragmentShaderText, simpleFragTex
 	let sceneTest = new Scene();
 	//need to initially load so that something shows up on screen without the user needing to interact first
 	sceneTest.load(0, CylModel, bunnyModel, planeModel, sphereModel, teapotModel, evaModel, foregroundModel, leftBaseModel, leftDetailsModel, lightBlockModel, rightBaseModel, rightDetailsModel);
-	document.getElementById('img').src = "s0.png";	//initiallizing the full render				
+	document.getElementById('img').src = "resources/images/s0.png";	//initiallizing the full render				
 
 	let obj = {	//used for the keyboard call back, can bring in an object, cannot pass by reference
 		camera: camera,
