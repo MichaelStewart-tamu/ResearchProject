@@ -744,7 +744,7 @@ class Scene
             let mat = new Material();
             let back;
 
-            //pack into an object the values passed into intersect
+            //pack into an object the values passed into intersect function
             let rayInfo = {
                 origin: rayOrig,
                 direction: rayDir,
@@ -755,8 +755,8 @@ class Scene
                 back: true
             };
 
-            // console.log("testing that values were input correctly, at thing", thing, "rayinfo", rayInfo);
-
+            //JavaScript does not allow to pass by reference, so to get multiple things out of a function you have to pack into an object pass in the object, then unpack the object after
+            //calling intersect function and passing in object, if there is an intersect it will return true and continue the conditional
             if(thing.intersect(rayInfo))
             {
                 //unpack the values from intersect object and reapply to variables
@@ -940,7 +940,7 @@ class Scene
                         n0: n0,
                         storePoints: storePoints
                     };
-                    let morePoints = this.trace(this, sceneObj);
+                    let morePoints = this.trace(camera, sceneObj);
 
                     color = sceneObj.color;
 
@@ -1029,7 +1029,7 @@ class Scene
                         n0: n0,
                         storePoints: storePoints
                     };
-                    let morePoints = this.trace(this, sceneObj);
+                    let morePoints = this.trace(camera, sceneObj);
                     console.log("morePoints");
                     color = sceneObj.color;
 
@@ -1048,6 +1048,7 @@ class Scene
         {
             if(storePoints === true)
             {
+                //will store a point way off in the distance
                 // points.push_back(rayOrig + camera->zfar*rayDir);
                 let zfarTIMESrayDir = vec3.create();
                 zfarTIMESrayDir[0] = camera.zfar * rayDir[0];

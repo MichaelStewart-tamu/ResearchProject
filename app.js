@@ -247,7 +247,7 @@ const keyPress = function(obj, event)
 
 	if("0" === event.key)
 	{
-		obj.camera.keyNumber = 0;
+		// obj.camera.keyNumber = 0;
 		obj.scene.load(0, obj.cyl, obj.bunny, obj.plane, obj.sphere, obj.teapot, obj.eva, obj.foreground, obj.leftB, obj.leftD, obj.lightB, obj.rightB, obj.rightD);				
 		// obj.camera.reset();
 		obj.camera.raytrace(obj.scene);
@@ -597,11 +597,11 @@ var RealTimeView = function (vertexShaderText, fragmentShaderText, simpleFragTex
 				// gl.uniformMatrix4fv(program.getUniform("P"), gl.FALSE, P.topMatrix());
 
 				//drawing the camera
-				camera.draw(MV, lineProgram, testingProgram, planeShape);
+				camera.draw(MV, lineProgram, planeShape);
 
 				testingProgram.bind();	//bind the program needed
 				sceneTest.draw(MV, testingProgram);
-
+				
 				if(loopIterations < 50 || infinite === true)
 				{
 					requestAnimationFrame(loop);	//calling this function again

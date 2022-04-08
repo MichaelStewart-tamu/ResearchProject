@@ -206,7 +206,7 @@ class Camera
         this.#showAll = false;
     }
 
-    draw(MV, program, quadsProgram, planeShape)
+    draw(MV, program, planeShape)
     {
         var timePerBounce = 20;
 
@@ -422,12 +422,12 @@ class Camera
                 var lineNo = selection.length / 3;
                 gl.drawArrays(gl.LINES, 0, lineNo);
             }
-            program.unbind();
+            // program.unbind();
 
             //drawing the color tiles
             if(this.#rayPts[0][0] != undefined && this.toggleSquares === true)
             {
-                program.bind();
+                // program.bind();
 
                 // gl.uniform3f(quadsProgram.getUniform("kd"), 0.0, 0.0, 0.0);
                 // gl.uniform3f(quadsProgram.getUniform("ks"), 0.0, 0.0, 0.0);
@@ -470,10 +470,10 @@ class Camera
 
 
 
-                program.unbind();
+                // program.unbind();
             }
 
-            
+        program.unbind();
         MV.popMatrix();
     }
 

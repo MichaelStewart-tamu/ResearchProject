@@ -34,6 +34,7 @@ class Light
         gl.uniform3f(prog.getUniform("ks"), 0.0, 0.0, 0.0);
         gl.uniform3f(prog.getUniform("ka"), 1.0, 1.0, 0.5);
         gl.uniform1f(prog.getUniform("s"), 1.0);
+        gl.uniform1f(prog.getUniform("alpha"), 1.0);
 
         MV.pushMatrix();
             MV.translate(this.position[0], this.position[1], this.position[2]);
