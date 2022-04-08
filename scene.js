@@ -60,6 +60,7 @@ class Scene
         let rightD = new Shape();
         rightD.init(rightDetailsModel);
         
+        this.#shadowing = true; //setting the default value of the rendering setting for shadows for every scene to true
 
         switch(scene)
         {
